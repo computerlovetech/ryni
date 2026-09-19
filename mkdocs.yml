@@ -1,0 +1,51 @@
+site_name: Rýni
+site_description: Share conventions. Catch harness drift.
+repo_url: https://github.com/computerlovetech/ryni
+repo_name: computerlovetech/ryni
+edit_uri: edit/main/docs/
+strict: true
+nav:
+  - Overview: index.md
+  - Getting started: getting-started.md
+  - Adopt a pack: adopting-packs.md
+  - Write and share a pack: writing-packs.md
+  - Check with your agent: agent-checks.md
+  - Continuous integration: ci.md
+  - Reference:
+      - CLI: cli.md
+      - Python API: api.md
+      - Built-in rules: rules.md
+  - Contributing: contributing.md
+theme:
+  name: material
+  font: false
+  palette:
+    - scheme: default
+      primary: custom
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: custom
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - toc:
+      permalink: true
+extra_css:
+  - stylesheets/extra.css

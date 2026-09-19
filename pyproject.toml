@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "ryni"
 version = "0.1.0"
-description = "An opinionated linter for agent harnesses"
+description = "Share conventions. Catch harness drift."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -26,6 +26,11 @@ line-length = 100
 dev = [
     "pytest>=9.0.3",
     "ruff>=0.15.12",
+]
+
+docs = [
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.6,<10",
 ]
 
 [tool.ruff.lint]
