@@ -58,9 +58,7 @@ def test_rule_without_fixer_keeps_findings(path: Path) -> None:
 
 def test_clean_rules_do_not_call_fixer(path: Path) -> None:
     repairer = InMemoryRepair([])
-    rule = Rule(
-        "CUSTOM", "custom", "Example", path.name, lambda path: [], fix=repairer
-    )
+    rule = Rule("CUSTOM", "custom", "Example", path.name, lambda path: [], fix=repairer)
     assert check([path], [rule], fix=True).exit_code == 0
     assert repairer.repaired == []
 
@@ -115,9 +113,7 @@ def test_fix_failure_preserves_error_and_other_rules_continue(path: Path) -> Non
     broken = Rule("FAIL", "broken", "Example", path.name, lambda path: [finding], fix=fail)
     findings = [replace(finding, rule_id="GOOD")]
     repairer = InMemoryRepair(findings)
-    good = replace(
-        broken, id="GOOD", evaluate=lambda path: list(findings), fix=repairer
-    )
+    good = replace(broken, id="GOOD", evaluate=lambda path: list(findings), fix=repairer)
     result = check([path], [broken, good], fix=True)
     assert result.exit_code == 2
     assert result.findings == [finding]
@@ -145,4 +141,9 @@ def test_plugin_fix_is_selectable_through_cli(path: Path, monkeypatch: pytest.Mo
         app, ["check", str(path), "--select", "CUSTOM", "--fix", "--output-format", "json"]
     )
     assert result.exit_code == 0
-    assert json.loads(result.output) == {"checked_files": [str(path)], "findings": [], "errors": []}
+    assert json.loads(result.output) == {
+        "checked_files": [str(path)],
+        "findings": [],
+        "errors": [],
+        "pending_reviews": [],
+    }

@@ -32,12 +32,55 @@ class Rule:
     fix: Callable[[Path], None] = no_fix
 
 
+@dataclass(frozen=True)
+class ReviewRule:
+    """A convention reviewed by the user's agent, never executed by Rýni."""
+
+    id: str
+    name: str
+    description: str
+    instructions: str
+    filename: str = ""
+    scope: RuleScope = RuleScope.REPOSITORY
+
+
+@dataclass(frozen=True)
+class RulePack:
+    name: str
+    description: str
+    rules: tuple[Rule | ReviewRule, ...]
+
+
+@dataclass(frozen=True)
+class RuleSource:
+    name: str
+    description: str = ""
+    package: str = ""
+    version: str = ""
+
+
+@dataclass(frozen=True)
+class ReviewTask:
+    rule_id: str
+    name: str
+    description: str
+    path: str
+    instructions: str
+    scope: RuleScope = RuleScope.REPOSITORY
+    source: RuleSource | None = None
+
+
 @dataclass
 class CheckResult:
     checked_files: list[str] = field(default_factory=list)
     findings: list[Finding] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+    pending_reviews: list[ReviewTask] = field(default_factory=list)
 
     @property
     def exit_code(self) -> int:
-        return 2 if self.errors else int(bool(self.findings))
+        if self.errors:
+            return 2
+        if self.findings:
+            return 1
+        return 3 if self.pending_reviews else 0

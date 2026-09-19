@@ -45,6 +45,7 @@ def test_discovery_deduplicates_and_excludes_installed_skills(tmp_path: Path):
         "checked_files": [str(skill)],
         "findings": [],
         "errors": [],
+        "pending_reviews": [],
     }
 
 

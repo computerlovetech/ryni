@@ -28,9 +28,9 @@ def test_plugin_is_discoverable_selectable_and_executable(
     install_plugin(monkeypatch, rule)
     (tmp_path / "example.txt").write_text("content")
     runner = CliRunner()
-    assert "CUSTOM001  example\n" in runner.invoke(app, ["rule"]).output
+    assert "CUSTOM001  example  [deterministic]  example\n" in runner.invoke(app, ["rule"]).output
     assert runner.invoke(app, ["rule", "CUSTOM001"]).output == (
-        "CUSTOM001: example\n\nAn example third-party rule.\n"
+        "CUSTOM001: example\ndeterministic · example \n\nAn example third-party rule.\n"
     )
     result = runner.invoke(app, ["check", str(tmp_path), "--select", "CUSTOM001"])
     assert result.exit_code == 1

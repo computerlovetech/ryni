@@ -2,7 +2,7 @@ import os
 from collections.abc import Sequence
 from pathlib import Path
 
-from ryni.models import CheckResult, Finding, Rule, RuleScope
+from ryni.models import CheckResult, Finding, ReviewRule, ReviewTask, Rule, RuleScope
 
 EXCLUDED_DIRECTORIES = {
     ".git",
@@ -48,7 +48,9 @@ def discover(paths: list[Path], result: CheckResult) -> list[Path]:
     return sorted(files.values(), key=str)
 
 
-def check(paths: list[Path], rules: Sequence[Rule], *, fix: bool = False) -> CheckResult:
+def check(
+    paths: list[Path], rules: Sequence[Rule | ReviewRule], *, fix: bool = False
+) -> CheckResult:
     result = CheckResult()
     repository_rules = [rule for rule in rules if rule.scope == RuleScope.REPOSITORY]
     file_rules = [rule for rule in rules if rule.scope == RuleScope.FILE]
@@ -69,9 +71,20 @@ def check(paths: list[Path], rules: Sequence[Rule], *, fix: bool = False) -> Che
     return result
 
 
-def _evaluate(path: Path, rules: Sequence[Rule], result: CheckResult, *, fix: bool = False) -> None:
+def _evaluate(
+    path: Path, rules: Sequence[Rule | ReviewRule], result: CheckResult, *, fix: bool = False
+) -> None:
     complete = True
+    evaluated = False
     for rule in rules:
+        if isinstance(rule, ReviewRule):
+            result.pending_reviews.append(
+                ReviewTask(
+                    rule.id, rule.name, rule.description, str(path), rule.instructions, rule.scope
+                )
+            )
+            continue
+        evaluated = True
         try:
             findings = _validated_findings(rule.evaluate(path), rule.id)
         except Exception as error:
@@ -85,7 +98,7 @@ def _evaluate(path: Path, rules: Sequence[Rule], result: CheckResult, *, fix: bo
             except Exception as error:
                 result.errors.append(f"Cannot fix {path} with {rule.id}: {error}")
                 complete = False
-    if complete:
+    if complete and evaluated:
         result.checked_files.append(str(path))
 
 

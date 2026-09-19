@@ -1,11 +1,13 @@
 from collections.abc import Sequence
-from importlib.metadata import entry_points
+from importlib.metadata import entry_points, version
 from pathlib import PurePosixPath, PureWindowsPath
 
-from ryni.models import Rule, RuleScope
+from ryni.models import ReviewRule, Rule, RulePack, RuleScope, RuleSource
 from ryni.rules.skill_frontmatter import RULE as SKILL_FRONTMATTER
 
 BUILTINS = (SKILL_FRONTMATTER,)
+type AnyRule = Rule | ReviewRule
+
 
 class CatalogLoadError(ValueError):
     """No complete catalog could be loaded."""
@@ -18,10 +20,13 @@ class UnknownRulesError(ValueError):
 
 
 class RuleCatalog:
-    def __init__(self, rules: dict[str, Rule]) -> None:
+    def __init__(
+        self, rules: dict[str, AnyRule], sources: dict[str, RuleSource] | None = None
+    ) -> None:
         self._rules = dict(rules)
+        self._sources = dict(sources or {})
 
-    def select(self, ids: Sequence[str] | None = None) -> tuple[Rule, ...]:
+    def select(self, ids: Sequence[str] | None = None) -> tuple[AnyRule, ...]:
         if ids is None:
             return tuple(self._rules.values())
         requested = tuple(dict.fromkeys(rule_id.strip() for rule_id in ids))
@@ -32,20 +37,31 @@ class RuleCatalog:
             raise UnknownRulesError(unknown)
         return tuple(self._rules[rule_id] for rule_id in requested)
 
-    def get(self, rule_id: str) -> Rule:
+    def get(self, rule_id: str) -> AnyRule:
         return self.select((rule_id,))[0]
 
+    def source(self, rule_id: str) -> RuleSource:
+        return self._sources.get(rule_id, RuleSource("unknown"))
 
-def _register(rules: dict[str, Rule], rule: object, origin: str) -> None:
+
+def _text(value: object, field: str) -> None:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field} must be a non-empty string")
+
+
+def _register(rules: dict[str, AnyRule], rule: object, origin: str) -> None:
     try:
-        if not isinstance(rule, Rule) or not callable(rule.evaluate):
-            raise ValueError("must export a ryni.models.Rule with a callable evaluator")
-        if not callable(rule.fix):
-            raise ValueError("fix must be callable")
+        if not isinstance(rule, (Rule, ReviewRule)):
+            raise ValueError("must export a Rule, ReviewRule, or RulePack")
+        if isinstance(rule, Rule):
+            if not callable(rule.evaluate):
+                raise ValueError("evaluate must be callable")
+            if not callable(rule.fix):
+                raise ValueError("fix must be callable")
+        else:
+            _text(rule.instructions, "instructions")
         for field in ("id", "name", "description"):
-            value = getattr(rule, field)
-            if not isinstance(value, str) or not value.strip():
-                raise ValueError(f"{field} must be a non-empty string")
+            _text(getattr(rule, field), field)
         if rule.id != rule.id.strip() or "," in rule.id:
             raise ValueError("id must not contain surrounding whitespace or commas")
         if not isinstance(rule.scope, RuleScope):
@@ -70,18 +86,38 @@ def _register(rules: dict[str, Rule], rule: object, origin: str) -> None:
 
 
 def load_catalog() -> RuleCatalog:
-    """Load and validate all rules atomically, retaining plugin provenance in failures."""
-    rules: dict[str, Rule] = {}
-    for index, rule in enumerate(BUILTINS):
-        _register(rules, rule, f"Built-in rule {index + 1}")
+    """Discover installed conventions atomically. Installation is activation."""
+    rules: dict[str, AnyRule] = {}
+    sources: dict[str, RuleSource] = {}
+    for rule in BUILTINS:
+        _register(rules, rule, "Built-in rule")
+        sources[rule.id] = RuleSource("ryni", "Baseline checks", "ryni", version("ryni"))
     try:
         entries = sorted(entry_points(group="ryni.rules"), key=lambda item: item.name)
     except Exception as error:
         raise CatalogLoadError(f"Cannot discover rule plugins: {error}") from error
     for entry in entries:
+        origin = f"Rule plugin {entry.name!r}"
         try:
-            rule = entry.load()
+            exported = entry.load()
+            dist = getattr(entry, "dist", None)
+            package = dist.metadata["Name"] if dist else ""
+            package_version = dist.version if dist else ""
+            if isinstance(exported, RulePack):
+                _text(exported.name, "pack name")
+                _text(exported.description, "pack description")
+                if not isinstance(exported.rules, tuple) or not exported.rules:
+                    raise ValueError("pack rules must be a non-empty tuple")
+                members = exported.rules
+                source = RuleSource(exported.name, exported.description, package, package_version)
+            else:
+                members = (exported,)
+                source = RuleSource(entry.name, package=package, version=package_version)
+            for rule in members:
+                _register(rules, rule, origin)
+                sources[rule.id] = source
+        except CatalogLoadError:
+            raise
         except Exception as error:
-            raise CatalogLoadError(f"Rule plugin {entry.name!r}: {error}") from error
-        _register(rules, rule, f"Rule plugin {entry.name!r}")
-    return RuleCatalog(rules)
+            raise CatalogLoadError(f"{origin}: {error}") from error
+    return RuleCatalog(rules, sources)
