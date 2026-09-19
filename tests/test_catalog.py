@@ -23,11 +23,15 @@ def _plugin(monkeypatch: pytest.MonkeyPatch, value: object) -> None:
 
 def test_default_selection_preserves_builtin_order() -> None:
     assert load_catalog().select() == BUILTINS
+    assert tuple(rule.id for rule in BUILTINS) == ("SKILL001",)
 
 
-def test_selection_trims_and_deduplicates_preserving_requested_order() -> None:
-    selected = load_catalog().select([" AGENT001 ", "SKILL001", "AGENT001"])
-    assert tuple(rule.id for rule in selected) == ("AGENT001", "SKILL001")
+def test_selection_trims_and_deduplicates_preserving_requested_order(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _plugin(monkeypatch, replace(BUILTINS[0], id="CUSTOM"))
+    selected = load_catalog().select([" CUSTOM ", "SKILL001", "CUSTOM"])
+    assert tuple(rule.id for rule in selected) == ("CUSTOM", "SKILL001")
 
 
 def test_selection_reports_all_unknown_ids() -> None:

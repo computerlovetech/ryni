@@ -3,7 +3,6 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from ryni.models import CheckResult, Finding, Rule, RuleScope
-from ryni.skill_repository_local import repository_root
 
 EXCLUDED_DIRECTORIES = {
     ".git",
@@ -16,6 +15,15 @@ EXCLUDED_DIRECTORIES = {
     ".codex",
     ".github",
 }
+
+
+def repository_root(path: Path) -> Path:
+    """Use the nearest Git checkout, including worktrees; otherwise the supplied directory."""
+    directory = Path(os.path.abspath(path if path.is_dir() else path.parent))
+    for candidate in (directory, *directory.parents):
+        if (candidate / ".git").exists():
+            return candidate
+    return directory
 
 
 def discover(paths: list[Path], result: CheckResult) -> list[Path]:
@@ -31,7 +39,7 @@ def discover(paths: list[Path], result: CheckResult) -> list[Path]:
                 directories[:] = sorted(
                     name for name in directories if name not in EXCLUDED_DIRECTORIES
                 )
-                # Preserve named directories too: a directory named CLAUDE.md is invalid.
+                # Preserve named directories too: a directory named SKILL.md is invalid.
                 for name in sorted(names + directories):
                     candidate = Path(root) / name
                     files.setdefault(candidate.absolute(), candidate)

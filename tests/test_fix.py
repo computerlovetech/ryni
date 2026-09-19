@@ -4,19 +4,26 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-from fake_instruction_link import InMemoryInstructionLinkRepair
 from typer.testing import CliRunner
 
 from ryni.cli import app
 from ryni.engine import check
-from ryni.instruction_link import InstructionLink
 from ryni.models import Finding, Rule, RuleScope
-from ryni.rules.claude_symlink import FixClaudeSymlink
+
+
+class InMemoryRepair:
+    def __init__(self, findings: list[Finding]) -> None:
+        self.findings = findings
+        self.repaired: list[Path] = []
+
+    def __call__(self, path: Path) -> None:
+        self.repaired.append(path)
+        self.findings.clear()
 
 
 @pytest.fixture
 def path(tmp_path: Path) -> Path:
-    path = tmp_path / "CLAUDE.md"
+    path = tmp_path / "example.txt"
     path.touch()
     return path
 
@@ -24,21 +31,21 @@ def path(tmp_path: Path) -> Path:
 @pytest.mark.parametrize("apply_fix", [False, True])
 def test_fixes_require_opt_in_and_report_remaining_findings(path: Path, apply_fix: bool) -> None:
     findings = [Finding(str(path), 1, "CUSTOM", "Needs repair")]
-    repairer = InMemoryInstructionLinkRepair(findings)
+    repairer = InMemoryRepair(findings)
     rule = Rule(
         "CUSTOM",
         "custom",
         "Example",
         path.name,
         lambda path: list(findings),
-        fix=FixClaudeSymlink(repairer),
+        fix=repairer,
     )
 
     result = check([path], [rule], fix=apply_fix)
 
     assert result.exit_code == (0 if apply_fix else 1)
     assert result.findings == findings
-    assert repairer.repaired == ([InstructionLink(path=path)] if apply_fix else [])
+    assert repairer.repaired == ([path] if apply_fix else [])
 
 
 def test_rule_without_fixer_keeps_findings(path: Path) -> None:
@@ -50,23 +57,23 @@ def test_rule_without_fixer_keeps_findings(path: Path) -> None:
 
 
 def test_clean_rules_do_not_call_fixer(path: Path) -> None:
-    repairer = InMemoryInstructionLinkRepair([])
+    repairer = InMemoryRepair([])
     rule = Rule(
-        "CUSTOM", "custom", "Example", path.name, lambda path: [], fix=FixClaudeSymlink(repairer)
+        "CUSTOM", "custom", "Example", path.name, lambda path: [], fix=repairer
     )
     assert check([path], [rule], fix=True).exit_code == 0
     assert repairer.repaired == []
 
 
 def test_invalid_evaluation_does_not_call_fixer(path: Path) -> None:
-    repairer = InMemoryInstructionLinkRepair([])
+    repairer = InMemoryRepair([])
     rule = Rule(
         "CUSTOM",
         "custom",
         "Example",
         path.name,
         lambda path: ["invalid"],
-        fix=FixClaudeSymlink(repairer),
+        fix=repairer,
     )
     assert check([path], [rule], fix=True).exit_code == 2
     assert repairer.repaired == []
@@ -74,7 +81,7 @@ def test_invalid_evaluation_does_not_call_fixer(path: Path) -> None:
 
 def test_repository_fixer_receives_root_once_for_repeated_paths(path: Path) -> None:
     findings = [Finding(str(path), 1, "CUSTOM", "Needs repair")]
-    repairer = InMemoryInstructionLinkRepair(findings)
+    repairer = InMemoryRepair(findings)
     rule = Rule(
         "CUSTOM",
         "custom",
@@ -82,10 +89,10 @@ def test_repository_fixer_receives_root_once_for_repeated_paths(path: Path) -> N
         "",
         lambda path: list(findings),
         scope=RuleScope.REPOSITORY,
-        fix=FixClaudeSymlink(repairer),
+        fix=repairer,
     )
     assert check([path, path.parent, path], [rule], fix=True).exit_code == 0
-    assert repairer.repaired == [InstructionLink(path=path.parent)]
+    assert repairer.repaired == [path.parent]
 
 
 def test_all_rules_are_rechecked_after_fixes(path: Path) -> None:
@@ -95,7 +102,7 @@ def test_all_rules_are_rechecked_after_fixes(path: Path) -> None:
         first,
         id="SECOND",
         evaluate=lambda path: [replace(finding, rule_id="SECOND") for finding in findings],
-        fix=FixClaudeSymlink(InMemoryInstructionLinkRepair(findings)),
+        fix=InMemoryRepair(findings),
     )
     assert check([path], [first, second], fix=True).exit_code == 0
 
@@ -107,9 +114,9 @@ def test_fix_failure_preserves_error_and_other_rules_continue(path: Path) -> Non
     finding = Finding(str(path), 1, "FAIL", "Needs repair")
     broken = Rule("FAIL", "broken", "Example", path.name, lambda path: [finding], fix=fail)
     findings = [replace(finding, rule_id="GOOD")]
-    repairer = InMemoryInstructionLinkRepair(findings)
+    repairer = InMemoryRepair(findings)
     good = replace(
-        broken, id="GOOD", evaluate=lambda path: list(findings), fix=FixClaudeSymlink(repairer)
+        broken, id="GOOD", evaluate=lambda path: list(findings), fix=repairer
     )
     result = check([path], [broken, good], fix=True)
     assert result.exit_code == 2
@@ -117,7 +124,7 @@ def test_fix_failure_preserves_error_and_other_rules_continue(path: Path) -> Non
     assert len(result.errors) == 1
     assert "Cannot fix" in result.errors[0]
     assert "Cannot write" in result.errors[0]
-    assert repairer.repaired == [InstructionLink(path=path)]
+    assert repairer.repaired == [path]
 
 
 def test_plugin_fix_is_selectable_through_cli(path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -128,7 +135,7 @@ def test_plugin_fix_is_selectable_through_cli(path: Path, monkeypatch: pytest.Mo
         "Example",
         path.name,
         lambda path: list(findings),
-        fix=FixClaudeSymlink(InMemoryInstructionLinkRepair(findings)),
+        fix=InMemoryRepair(findings),
     )
     monkeypatch.setattr(
         "ryni.rules.entry_points",

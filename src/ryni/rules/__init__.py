@@ -3,24 +3,9 @@ from importlib.metadata import entry_points
 from pathlib import PurePosixPath, PureWindowsPath
 
 from ryni.models import Rule, RuleScope
-from ryni.rules.claude_symlink import RULE as CLAUDE_SYMLINK
-from ryni.rules.markdown_location import RULE as MARKDOWN_LOCATION
 from ryni.rules.skill_frontmatter import RULE as SKILL_FRONTMATTER
-from ryni.rules.skill_management import (
-    IGNORED_INSTALLATIONS,
-    LOCAL_INSTALLATIONS,
-    SOURCE_LOCATIONS,
-)
 
-BUILTINS = (
-    SKILL_FRONTMATTER,
-    CLAUDE_SYMLINK,
-    IGNORED_INSTALLATIONS,
-    SOURCE_LOCATIONS,
-    LOCAL_INSTALLATIONS,
-    MARKDOWN_LOCATION,
-)
-
+BUILTINS = (SKILL_FRONTMATTER,)
 
 class CatalogLoadError(ValueError):
     """No complete catalog could be loaded."""
