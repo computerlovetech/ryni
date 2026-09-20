@@ -55,8 +55,7 @@ missing review capability is reported as incomplete.
 - [Your first rule pack](website/first-rule-pack.md)
 - [Working example pack](examples/team-pack/README.md)
 
-The pack/review API is in early development in this checkout and must be released
-before it is available through registry installs. To try this source version:
+Rule packs and agent reviews require Rýni 0.1.1 or later. To try this source version:
 
 ```bash
 uv run --with-editable . --with ./examples/team-pack ryni check .

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tidy-harness"
+version = "0.1.1"
+description = "Opinionated agent harness conventions for Rýni."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = ["ryni>=0.1.1,<0.2", "markdown-it-py>=3,<5"]
+
+[project.entry-points."ryni.rules"]
+tidy_harness = "tidy_harness:PACK"
+
+[project.urls]
+Repository = "https://github.com/computerlovetech/ryni"
+Issues = "https://github.com/computerlovetech/ryni/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tidy_harness"]

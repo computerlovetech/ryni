@@ -71,7 +71,7 @@ build-backend = "hatchling.build"
 name = "team-rules"
 version = "0.1.0"
 requires-python = ">=3.14"
-dependencies = ["ryni>=0.1.0"]
+dependencies = ["ryni>=0.1.1"]
 
 [project.entry-points."ryni.rules"]
 team = "team_rules:PACK"

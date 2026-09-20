@@ -19,8 +19,11 @@ jobs:
       - run: uv sync --locked --group docs
       - run: uv run --no-sync ruff check .
       - run: uv run --no-sync pytest tests
+      - name: Test tidy-harness against the local Rýni API
+        run: uv run --with-editable . --with ./packages/tidy-harness pytest packages/tidy-harness/tests
       - run: uv run --no-sync ryni check .
       - run: uv run --no-sync mkdocs build --strict
       - run: uv build
+      - run: uv build packages/tidy-harness --out-dir packages/tidy-harness/dist
       - name: Verify installed wheel and bundled skill
         run: uvx --from dist/ryni-*-py3-none-any.whl ryni skill install "$RUNNER_TEMP/ryni-skills"
