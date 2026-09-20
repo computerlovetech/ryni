@@ -6,14 +6,14 @@ returns one evidence-backed report.
 
 ## Install the skill
 
-Install Rýni with your pack first. Then install its bundled skill into the directory
-your agent discovers:
+Add Rýni and your pack as [project development dependencies](adopting-packs.md) first.
+Then install its bundled skill into the directory your agent discovers:
 
 | Agent | Command, from your repository | Invocation |
 | --- | --- | --- |
-| Claude Code | `ryni skill install .claude/skills` | `/ryni-check` |
-| Codex | `ryni skill install .agents/skills` | `$ryni-check` |
-| Another skill-capable agent | `ryni skill install PATH_TO_SKILLS` | Use that agent's skill picker or invocation syntax. |
+| Claude Code | `uv run ryni skill install .claude/skills` | `/ryni-check` |
+| Codex | `uv run ryni skill install .agents/skills` | `$ryni-check` |
+| Another skill-capable agent | `uv run ryni skill install PATH_TO_SKILLS` | Use that agent's skill picker or invocation syntax. |
 
 The directory defaults to `.agents/skills`. You may provide an absolute path to
 install in a personal skills directory. Identical installations are a no-op;
@@ -27,7 +27,7 @@ skills if the new entry is not visible.
 
 ## What happens
 
-1. Your agent runs `ryni check . --output-format json` in the intended repository.
+1. Tell your agent to use `uv run ryni`; it runs `uv run ryni check . --output-format json` in the intended repository.
 2. Rýni executes Python rules and prepares review tasks with exact targets,
    instructions, and pack provenance.
 3. Your agent delegates **each** task to a sub-agent. It queues work when concurrency

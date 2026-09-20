@@ -3,32 +3,44 @@
 A pack is an ordinary Python package with a point of view. Its author documents
 what the rules require and why. Installing the package activates its rules.
 
-## Install once
+## Recommended: project development dependencies
 
-Replace `your-team-rules` with the published package you want to adopt:
-
-```bash
-uv tool install --with your-team-rules ryni
-ryni check .
-```
-
-Try the same policy without a persistent install:
+For a shared repository, add both Rýni and your team's rule pack as development
+dependencies. Replace `your-team-rules` with the published package name:
 
 ```bash
-uvx --with your-team-rules ryni check .
+uv add --dev ryni your-team-rules
+uv run ryni check .
 ```
 
-Use the same `--with` packages on every `uvx` invocation. Bare `uvx ryni` may run
-without the pack installed in your persistent tool environment.
+Commit `pyproject.toml` and `uv.lock`. The development dependencies declare which
+packages the team uses; the lockfile records their resolved versions. These tools
+are development dependencies, not application runtime dependencies.
+
+Rýni discovers packs installed in the environment that runs it. It does not read
+`pyproject.toml` itself. Use `uv run ryni` locally and in your agent so it runs in
+the project environment. In CI, install from the committed lockfile:
+
+```bash
+uv sync --locked --group dev
+uv run --no-sync ryni check .
+```
+
+This command prepares agent reviews as well as running deterministic checks.
+See [CI](ci.md) for a deterministic-only gate and agent review completion.
+
+Add more packs with `uv add --dev another-team-rules`. Review dependency and
+lockfile changes when updating the team's conventions. No Rýni-specific
+configuration file is needed.
 
 Packages execute Python when loaded. Adopt packages from authors you trust.
 
 ## See what you adopted
 
 ```bash
-ryni rule
-ryni rule TEAM002
-ryni rule --output-format json
+uv run ryni rule
+uv run ryni rule TEAM002
+uv run ryni rule --output-format json
 ```
 
 Each rule identifies its execution type, pack, and installed version. Individual
@@ -51,19 +63,32 @@ uv run --with-editable . --with ./examples/team-pack ryni check .
 `--with-editable .` ensures the example uses this checkout rather than an older
 published Rýni dependency. The example is not a published community pack.
 
-## Keep adoption repeatable
+## Alternative: standalone installation
 
-Pin both packages when sharing installation commands or configuring CI:
+For use outside a project environment, install Rýni and the pack together:
 
 ```bash
-uv tool install --with your-team-rules==1.2.0 ryni==0.1.0
+uv tool install --with your-team-rules ryni
+ryni check .
 ```
 
-These are illustrative versions; use versions published by your pack author.
-Install multiple packs by repeating `--with`. A team can also publish an umbrella
-package depending on its chosen packs. No Rýni-specific configuration is needed.
+Or try a pack without a persistent installation:
 
-To replace the policy in an existing tool installation, reinstall with the desired
-packages, for example `uv tool install --force --with other-team-rules ryni`.
-Removing a dependency from a running Python environment is not an activation API.
-Use uv to manage the tool environment.
+```bash
+uvx --with your-team-rules ryni check .
+```
+
+These environments are separate from the project's development dependencies.
+Bare `uvx ryni` does not include the team's project pack. Supply the same `--with`
+packages each time you use `uvx`; repeat `--with` for multiple packs.
+
+Pin both Rýni and pack versions when sharing standalone commands, for example:
+
+```bash
+uvx --with your-team-rules==1.2.0 ryni==0.1.0 check .
+```
+
+The names and versions above are illustrative. Use published versions that
+support your pack. To replace a persistent tool installation's policy, reinstall
+with the desired packages, for example
+`uv tool install --force --with other-team-rules ryni`.

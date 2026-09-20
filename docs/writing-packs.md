@@ -148,8 +148,13 @@ Publishing requires credentials and a package name you control. Rýni does not
 publish anything automatically. After publication, another team adopts the pack:
 
 ```bash
-uv tool install --with your-team-rules ryni
+uv add --dev ryni your-team-rules
 ```
 
-Release a new pack version when its conventions change. Provide pinned installation
-commands for customers and CI so policy upgrades are deliberate.
+Adopting teams should commit `pyproject.toml` and `uv.lock` and run checks with
+`uv run ryni`. See [adopting packs](adopting-packs.md) for the complete setup.
+The pack itself keeps Rýni as a runtime dependency because its rules import the
+Rýni API; both packages are development dependencies in a consuming repository.
+
+Release a new pack version when its conventions change. Teams update their
+dependencies and lockfile deliberately to adopt it.

@@ -9,9 +9,12 @@ Both belong in the same shareable rule pack. No Rýni configuration file or
 activation step is required.
 
 ```bash
-uv tool install ryni
-ryni check .
+uv add --dev ryni
+uv run ryni check .
 ```
+
+For a shared repository, add Rýni and your team's pack as development dependencies
+and commit `pyproject.toml` and `uv.lock`. See [adopting packs](adopting-packs.md).
 
 Rýni ships with one baseline check: valid skill frontmatter. Install a pack to
 adopt a team's broader conventions.
@@ -40,6 +43,6 @@ Rýni does not run a model, require an API key, or assign a codebase readiness s
 Your agent supplies the judgment; your installed packs supply the conventions.
 
 !!! note "Early development"
-    The Python API and JSON report format may change. Pin Rýni and pack versions
-    when using them in CI. This repository contains an executable example pack;
+    The Python API and JSON report format may change. Commit the lockfile and use its resolved versions
+    in CI. This repository contains an executable example pack;
     it does not yet provide a public pack catalog.

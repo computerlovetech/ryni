@@ -17,31 +17,32 @@ frontmatter. Python 3.14 or later is required.
 
 ## Get started
 
-```bash
-uv tool install ryni
-ryni check .
-```
-
-To adopt a published pack, replace `your-team-rules` with its package name:
+For a shared repository, add Rýni as a development dependency:
 
 ```bash
-uv tool install --with your-team-rules ryni
+uv add --dev ryni
+uv run ryni check .
 ```
 
-Or run without a persistent installation:
+Add your team's published rule pack as a development dependency too. Replace
+`your-team-rules` with its package name:
 
 ```bash
-uvx --with your-team-rules ryni check .
+uv add --dev your-team-rules
+uv run ryni rule
 ```
 
-Installed rules are active immediately. Inspect them with `ryni rule`.
+Commit `pyproject.toml` and `uv.lock`. Use `uv run ryni` locally and in your agent;
+in CI, run `uv sync --locked --group dev` before `uv run --no-sync ryni check .`.
+Installed rules are active immediately. See [adopting packs](docs/adopting-packs.md)
+for details and standalone alternatives.
 
 ## Check with your agent
 
 Install the bundled skill into your agent's skills directory:
 
 ```bash
-ryni skill install .claude/skills
+uv run ryni skill install .claude/skills
 ```
 
 Invoke `/ryni-check` in Claude Code. For Codex, install into `.agents/skills` and
