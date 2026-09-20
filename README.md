@@ -61,3 +61,7 @@ uv run --group docs mkdocs serve
 ```
 
 See [our jobs to be done](JTBD.md) for the project's direction.
+
+---
+
+*[Rýni](https://en.wiktionary.org/wiki/r%C3%BDni#Etymology) — from Old Norse, “scrutiny” or “contemplation.”*

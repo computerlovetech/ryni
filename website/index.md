@@ -58,3 +58,7 @@ conventions, so your agents get a consistent and coherent working environment.
     ```
 
 **[Build your first rule pack →](first-rule-pack.md)**
+
+---
+
+*[Rýni](https://en.wiktionary.org/wiki/r%C3%BDni#Etymology) — from Old Norse, “scrutiny” or “contemplation.”*
