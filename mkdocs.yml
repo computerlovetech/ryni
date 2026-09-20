@@ -10,6 +10,8 @@ nav:
   - Your first rule pack: first-rule-pack.md
 theme:
   name: material
+  logo: assets/ryni-logo.png
+  favicon: assets/ryni-logo.png
   font: false
   palette:
     - scheme: default

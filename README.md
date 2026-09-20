@@ -1,3 +1,5 @@
+<img src="website/assets/ryni-logo.png" alt="Rýni logo" width="160">
+
 # Rýni
 
 **A linter for your agent harness.**

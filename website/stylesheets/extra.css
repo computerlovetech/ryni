@@ -7,3 +7,13 @@
 .md-typeset h2 { font-weight: 600; letter-spacing: -.02em; }
 .md-typeset code { border-radius: .2rem; }
 .md-typeset .admonition { border-radius: .35rem; }
+
+/* The supplied logo is dark on transparent; keep it legible in the header. */
+.md-header .md-logo img,
+.md-nav--primary .md-logo img {
+  width: 2.4rem;
+  height: 2.4rem;
+  max-width: none;
+  margin: -.6rem;
+  filter: brightness(0) invert(1);
+}
