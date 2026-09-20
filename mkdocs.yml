@@ -1,21 +1,13 @@
 site_name: Rýni
-site_description: Share conventions. Catch harness drift.
+site_description: A linter for your agent harness.
+docs_dir: website
 repo_url: https://github.com/computerlovetech/ryni
 repo_name: computerlovetech/ryni
-edit_uri: edit/main/docs/
+edit_uri: edit/main/website/
 strict: true
 nav:
-  - Overview: index.md
-  - Getting started: getting-started.md
-  - Adopt a pack: adopting-packs.md
-  - Write and share a pack: writing-packs.md
-  - Check with your agent: agent-checks.md
-  - Continuous integration: ci.md
-  - Reference:
-      - CLI: cli.md
-      - Python API: api.md
-      - Built-in rules: rules.md
-  - Contributing: contributing.md
+  - Home: index.md
+  - Your first rule pack: first-rule-pack.md
 theme:
   name: material
   font: false
@@ -44,6 +36,8 @@ markdown_extensions:
   - admonition
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.inlinehilite
   - toc:
       permalink: true
