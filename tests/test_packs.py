@@ -28,7 +28,14 @@ def installed_pack(monkeypatch):
 
 def test_pack_is_automatically_active_with_provenance(installed_pack):
     catalog = load_catalog()
-    assert [rule.id for rule in catalog.select()] == ["SKILL001", "TEAM001", "TEAM002"]
+    assert [rule.id for rule in catalog.select()] == [
+        "SKILL001",
+        "SKILL002",
+        "SKILL003",
+        "SKILL004",
+        "TEAM001",
+        "TEAM002",
+    ]
     assert catalog.source("TEAM002").name == "team-harness"
     assert catalog.source("TEAM002").package == "team-rules"
     assert catalog.source("TEAM002").version == "1.2.3"
@@ -86,7 +93,8 @@ def test_file_reviews_follow_discovery_and_ignore_other_files(tmp_path):
     (hidden / "AGENTS.md").touch()
     result = check([tmp_path, target], [rule])
     assert [task.path for task in result.pending_reviews] == [
-        str(hidden / "AGENTS.md"), str(target)
+        str(hidden / "AGENTS.md"),
+        str(target),
     ]
     assert result.pending_reviews[0].scope == RuleScope.FILE
     assert len(check([hidden], [rule]).pending_reviews) == 1

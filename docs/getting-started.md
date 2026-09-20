@@ -14,7 +14,7 @@ For a quick trial outside a project environment, use `uvx ryni check .`.
 
 ## Your first finding
 
-Given a `skills/review/SKILL.md` containing only a heading:
+Given a `skills/review-changes/SKILL.md` containing only a heading:
 
 ```markdown
 # Review changes
@@ -23,7 +23,7 @@ Given a `skills/review/SKILL.md` containing only a heading:
 Rýni reports:
 
 ```text
-skills/review/SKILL.md:1: SKILL001 Start SKILL.md with YAML frontmatter delimited by ---.
+skills/review-changes/SKILL.md:1: SKILL001 Start SKILL.md with YAML frontmatter delimited by ---.
 1 target checked · 1 finding
 ```
 

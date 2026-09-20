@@ -5,26 +5,34 @@ import yaml
 from ryni.models import Finding, Rule
 
 
-def evaluate(path: Path) -> list[Finding]:
+def read_frontmatter(path: Path) -> tuple[dict, list[Finding]]:
+    """Read metadata; structural failures belong to SKILL001 alone."""
     def finding(message: str, line: int = 1) -> Finding:
         return Finding(str(path), line, "SKILL001", message)
 
     lines = path.read_text(encoding="utf-8-sig").splitlines()
     if not lines or lines[0] != "---":
-        return [finding("Start SKILL.md with YAML frontmatter delimited by ---.")]
+        return {}, [finding("Start SKILL.md with YAML frontmatter delimited by ---.")]
     end = next((i for i in range(1, len(lines)) if lines[i] == "---"), None)
     if end is None:
-        return [finding("Close YAML frontmatter with a --- line.")]
+        return {}, [finding("Close YAML frontmatter with a --- line.")]
     try:
-        metadata = yaml.safe_load("\n".join(lines[1:end]))
+        metadata = yaml.safe_load("\n".join(lines[1:end]) + "\n")
     except yaml.YAMLError as error:
         mark = getattr(error, "problem_mark", None)
         line = min(mark.line + 2, end + 1) if mark else 1
-        return [finding("Frontmatter must contain valid YAML.", line)]
+        return {}, [finding("Frontmatter must contain valid YAML.", line)]
     if not isinstance(metadata, dict):
-        return [finding("Frontmatter must be a YAML mapping.")]
+        return {}, [finding("Frontmatter must be a YAML mapping.")]
+    return metadata, []
+
+
+def evaluate(path: Path) -> list[Finding]:
+    metadata, errors = read_frontmatter(path)
+    if errors:
+        return errors
     return [
-        finding(f"Frontmatter field '{key}' must be a non-empty string.")
+        Finding(str(path), 1, "SKILL001", f"Frontmatter field '{key}' must be a non-empty string.")
         for key in ("name", "description")
         if not isinstance(metadata.get(key), str) or not metadata[key].strip()
     ]

@@ -18,7 +18,7 @@ ryni check . --output-format json
 | `--fix` | Apply available Python fixes and recheck all selected rules. |
 | `--output-format text\|json` | Choose human-readable diagnostics or structured output. |
 
-`SKILL001` has no automatic fix. Pack authors may provide fix callbacks. Fixes run
+Built-in skill checks have no automatic fixes. Pack authors may provide fix callbacks. Fixes run
 once per applicable target with findings, and successful fixes are not rolled back
 if another rule fails. Review rules are never executed or fixed by the CLI.
 

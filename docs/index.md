@@ -16,8 +16,8 @@ uv run ryni check .
 For a shared repository, add Rýni and your team's pack as development dependencies
 and commit `pyproject.toml` and `uv.lock`. See [adopting packs](adopting-packs.md).
 
-Rýni ships with one baseline check: valid skill frontmatter. Install a pack to
-adopt a team's broader conventions.
+Rýni ships with baseline checks for skill frontmatter, names, directory matches,
+and description length. Install a pack to adopt a team's broader conventions.
 
 ## Start with the job
 

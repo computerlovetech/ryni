@@ -47,7 +47,7 @@ Each rule identifies its execution type, pack, and installed version. Individual
 rule explanations include review instructions where applicable. JSON also includes
 the distribution name and pack description.
 
-All packs run alongside the built-in `SKILL001`. Duplicate rule IDs fail clearly;
+All packs run alongside the [built-in skill checks](rules.md). Duplicate rule IDs fail clearly;
 they never silently replace one another. Authors should choose a distinct prefix.
 
 ## Try the included pack from source

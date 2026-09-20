@@ -3,9 +3,10 @@ from importlib.metadata import entry_points, version
 from pathlib import PurePosixPath, PureWindowsPath
 
 from ryni.models import ReviewRule, Rule, RulePack, RuleScope, RuleSource
+from ryni.rules.skill_constraints import DESCRIPTION_RULE, DIRECTORY_RULE, NAME_RULE
 from ryni.rules.skill_frontmatter import RULE as SKILL_FRONTMATTER
 
-BUILTINS = (SKILL_FRONTMATTER,)
+BUILTINS = (SKILL_FRONTMATTER, NAME_RULE, DIRECTORY_RULE, DESCRIPTION_RULE)
 type AnyRule = Rule | ReviewRule
 
 

@@ -12,8 +12,8 @@ and share those conventions as installable Python rule packs.
 - **Catch drift in CI.** Structured diagnostics and explicit incomplete/pending states.
 
 Rýni runs locally and does not launch a model or require an API key. Agent reviews
-use your existing agent. The built-in baseline is `SKILL001`, which validates skill
-frontmatter. Python 3.14 or later is required.
+use your existing agent. Built-in checks validate skill frontmatter, names,
+directory matches, and description length. Python 3.14 or later is required.
 
 ## Get started
 

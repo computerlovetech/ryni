@@ -23,7 +23,7 @@ def _plugin(monkeypatch: pytest.MonkeyPatch, value: object) -> None:
 
 def test_default_selection_preserves_builtin_order() -> None:
     assert load_catalog().select() == BUILTINS
-    assert tuple(rule.id for rule in BUILTINS) == ("SKILL001",)
+    assert tuple(rule.id for rule in BUILTINS) == ("SKILL001", "SKILL002", "SKILL003", "SKILL004")
 
 
 def test_selection_trims_and_deduplicates_preserving_requested_order(
