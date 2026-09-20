@@ -46,7 +46,8 @@ See [CI](ci.md) for exit codes and completion semantics.
 ### Discovery and scope
 
 File rules recursively match a literal basename. Discovery skips `.git`, `.venv`,
-`venv`, `node_modules`, `__pycache__`, `.agents`, `.claude`, `.codex`, and `.github`.
+`venv`, `node_modules`, and `__pycache__`.
+Harness directories such as `.agents`, `.claude`, `.codex`, and `.github` are included.
 You can check an excluded location by passing it explicitly. Directory symlinks
 are not traversed. Repeated paths are deduplicated without resolving symlinks.
 File discovery does not apply `.gitignore` patterns.

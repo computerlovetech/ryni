@@ -30,10 +30,10 @@ def test_invalid_frontmatter(tmp_path: Path, text: str, expected: str):
     assert expected in result.output
 
 
-def test_discovery_deduplicates_and_excludes_installed_skills(tmp_path: Path):
+def test_discovery_deduplicates_and_excludes_dependencies(tmp_path: Path):
     skill = tmp_path / "SKILL.md"
     skill.write_text(VALID)
-    installed = tmp_path / ".agents" / "skills"
+    installed = tmp_path / "node_modules" / "skills"
     installed.mkdir(parents=True)
     (installed / "SKILL.md").write_text("invalid")
     (tmp_path / "README.md").write_text("not a skill")
@@ -47,6 +47,20 @@ def test_discovery_deduplicates_and_excludes_installed_skills(tmp_path: Path):
         "errors": [],
         "pending_reviews": [],
     }
+
+
+@pytest.mark.parametrize("directory", [".agents", ".claude", ".codex", ".github"])
+def test_discovery_checks_harness_skills(tmp_path: Path, directory: str):
+    skill = tmp_path / directory / "skills" / "example" / "SKILL.md"
+    skill.parent.mkdir(parents=True)
+    skill.write_text("invalid")
+    result = runner.invoke(
+        app, ["check", str(tmp_path), "--select", "SKILL001", "--output-format", "json"]
+    )
+    assert result.exit_code == 1
+    report = json.loads(result.output)
+    assert report["checked_files"] == [str(skill)]
+    assert [finding["path"] for finding in report["findings"]] == [str(skill)]
 
 
 def test_missing_path_preserves_other_findings(tmp_path: Path):

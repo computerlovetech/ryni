@@ -85,7 +85,9 @@ def test_file_reviews_follow_discovery_and_ignore_other_files(tmp_path):
     hidden.mkdir()
     (hidden / "AGENTS.md").touch()
     result = check([tmp_path, target], [rule])
-    assert [task.path for task in result.pending_reviews] == [str(target)]
+    assert [task.path for task in result.pending_reviews] == [
+        str(hidden / "AGENTS.md"), str(target)
+    ]
     assert result.pending_reviews[0].scope == RuleScope.FILE
     assert len(check([hidden], [rule]).pending_reviews) == 1
 

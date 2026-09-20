@@ -10,10 +10,6 @@ EXCLUDED_DIRECTORIES = {
     "venv",
     "node_modules",
     "__pycache__",
-    ".agents",
-    ".claude",
-    ".codex",
-    ".github",
 }
 
 
