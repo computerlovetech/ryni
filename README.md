@@ -1,70 +1,58 @@
 # Rýni
 
-**Share conventions. Catch harness drift.**
+**A linter for your agent harness.**
 
-Rýni helps teams adopt a trusted standard, express their own harness conventions,
-and share those conventions as installable Python rule packs.
+Harness engineering is hard. Keeping a team aligned on it is harder. Rýni checks
+your `AGENTS.md`, instructions, skills, and Markdown docs against shared
+conventions, so your agents get a consistent and coherent working environment.
 
-- **Adopt a pack.** One uv installation activates its rules. No `ryni.toml`.
-- **Express your conventions.** Use Python checks or focused agent review instructions.
-- **Check with your agent.** The `ryni-check` skill runs checks and delegates every
-  pending review to a sub-agent, then combines the findings.
-- **Catch drift in CI.** Structured diagnostics and explicit incomplete/pending states.
-
-Rýni runs locally and does not launch a model or require an API key. Agent reviews
-use your existing agent. Built-in checks validate skill frontmatter, names,
-directory matches, and description length. Python 3.14 or later is required.
+- 🔍 **Lint your harness.** Catch structural issues with deterministic checks.
+- 📝 **Review your markdown docs.** Structure non-deterministic checks that require judgment.
+- 📦 **Share your conventions.** Turn your team’s standards into rule packs you can use across repositories.
 
 ## Get started
 
-For a shared repository, add Rýni as a development dependency:
+Requires Python 3.14 or later. Add Rýni and
+[tidy-harness](packages/tidy-harness/README.md), our opinionated rule pack, as development dependencies:
 
 ```bash
-uv add --dev ryni
+uv add --dev ryni tidy-harness
 uv run ryni check .
 ```
 
-Add your team's published rule pack as a development dependency too. Replace
-`your-team-rules` with its package name:
+Installed rules are active automatically. The CLI runs deterministic checks and
+reports agent reviews as pending. Commit `pyproject.toml` and `uv.lock` to share
+the same versions with your team.
 
-```bash
-uv add --dev your-team-rules
-uv run ryni rule
-```
+## Run with your agent
 
-Commit `pyproject.toml` and `uv.lock`. Use `uv run ryni` locally and in your agent;
-in CI, run `uv sync --locked --group dev` before `uv run --no-sync ryni check .`.
-Installed rules are active immediately. See [Your first rule pack](website/first-rule-pack.md)
-for a walkthrough of creating, installing, and running a pack.
+Install the bundled skill for your agent, then invoke it in the same repository:
 
-## Check with your agent
+| Agent | Install in your terminal | Send in your agent |
+| --- | --- | --- |
+| Claude Code | `uv run ryni skill install .claude/skills` | `/ryni-check Use uv run ryni.` |
+| Codex | `uv run ryni skill install .agents/skills` | `$ryni-check Use uv run ryni.` |
 
-Install the bundled skill into your agent's skills directory:
+The skill runs deterministic checks, delegates reviews to sub-agents, and combines
+the findings. Your agent must support sub-agents to complete reviews. Rýni itself
+runs no model and needs no API key.
 
-```bash
-uv run ryni skill install .claude/skills
-```
+## Make it your own
 
-Invoke `/ryni-check` in Claude Code. For Codex, install into `.agents/skills` and
-invoke `$ryni-check`. An agent with sub-agent support is required for review rules;
-missing review capability is reported as incomplete.
+A rule pack can combine deterministic checks with instructions for agent reviews.
+Write your team's conventions once and share them across repositories.
 
-## Documentation
+**[Build your first rule pack →](website/first-rule-pack.md)**
 
-- [Overview](website/index.md)
-- [Your first rule pack](website/first-rule-pack.md)
+- [Overview and rule examples](website/index.md)
+- [tidy-harness rules](packages/tidy-harness/README.md)
 - [Working example pack](examples/team-pack/README.md)
-
-Rule packs and agent reviews require Rýni 0.1.1 or later. To try this source version:
-
-```bash
-uv run --with-editable . --with ./examples/team-pack ryni check .
-```
 
 ## Contributing
 
 ```bash
 uv run pytest tests
+uv run --with-editable . --with ./packages/tidy-harness pytest packages/tidy-harness/tests
 uv run ruff check .
 uv run --group docs mkdocs build --strict
 uv run --group docs mkdocs serve
