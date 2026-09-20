@@ -13,7 +13,7 @@ conventions, so your agents get a consistent and coherent working environment.
 ## Get started
 
 Requires Python 3.14 or later. Add Rýni and
-[tidy-harness](packages/tidy-harness/README.md), our opinionated rule pack, as development dependencies:
+[tidy-harness](examples/tidy-harness/README.md), an opinionated example rule pack, as development dependencies:
 
 ```bash
 uv add --dev ryni tidy-harness
@@ -30,8 +30,8 @@ Install the bundled skill for your agent, then invoke it in the same repository:
 
 | Agent | Install in your terminal | Send in your agent |
 | --- | --- | --- |
-| Claude Code | `uv run ryni skill install .claude/skills` | `/ryni-check Use uv run ryni.` |
-| Codex | `uv run ryni skill install .agents/skills` | `$ryni-check Use uv run ryni.` |
+| Claude Code | `uv run ryni skill install .claude/skills` | `/ryni-check` |
+| Codex | `uv run ryni skill install .agents/skills` | `$ryni-check` |
 
 The skill runs deterministic checks, delegates reviews to sub-agents, and combines
 the findings. Your agent must support sub-agents to complete reviews. Rýni itself
@@ -45,14 +45,13 @@ Write your team's conventions once and share them across repositories.
 **[Build your first rule pack →](website/first-rule-pack.md)**
 
 - [Overview and rule examples](website/index.md)
-- [tidy-harness rules](packages/tidy-harness/README.md)
-- [Working example pack](examples/team-pack/README.md)
+- [tidy-harness rules](examples/tidy-harness/README.md)
 
 ## Contributing
 
 ```bash
 uv run pytest tests
-uv run --with-editable . --with ./packages/tidy-harness pytest packages/tidy-harness/tests
+uv run --with-editable . --with ./examples/tidy-harness pytest examples/tidy-harness/tests
 uv run ruff check .
 uv run --group docs mkdocs build --strict
 uv run --group docs mkdocs serve

@@ -1,6 +1,6 @@
 # tidy-harness
 
-Opinionated agent harness conventions for [Rýni](https://github.com/computerlovetech/ryni):
+An opinionated example rule pack for [Rýni](https://github.com/computerlovetech/ryni):
 one source of truth, discoverable docs, and focused instructions.
 
 ## Rules
@@ -75,10 +75,10 @@ asking it to use `uv run ryni`. To run only deterministic checks, add
 
 ## Development
 
-This package is versioned independently under `packages/tidy-harness/`.
+This package is versioned independently under `examples/tidy-harness/`.
 From the repository root:
 
 ```bash
-uv run --with-editable . --with ./packages/tidy-harness pytest packages/tidy-harness/tests
-uv build packages/tidy-harness --out-dir packages/tidy-harness/dist
+uv run --with-editable . --with ./examples/tidy-harness pytest examples/tidy-harness/tests
+uv build examples/tidy-harness --out-dir examples/tidy-harness/dist
 ```
