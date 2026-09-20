@@ -34,8 +34,8 @@ uv run ryni rule
 
 Commit `pyproject.toml` and `uv.lock`. Use `uv run ryni` locally and in your agent;
 in CI, run `uv sync --locked --group dev` before `uv run --no-sync ryni check .`.
-Installed rules are active immediately. See [adopting packs](docs/adopting-packs.md)
-for details and standalone alternatives.
+Installed rules are active immediately. See [Your first rule pack](website/first-rule-pack.md)
+for a walkthrough of creating, installing, and running a pack.
 
 ## Check with your agent
 
@@ -51,12 +51,8 @@ missing review capability is reported as incomplete.
 
 ## Documentation
 
-- [Getting started](docs/getting-started.md)
-- [Adopt a pack](docs/adopting-packs.md)
-- [Write and share a pack](docs/writing-packs.md)
-- [Check with your agent](docs/agent-checks.md)
-- [Continuous integration](docs/ci.md)
-- [CLI reference](docs/cli.md) and [Python API](docs/api.md)
+- [Overview](website/index.md)
+- [Your first rule pack](website/first-rule-pack.md)
 - [Working example pack](examples/team-pack/README.md)
 
 The pack/review API is in early development in this checkout and must be released
@@ -75,4 +71,4 @@ uv run --group docs mkdocs build --strict
 uv run --group docs mkdocs serve
 ```
 
-See [the contributing guide](docs/contributing.md) and [our jobs to be done](JTBD.md).
+See [our jobs to be done](JTBD.md) for the project's direction.

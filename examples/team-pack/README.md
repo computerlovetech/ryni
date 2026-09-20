@@ -16,4 +16,4 @@ uv run --with-editable . --with ./examples/team-pack ryni check .
 The package is a local example, not a published product. Copy it, choose a unique
 package name and rule prefix, and replace these conventions with your own.
 
-Read [the pack authoring guide](../../docs/writing-packs.md) before publishing.
+See [Your first rule pack](../../website/first-rule-pack.md) for the authoring walkthrough.
