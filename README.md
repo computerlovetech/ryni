@@ -5,6 +5,8 @@
 
 **A linter for your agent harness.**
 
+[Documentation](https://computerlovetech.github.io/ryni/)
+
 Harness engineering is hard. Keeping a team aligned on it is harder. Rýni checks
 your `AGENTS.md`, instructions, skills, and Markdown docs against shared
 conventions, so your agents get a consistent and coherent working environment.

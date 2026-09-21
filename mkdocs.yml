@@ -1,4 +1,5 @@
 site_name: Rýni
+site_url: https://computerlovetech.github.io/ryni/
 site_description: A linter for your agent harness.
 docs_dir: website
 repo_url: https://github.com/computerlovetech/ryni
