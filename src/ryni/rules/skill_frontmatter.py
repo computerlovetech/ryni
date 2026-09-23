@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import yaml
-
 from ryni.cache import cached_per_check
 from ryni.models import Finding, Rule
 
@@ -18,6 +16,8 @@ def read_frontmatter(path: Path) -> tuple[dict, list[Finding]]:
     end = next((i for i in range(1, len(lines)) if lines[i] == "---"), None)
     if end is None:
         return {}, [finding("Close YAML frontmatter with a --- line.")]
+    import yaml
+
     try:
         metadata = yaml.safe_load("\n".join(lines[1:end]) + "\n")
     except yaml.YAMLError as error:

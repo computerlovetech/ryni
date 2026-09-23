@@ -1,5 +1,4 @@
 from enum import StrEnum
-from importlib.resources import files
 from pathlib import Path
 from typing import Annotated
 
@@ -31,6 +30,8 @@ def install(
     name: Annotated[SkillName, typer.Option(help="Bundled skill to install.")] = SkillName.CHECK,
 ) -> None:
     """Install the bundled skill. Existing custom instructions are never overwritten."""
+    from importlib.resources import files
+
     source = files("ryni").joinpath("skills", name.value)
     destination = directory / name.value
     try:

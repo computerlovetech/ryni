@@ -90,9 +90,10 @@ def load_catalog() -> RuleCatalog:
     """Discover installed conventions atomically. Installation is activation."""
     rules: dict[str, AnyRule] = {}
     sources: dict[str, RuleSource] = {}
+    builtin_source = RuleSource("ryni", "Baseline checks", "ryni", version("ryni"))
     for rule in BUILTINS:
         _register(rules, rule, "Built-in rule")
-        sources[rule.id] = RuleSource("ryni", "Baseline checks", "ryni", version("ryni"))
+        sources[rule.id] = builtin_source
     try:
         entries = sorted(entry_points(group="ryni.rules"), key=lambda item: item.name)
     except Exception as error:
