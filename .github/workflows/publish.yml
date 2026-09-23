@@ -78,14 +78,10 @@ jobs:
         with:
           version: '0.11.17'
       # Re-running a partial upload skips only byte-identical files on PyPI.
-      - name: Publish ryni first
+      - name: Publish ryni
         run: >-
           uv publish --trusted-publishing always --check-url https://pypi.org/simple/
-          dist/ryni/*.whl dist/ryni/*.tar.gz
-      - name: Publish tidy-harness
-        run: >-
-          uv publish --trusted-publishing always --check-url https://pypi.org/simple/
-          dist/tidy-harness/*.whl dist/tidy-harness/*.tar.gz
+          dist/*.whl dist/*.tar.gz
 
   release:
     needs: [validate, publish]
@@ -115,7 +111,7 @@ jobs:
           for attempt in {1..6}; do
             if uv run --isolated --no-project --no-cache \
               --default-index https://pypi.org/simple/ \
-              --with "ryni==$VERSION" --with "tidy-harness==$VERSION" \
+              --with "ryni==$VERSION" \
               python scripts/smoke_release.py "$VERSION"; then
               exit 0
             fi
@@ -129,6 +125,5 @@ jobs:
             if [[ "$PRERELEASE" == true ]]; then args+=(--prerelease); fi
             gh release create "$TAG_NAME" --verify-tag --title "$TAG_NAME" \
               --notes-file notes/release-notes.md "${args[@]}" \
-              dist/ryni/*.whl dist/ryni/*.tar.gz \
-              dist/tidy-harness/*.whl dist/tidy-harness/*.tar.gz
+              dist/*.whl dist/*.tar.gz
           fi

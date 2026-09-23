@@ -30,16 +30,12 @@ jobs:
         run: uv run --with-editable . --with-editable ./examples/tidy-harness pytest examples/tidy-harness/tests
       - run: uv run --no-sync ryni check .
       - run: uv run --no-sync mkdocs build --strict
-      - run: uv build --no-sources --out-dir "$RUNNER_TEMP/release-dist/ryni"
-      - run: >-
-          uv build examples/tidy-harness --no-sources
-          --out-dir "$RUNNER_TEMP/release-dist/tidy-harness"
-      - name: Verify both installed wheels and bundled skill
+      - run: uv build --no-sources --out-dir "$RUNNER_TEMP/release-dist"
+      - name: Verify installed wheel and bundled skill
         run: |
           version=$(uv run --no-sync python scripts/release.py)
           uv run --isolated --no-project \
-            --with "$RUNNER_TEMP"/release-dist/ryni/*.whl \
-            --with "$RUNNER_TEMP"/release-dist/tidy-harness/*.whl \
+            --with "$RUNNER_TEMP"/release-dist/*.whl \
             python scripts/smoke_release.py "$version"
       - name: Save tested distributions for publishing
         if: inputs.upload-distributions

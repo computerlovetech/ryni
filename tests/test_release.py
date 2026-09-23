@@ -13,9 +13,6 @@ release_metadata = runpy.run_path(str(SCRIPT))["release_metadata"]
 @pytest.fixture
 def release_repo(tmp_path):
     (tmp_path / "pyproject.toml").write_text('[project]\nversion = "0.2.0"\n')
-    pack = tmp_path / "examples/tidy-harness/pyproject.toml"
-    pack.parent.mkdir(parents=True)
-    pack.write_text('[project]\nversion = "0.2.0"\ndependencies = ["ryni>=0.2,<0.3"]\n')
     (tmp_path / "CHANGELOG.md").write_text(
         "# Changelog\n\n## [Unreleased]\n\n### Added\n\n- Future change.\n\n"
         "## [0.2.0] - 2026-09-23\n\n### Added\n\n- New rule API.\n\n"
@@ -38,26 +35,10 @@ def test_wrong_tag_fails_before_publishing(release_repo, tag):
         release_metadata(release_repo, tag)
 
 
-def test_packages_must_have_matching_versions(release_repo):
-    (release_repo / "pyproject.toml").write_text('[project]\nversion = "0.2.1"\n')
-    with pytest.raises(ValueError, match="versions must match"):
-        release_metadata(release_repo)
-
-
-@pytest.mark.parametrize(
-    "requirement",
-    [
-        "ryni>=0.1.1,<0.2",
-        "ryni",
-        "ryni>=0.2; python_version < '3.14'",
-        "ryni @ https://example.com/ryni.whl",
-        "unrelated>=1",
-    ],
-)
-def test_pack_must_require_the_released_core(release_repo, requirement):
-    pack = release_repo / "examples/tidy-harness/pyproject.toml"
-    pack.write_text(f'[project]\nversion = "0.2.0"\ndependencies = ["{requirement}"]\n')
-    with pytest.raises(ValueError):
+@pytest.mark.parametrize("version", ["0.2", "0.2.0+local", "0.2.0.dev1", "00.2.0"])
+def test_non_release_versions_are_rejected(release_repo, version):
+    (release_repo / "pyproject.toml").write_text(f'[project]\nversion = "{version}"\n')
+    with pytest.raises(ValueError, match="canonical"):
         release_metadata(release_repo)
 
 
@@ -78,11 +59,8 @@ def test_missing_malformed_or_empty_release_notes_fail(release_repo, section):
 
 
 @pytest.mark.parametrize("version", ["0.2.0a1", "0.2.0b2", "0.2.0rc1"])
-def test_prerelease_versions_and_compatible_dependencies(release_repo, version):
+def test_prerelease_versions(release_repo, version):
     (release_repo / "pyproject.toml").write_text(f'[project]\nversion = "{version}"\n')
-    (release_repo / "examples/tidy-harness/pyproject.toml").write_text(
-        f'[project]\nversion = "{version}"\ndependencies = ["ryni>={version},<0.3"]\n'
-    )
     (release_repo / "CHANGELOG.md").write_text(
         f"# Changelog\n\n## [{version}] - 2026-09-23\n\n- Preview.\n"
     )

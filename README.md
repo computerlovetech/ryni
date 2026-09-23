@@ -64,7 +64,7 @@ uv run --group docs mkdocs serve
 
 See [our jobs to be done](JTBD.md) for the project's direction.
 
-Maintainers: see [the release guide](docs/releasing.md) for coordinated PyPI
+Maintainers: see [the release guide](docs/releasing.md) for Rýni's PyPI
 releases, dry runs, and the `ryni-release` skill.
 
 ---
