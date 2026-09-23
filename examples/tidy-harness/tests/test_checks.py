@@ -249,3 +249,39 @@ def test_git_failure_is_an_error_not_a_clean_run(tmp_path):
     result = check([tmp_path], [RULES[-1]])
     assert result.exit_code == 2
     assert result.errors
+
+
+def test_rules_share_inventory_and_reads_but_refresh_next_run(tmp_path, monkeypatch):
+    from collections import Counter
+    from pathlib import Path
+
+    from ryni.engine import check
+    from tidy_harness import discovery
+    from tidy_harness.checks import RULES
+
+    git(tmp_path, "init")
+    write(tmp_path, "AGENTS.md", "[docs](docs/README.md#docs)")
+    write(tmp_path, "docs/README.md", "# Docs\n[guide](guide.md#guide)")
+    write(tmp_path, "docs/guide.md", "# Guide\n[home](README.md#docs)")
+    walks, reads = [], Counter()
+    original_walk, original_read = discovery.os.walk, Path.read_text
+
+    def walk(*args, **kwargs):
+        walks.append(args[0])
+        return original_walk(*args, **kwargs)
+
+    def read(path, *args, **kwargs):
+        reads[path] += 1
+        return original_read(path, *args, **kwargs)
+
+    monkeypatch.setattr(discovery.os, "walk", walk)
+    monkeypatch.setattr(Path, "read_text", read)
+    assert check([tmp_path], RULES).exit_code == 0
+    assert walks == [tmp_path]
+    assert reads == Counter({tmp_path / name: 1 for name in (
+        "AGENTS.md", "docs/README.md", "docs/guide.md"
+    )})
+    write(tmp_path, "docs/orphan.md", "# Orphan")
+    result = check([tmp_path], RULES)
+    assert [(f.rule_id, f.path) for f in result.findings] == [("TIDY005", "docs/orphan.md")]
+    assert walks == [tmp_path, tmp_path]

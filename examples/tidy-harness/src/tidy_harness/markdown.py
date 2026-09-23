@@ -6,6 +6,8 @@ from urllib.parse import unquote, urlsplit
 
 from markdown_it import MarkdownIt
 
+from ryni.cache import cached_per_check
+
 PARSER = MarkdownIt("commonmark")
 
 
@@ -22,6 +24,7 @@ class Anchors(HTMLParser):
         )
 
 
+@cached_per_check
 def parse(text: str, *, include_images: bool = True) -> tuple[list[tuple[str, int]], set[str]]:
     tokens = PARSER.parse(text)
     links, anchors = [], set()

@@ -4,6 +4,8 @@ import os
 import subprocess
 from pathlib import Path
 
+from ryni.cache import cached_per_check
+
 EXCLUDED = {
     ".git",
     ".venv",
@@ -38,6 +40,7 @@ def is_checkout(root: Path) -> bool:
     return (root / ".git").exists()
 
 
+@cached_per_check
 def inventory(root: Path) -> tuple[list[Path], list[Path]]:
     files, directories = [], []
 
@@ -64,6 +67,7 @@ def inventory(root: Path) -> tuple[list[Path], list[Path]]:
     return files, directories
 
 
+@cached_per_check
 def documents(root: Path) -> list[Path]:
     files, _ = inventory(root)
     return [
@@ -80,6 +84,7 @@ def documents(root: Path) -> list[Path]:
     ]
 
 
+@cached_per_check
 def read(path: Path, root: Path) -> str:
     if not path.resolve().is_relative_to(root.resolve()):
         raise ValueError(f"Refusing to read outside the repository: {path}")
