@@ -1,23 +1,35 @@
 # Changelog
 
-Rýni and tidy-harness are released together with matching versions. Entries name
-the affected package when a change applies to only one of them.
+Release history for the `ryni` package. Rule packs such as `tidy-harness` have
+independent releases.
 
 Release notes are maintained here starting after 0.1.1. Earlier changes are
 recorded in Git history.
 
 ## [Unreleased]
 
+## [0.1.11] - 2026-09-23
+
 ### Added
 
-- Coordinated, tag-driven releases to PyPI and GitHub, with branch dry runs and
-  checks of the installed CLI, rule pack, and bundled skill.
+- Rýni's `cached_per_check` helper lets rule packs share discovery, file reads,
+  and parsing within a check run. Cached data is cleared after attempted fixes
+  and discarded between runs.
+- Tag-driven Rýni releases to PyPI and GitHub, with branch dry runs and checks
+  of the installed CLI, baseline rules, and bundled skill.
 - A repository-local `ryni-release` skill and maintainer release guide.
 
 ### Changed
 
-- Reuse discovery and parsed documents across tidy-harness checks to reduce
-  repeated work.
+- Rýni dispatches file rules by filename and skips file discovery when only
+  repository rules are active.
+- Release Rýni independently of tidy-harness, which will have its own repository
+  and publishing pipeline.
+
+### Docs
+
+- Publish the documentation site, refresh the README and branding, and document
+  shared caching for rule-pack authors.
 
 ### Fixed
 
