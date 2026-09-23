@@ -56,7 +56,7 @@ Write your team's conventions once and share them across repositories.
 
 ```bash
 uv run pytest tests
-uv run --with-editable . --with ./examples/tidy-harness pytest examples/tidy-harness/tests
+uv run --with-editable . --with-editable ./examples/tidy-harness pytest examples/tidy-harness/tests
 uv run ruff check .
 uv run --group docs mkdocs build --strict
 uv run --group docs mkdocs serve
