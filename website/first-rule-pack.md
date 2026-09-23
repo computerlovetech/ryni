@@ -54,6 +54,9 @@ calls outside the engine are not cached. Keep rule evaluation read-only and put
 edits in the rule's `fix` function so later checks see fresh data. Do not decorate
 rule evaluation or fix functions.
 
+See [Efficient rule packs](efficient-rule-packs.md) for composing shared analysis,
+profiling a complete pack, and using the bundled rule-authoring skill.
+
 ## Put it in a rule pack
 
 A rule pack is a Python package. Save the rule above in `require_instructions.py`:

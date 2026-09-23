@@ -8,6 +8,19 @@ recorded in Git history.
 
 ## [Unreleased]
 
+### Added
+
+- Opt-in `ryni check --profile` reports engine stages, rule and fix timings, and
+  shared-helper cache hits and misses. Python callers can pass a `CheckProfile`.
+- A bundled `ryni-rule-author` skill with a runnable shared-analysis example and
+  API reference. Install it with `ryni skill install --name ryni-rule-author`.
+- Guidance for composing shared analysis and measuring complete rule packs.
+
+### Changed
+
+- File discovery retains only filenames used by active rules before constructing
+  and sorting target paths.
+
 ## [0.1.11] - 2026-09-23
 
 ### Added

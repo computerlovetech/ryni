@@ -49,7 +49,22 @@ Write your team's conventions once and share them across repositories.
 
 **[Build your first rule pack →](website/first-rule-pack.md)**
 
+To build rules with an agent, install the bundled authoring skill:
+
+```bash
+uv run ryni skill install .agents/skills --name ryni-rule-author
+```
+
+Use `.claude/skills` for Claude Code. Invoke `ryni-rule-author` to build or extend
+a pack with shared analysis, tests, and measured performance. To inspect the cost
+of installed deterministic checks:
+
+```bash
+uv run ryni check . --deterministic --profile
+```
+
 - [Overview and rule examples](website/index.md)
+- [Efficient rule packs and profiling](website/efficient-rule-packs.md)
 - [tidy-harness rules](examples/tidy-harness/README.md)
 
 ## Contributing

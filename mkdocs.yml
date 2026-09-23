@@ -9,6 +9,7 @@ strict: true
 nav:
   - Home: index.md
   - Your first rule pack: first-rule-pack.md
+  - Efficient rule packs: efficient-rule-packs.md
 theme:
   name: material
   logo: assets/ryni-logo.png
