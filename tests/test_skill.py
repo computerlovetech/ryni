@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from ryni.cli import app
@@ -49,3 +50,41 @@ def test_install_handles_unwritable_destination(tmp_path: Path):
     result = CliRunner().invoke(app, ["skill", "install", str(blocker)])
     assert result.exit_code == 2
     assert "Cannot install skill" in result.output
+
+
+def test_author_skill_installs_all_resources_and_is_idempotent(tmp_path):
+    runner = CliRunner()
+    args = ["skill", "install", str(tmp_path), "--name", "ryni-rule-author"]
+    result = runner.invoke(app, args)
+    assert result.exit_code == 0, result.output
+    root = tmp_path / "ryni-rule-author"
+    assert evaluate(root / "SKILL.md") == []
+    assert (root / "references/authoring.md").is_file()
+    assert (root / "assets/example_pack.py").is_file()
+    before = {path: path.stat().st_mtime_ns for path in root.rglob("*") if path.is_file()}
+    assert runner.invoke(app, args).exit_code == 0
+    assert all(path.stat().st_mtime_ns == stamp for path, stamp in before.items())
+
+
+@pytest.mark.parametrize("symlink", [False, True])
+def test_author_install_preflights_nested_resources(tmp_path, symlink):
+    root = tmp_path / "ryni-rule-author"
+    target = root / "references"
+    root.mkdir()
+    if symlink:
+        external = tmp_path / "external"
+        external.mkdir()
+        target.symlink_to(external, target_is_directory=True)
+    else:
+        target.mkdir()
+        (target / "authoring.md").write_text("custom guidance")
+    result = CliRunner().invoke(
+        app, ["skill", "install", str(tmp_path), "--name", "ryni-rule-author"]
+    )
+    assert result.exit_code == 2
+    assert not (root / "SKILL.md").exists()
+    assert not (root / "assets").exists()
+    if symlink:
+        assert list(external.iterdir()) == []
+    else:
+        assert (target / "authoring.md").read_text() == "custom guidance"

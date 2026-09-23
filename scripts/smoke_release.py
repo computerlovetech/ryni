@@ -34,7 +34,16 @@ def main(expected: str) -> None:
         if not skill.is_file():
             raise RuntimeError("Bundled ryni-check skill was not installed")
         run("check", str(skill), "--select", "SKILL001")
-    print(f"Verified ryni {expected}: CLI, baseline rules, and bundled skill.")
+        report = json.loads(run("check", str(skill), "--profile", "--output-format", "json"))
+        if not report["profile"]["timings"]:
+            raise RuntimeError("Check profiling did not report timings")
+        run("skill", "install", str(root / "skills"), "--name", "ryni-rule-author")
+        author = root / "skills/ryni-rule-author"
+        for name in ("SKILL.md", "references/authoring.md", "assets/example_pack.py"):
+            if not (author / name).is_file():
+                raise RuntimeError(f"Bundled authoring resource was not installed: {name}")
+        run("check", str(author), "--deterministic")
+    print(f"Verified ryni {expected}: CLI, baseline rules, profiling, and bundled skills.")
 
 
 if __name__ == "__main__":
