@@ -60,10 +60,32 @@ def inventory(root: Path) -> tuple[list[Path], list[Path]]:
         files.extend(directory / n for n in sorted(leaves))
     if is_checkout(root):
         candidates = files + directories[1:]
-        data = b"".join(os.fsencode(p.relative_to(root)) + b"\0" for p in candidates)
-        ignored = set(git(root, "check-ignore", "-z", "--stdin", input=data).stdout.split(b"\0"))
-        files = [p for p in files if os.fsencode(p.relative_to(root)) not in ignored]
-        directories = [p for p in directories if os.fsencode(p.relative_to(root)) not in ignored]
+        relative = {p: os.fsencode(p.relative_to(root).as_posix()) for p in candidates}
+        # check-ignore's index checks are expensive on large trees. Protect tracked
+        # files and their ancestor directories before asking only about ignore rules.
+        index = git(root, "ls-files", "-z", "--stage").stdout.split(b"\0")
+        tracked = {record.partition(b"\t")[2] for record in index if record}
+        submodules = {
+            record.partition(b"\t")[2]
+            for record in index
+            if record.startswith(b"160000 ")
+        }
+        # Retain Git's errors for paths inside submodules; --no-index skips them.
+        needs_index = any(relative[p] in submodules for p in directories[1:])
+        for path in tuple(tracked):
+            while b"/" in path:
+                path = path.rpartition(b"/")[0]
+                tracked.add(path)
+        data = b"".join(
+            name + b"\0" for name in relative.values() if needs_index or name not in tracked
+        )
+        options = () if needs_index else ("--no-index",)
+        ignored = set(
+            git(root, "check-ignore", *options, "-z", "--stdin", input=data)
+            .stdout.split(b"\0")
+        )
+        files = [p for p in files if relative[p] not in ignored]
+        directories = [root, *(p for p in directories[1:] if relative[p] not in ignored)]
     return files, directories
 
 

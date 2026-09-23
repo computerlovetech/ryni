@@ -149,6 +149,66 @@ def test_ignored_and_generated_content(tmp_path):
     assert reachable_documentation(tmp_path) == []
 
 
+@pytest.mark.parametrize("worktree", [False, True])
+def test_inventory_preserves_git_index_and_ignore_semantics(tmp_path, worktree):
+    from tidy_harness.discovery import inventory
+
+    root = tmp_path / "repo"
+    root.mkdir()
+    git(root, "init")
+    write(root, ".gitignore", "ignored/\n*.md\n!keep.md\n")
+    tracked = ("tracked.md", "ignored/deep/tracked.md", "tracked\nname.md")
+    for name in tracked:
+        write(root, name)
+    git(root, "add", "-f", ".gitignore", *tracked)
+    if worktree:
+        git(root, "-c", "user.name=Test", "-c", "user.email=test@example.com",
+            "commit", "-m", "fixture")
+        destination = tmp_path / "worktree"
+        git(root, "worktree", "add", "--detach", str(destination))
+        root = destination
+    for name in ("ignored/deep/untracked.md", "untracked.md", "keep.md", "plain.txt"):
+        write(root, name)
+    files, directories = inventory(root)
+    expected = {".gitignore", *tracked, "keep.md", "plain.txt"}
+    if worktree:
+        expected.add(".git")
+    assert {p.relative_to(root).as_posix() for p in files} == expected
+    # Git protects ancestors of tracked files even when the directory is ignored.
+    assert directories == [root, root / "ignored", root / "ignored/deep"]
+
+
+@pytest.mark.parametrize("tracked", [False, True])
+def test_inventory_with_no_untracked_candidates(tmp_path, tracked):
+    from tidy_harness.discovery import inventory
+
+    git(tmp_path, "init")
+    if tracked:
+        write(tmp_path, "AGENTS.md")
+        git(tmp_path, "add", "AGENTS.md")
+    files, directories = inventory(tmp_path)
+    assert files == ([tmp_path / "AGENTS.md"] if tracked else [])
+    assert directories == [tmp_path]
+
+
+def test_inventory_preserves_errors_inside_submodules(tmp_path):
+    from tidy_harness.discovery import inventory
+
+    git(tmp_path, "init")
+    # Git accepts an index entry without the object present; ignore validation
+    # depends on its mode and path, not on the object's contents.
+    git(tmp_path, "update-index", "--add", "--cacheinfo", f"160000,{'1' * 40},special")
+    write(tmp_path, "special/file.md")
+    expected = subprocess.run(
+        ["git", "-C", str(tmp_path), "check-ignore", "special/file.md"],
+        capture_output=True,
+    )
+    assert expected.returncode == 128
+    with pytest.raises(RuntimeError) as caught:
+        inventory(tmp_path)
+    assert str(caught.value) == expected.stderr.decode().strip()
+
+
 def test_symlinked_directories_are_not_followed(tmp_path):
     outside = tmp_path / "generated"
     write(outside, "docs/a.md", "[bad](missing.md)")
