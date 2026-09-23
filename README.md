@@ -64,6 +64,9 @@ uv run --group docs mkdocs serve
 
 See [our jobs to be done](JTBD.md) for the project's direction.
 
+Maintainers: see [the release guide](docs/releasing.md) for coordinated PyPI
+releases, dry runs, and the `ryni-release` skill.
+
 ---
 
 *[Rýni](https://en.wiktionary.org/wiki/r%C3%BDni#Etymology) — from Old Norse, “scrutiny” or “contemplation.”*
