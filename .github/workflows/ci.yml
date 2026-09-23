@@ -2,7 +2,13 @@ name: Checks
 
 on:
   push:
+    branches: ['**']
   pull_request:
+  workflow_call:
+    inputs:
+      upload-distributions:
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -17,13 +23,29 @@ jobs:
           python-version: '3.14'
           enable-cache: true
       - run: uv sync --locked --group docs
+      - run: uv run --no-sync python scripts/release.py
       - run: uv run --no-sync ruff check .
       - run: uv run --no-sync pytest tests
       - name: Test tidy-harness against the local Rýni API
         run: uv run --with-editable . --with-editable ./examples/tidy-harness pytest examples/tidy-harness/tests
       - run: uv run --no-sync ryni check .
       - run: uv run --no-sync mkdocs build --strict
-      - run: uv build
-      - run: uv build examples/tidy-harness --out-dir examples/tidy-harness/dist
-      - name: Verify installed wheel and bundled skill
-        run: uvx --from dist/ryni-*-py3-none-any.whl ryni skill install "$RUNNER_TEMP/ryni-skills"
+      - run: uv build --no-sources --out-dir "$RUNNER_TEMP/release-dist/ryni"
+      - run: >-
+          uv build examples/tidy-harness --no-sources
+          --out-dir "$RUNNER_TEMP/release-dist/tidy-harness"
+      - name: Verify both installed wheels and bundled skill
+        run: |
+          version=$(uv run --no-sync python scripts/release.py)
+          uv run --isolated --no-project \
+            --with "$RUNNER_TEMP"/release-dist/ryni/*.whl \
+            --with "$RUNNER_TEMP"/release-dist/tidy-harness/*.whl \
+            python scripts/smoke_release.py "$version"
+      - name: Save tested distributions for publishing
+        if: inputs.upload-distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-dist
+          path: ${{ runner.temp }}/release-dist/
+          if-no-files-found: error
+          overwrite: true
