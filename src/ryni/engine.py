@@ -1,5 +1,5 @@
 import os
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from pathlib import Path
 
 from ryni.cache import check_cache, clear_check_cache
@@ -23,13 +23,18 @@ def repository_root(path: Path) -> Path:
     return directory
 
 
-def discover(paths: list[Path], result: CheckResult) -> list[Path]:
+def discover(
+    paths: list[Path], result: CheckResult, *, filenames: Collection[str] | None = None
+) -> list[Path]:
+    """Find targets, retaining only requested basenames when a filter is supplied."""
     files: dict[Path, Path] = {}
     for path in paths:
         if path.is_file() or path.is_symlink():
-            files.setdefault(path.absolute(), path)
+            if filenames is None or path.name in filenames:
+                files.setdefault(path.absolute(), path)
         elif path.is_dir():
-            files.setdefault(path.absolute(), path)
+            if filenames is None or path.name in filenames:
+                files.setdefault(path.absolute(), path)
             for root, directories, names in os.walk(
                 path, onerror=lambda error: result.errors.append(str(error))
             ):
@@ -37,7 +42,9 @@ def discover(paths: list[Path], result: CheckResult) -> list[Path]:
                     name for name in directories if name not in EXCLUDED_DIRECTORIES
                 )
                 # Preserve named directories too: a directory named SKILL.md is invalid.
-                for name in sorted(names + directories):
+                for name in names + directories:
+                    if filenames is not None and name not in filenames:
+                        continue
                     candidate = Path(root) / name
                     files.setdefault(candidate.absolute(), candidate)
         else:
@@ -71,7 +78,7 @@ def _check(
         for root in sorted(roots):
             _evaluate(root, repository_rules, result, fix=fix)
     if file_rules:
-        for path in discover(paths, result):
+        for path in discover(paths, result, filenames=file_rules):
             applicable = file_rules.get(path.name)
             if applicable:
                 _evaluate(path, applicable, result, fix=fix)

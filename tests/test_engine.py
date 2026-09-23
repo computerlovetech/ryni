@@ -4,8 +4,8 @@ from typing import cast
 
 import pytest
 
-from ryni.engine import check
-from ryni.models import Finding, Rule, RuleScope
+from ryni.engine import check, discover
+from ryni.models import CheckResult, Finding, Rule, RuleScope
 
 
 def _rule(evaluate: Callable[[Path], object], rule_id: str = "TEST001") -> Rule:
@@ -140,3 +140,62 @@ def test_indexed_rules_preserve_file_and_rule_order(tmp_path):
     result = check([tmp_path], [rule("B", "b.txt"), rule("A2", "a.txt"), rule("A1", "a.txt")])
     assert result.exit_code == 0
     assert calls == [("a.txt", "A2"), ("a.txt", "A1"), ("b.txt", "B")]
+
+
+def test_filtered_discovery_preserves_paths_and_deduplicates_inputs(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    nested = Path("nested")
+    nested.mkdir()
+    target = nested / "file.txt"
+    target.touch()
+    other = Path("other.txt")
+    other.touch()
+    result = CheckResult()
+
+    found = discover(
+        [nested, tmp_path, target.absolute(), other], result, filenames={"file.txt"}
+    )
+
+    assert found == [target]
+    assert result.errors == []
+
+
+@pytest.mark.parametrize("explicit", [False, True])
+def test_filtered_discovery_preserves_directories_and_symlinks(tmp_path, explicit):
+    directory = tmp_path / "directory" / "file.txt"
+    directory.mkdir(parents=True)
+    link = tmp_path / "link" / "file.txt"
+    link.parent.mkdir()
+    link.symlink_to(directory, target_is_directory=True)
+    dangling = tmp_path / "dangling" / "file.txt"
+    dangling.parent.mkdir()
+    dangling.symlink_to(tmp_path / "missing")
+    # Directory symlinks must remain targets without being traversed.
+    (directory / "file.txt").touch()
+    targets = [directory, link, dangling] if explicit else [tmp_path]
+
+    def evaluate(path):
+        path.read_text()
+        return []
+
+    result = check(targets, [_rule(evaluate)])
+
+    assert len(result.errors) == 3
+    assert all(str(path) in "\n".join(result.errors) for path in (directory, link, dangling))
+    assert result.checked_files == [str(directory / "file.txt")]
+
+
+def test_filtered_discovery_reports_missing_inputs_and_walk_errors(tmp_path, monkeypatch):
+    def failed_walk(path, *, onerror):
+        onerror(PermissionError("Cannot read directory"))
+        return iter(())
+
+    monkeypatch.setattr("ryni.engine.os.walk", failed_walk)
+    missing = tmp_path / "unrelated.txt"
+    result = check([tmp_path, missing], [_rule(lambda path: [])])
+
+    assert result.errors == [
+        "Cannot read directory",
+        f"Path does not exist or is not a regular file/directory: {missing}",
+    ]
+    assert result.exit_code == 2
