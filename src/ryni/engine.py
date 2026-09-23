@@ -4,6 +4,7 @@ from pathlib import Path
 
 from ryni.cache import check_cache, clear_check_cache
 from ryni.models import CheckResult, Finding, ReviewRule, ReviewTask, Rule, RuleScope
+from ryni.profiling import CheckProfile, current_profile, measure, profile_run
 
 EXCLUDED_DIRECTORIES = {
     ".git",
@@ -53,11 +54,23 @@ def discover(
 
 
 def check(
-    paths: list[Path], rules: Sequence[Rule | ReviewRule], *, fix: bool = False
+    paths: list[Path],
+    rules: Sequence[Rule | ReviewRule],
+    *,
+    fix: bool = False,
+    profile: CheckProfile | None = None,
 ) -> CheckResult:
     try:
-        with check_cache():
-            return _check(paths, rules, fix=fix)
+        with profile_run(profile), check_cache(), measure("stage", "check"):
+            result = _check(paths, rules, fix=fix)
+            if fix:
+                # Recheck all rules with fresh data, including cross-target edits.
+                clear_check_cache()
+                with measure("stage", "recheck"):
+                    remaining = _check(paths, rules)
+                remaining.errors = list(dict.fromkeys([*result.errors, *remaining.errors]))
+                return remaining
+            return result
     finally:
         # A nested fixing check can also change data cached by its caller.
         if fix:
@@ -74,11 +87,14 @@ def _check(
         if rule.scope == RuleScope.FILE:
             file_rules.setdefault(rule.filename, []).append(rule)
     if repository_rules:
-        roots = {repository_root(path) for path in paths if path.exists()}
+        with measure("stage", "repository_roots"):
+            roots = {repository_root(path) for path in paths if path.exists()}
         for root in sorted(roots):
             _evaluate(root, repository_rules, result, fix=fix)
     if file_rules:
-        for path in discover(paths, result, filenames=file_rules):
+        with measure("stage", "discovery"):
+            targets = discover(paths, result, filenames=file_rules)
+        for path in targets:
             applicable = file_rules.get(path.name)
             if applicable:
                 _evaluate(path, applicable, result, fix=fix)
@@ -89,11 +105,6 @@ def _check(
                 result.errors.append(
                     f"Path does not exist or is not a regular file/directory: {path}"
                 )
-    if fix:
-        # Recheck every rule after all edits, including effects on other rules/targets.
-        remaining = check(paths, rules)
-        remaining.errors = list(dict.fromkeys([*result.errors, *remaining.errors]))
-        return remaining
     return result
 
 
@@ -102,6 +113,7 @@ def _evaluate(
 ) -> None:
     complete = True
     evaluated = False
+    profile = current_profile()
     for rule in rules:
         if isinstance(rule, ReviewRule):
             result.pending_reviews.append(
@@ -112,7 +124,11 @@ def _evaluate(
             continue
         evaluated = True
         try:
-            findings = _validated_findings(rule.evaluate(path), rule.id)
+            if profile is None:
+                findings = _validated_findings(rule.evaluate(path), rule.id)
+            else:
+                with profile.measure("rule", rule.id):
+                    findings = _validated_findings(rule.evaluate(path), rule.id)
         except Exception as error:
             result.errors.append(f"Cannot check {path} with {rule.id}: {error}")
             complete = False
@@ -120,7 +136,11 @@ def _evaluate(
         result.findings.extend(findings)
         if fix and findings:
             try:
-                rule.fix(path)
+                if profile is None:
+                    rule.fix(path)
+                else:
+                    with profile.measure("fix", rule.id):
+                        rule.fix(path)
             except Exception as error:
                 result.errors.append(f"Cannot fix {path} with {rule.id}: {error}")
                 complete = False

@@ -6,6 +6,8 @@ from contextvars import ContextVar
 from functools import wraps
 from typing import cast
 
+from ryni.profiling import current_profile
+
 _cache: ContextVar[dict | None] = ContextVar("ryni_check_cache", default=None)
 
 
@@ -15,7 +17,12 @@ def cached_per_check[**P, T](function: Callable[P, T]) -> Callable[P, T]:
     Arguments must be hashable and callers must treat returned values as read-only.
     Each check has its own cache, which is cleared after every attempted fix.
     Use this for discovery, reads and parsing, not rule evaluation or mutations.
+    Profiled checks report this helper's time, cache hits and cache misses.
     """
+
+    module = getattr(function, "__module__", type(function).__module__)
+    qualified_name = getattr(function, "__qualname__", type(function).__qualname__)
+    name = f"{module}.{qualified_name}"
 
     @wraps(function)
     def wrapped(*args: P.args, **kwargs: P.kwargs) -> T:
@@ -23,7 +30,14 @@ def cached_per_check[**P, T](function: Callable[P, T]) -> Callable[P, T]:
         if cache is None:
             return function(*args, **kwargs)
         key = (function, args, tuple(sorted(kwargs.items())))
-        if key not in cache:
+        hit = key in cache
+        profile = current_profile()
+        if profile is not None:
+            with profile.measure("helper", name, cache_hit=hit):
+                if not hit:
+                    cache[key] = function(*args, **kwargs)
+                return cast(T, cache[key])
+        if not hit:
             cache[key] = function(*args, **kwargs)
         return cast(T, cache[key])
 

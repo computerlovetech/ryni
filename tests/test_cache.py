@@ -110,3 +110,23 @@ def test_cache_is_released_after_interruption(tmp_path):
         check([path], [Rule("TEST", "test", "Test", path.name, evaluate)])
     path.write_text("new")
     assert read(path) == "new"
+
+
+def test_cached_callable_without_function_metadata(tmp_path):
+    from functools import partial
+
+    from ryni.profiling import CheckProfile
+
+    path = tmp_path / "config.ini"
+    path.write_text("value")
+    read = cached_per_check(partial(path.read_text, encoding="utf-8"))
+
+    def evaluate(path):
+        assert read() == read() == "value"
+        return []
+
+    profile = CheckProfile()
+    result = check([path], [Rule("TEST", "test", "Test", path.name, evaluate)], profile=profile)
+    assert result.exit_code == 0
+    helper = next(row for row in profile.to_dict()["timings"] if row["kind"] == "helper")
+    assert helper["cache_hits"] == helper["cache_misses"] == 1

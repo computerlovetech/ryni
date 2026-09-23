@@ -8,6 +8,7 @@ import typer
 
 from ryni.engine import check as run_checks
 from ryni.models import ReviewRule, Rule
+from ryni.profiling import CheckProfile, measure, profile_run
 from ryni.rules import CatalogLoadError, RuleCatalog, UnknownRulesError, load_catalog
 from ryni.skill import app as skill_app
 
@@ -44,24 +45,32 @@ def check(
     deterministic: Annotated[
         bool, typer.Option(help="Run only Python checks; explicitly omit agent reviews.")
     ] = False,
+    profile: Annotated[
+        bool, typer.Option(help="Report rule timings and shared-helper cache statistics.")
+    ] = False,
     output_format: Annotated[OutputFormat, typer.Option(help="Diagnostic output format.")] = (
         OutputFormat.TEXT
     ),
 ) -> None:
     """Run checks and prepare agent reviews. Exit 0: clean, 1: findings, 2: error, 3: reviews pending."""
-    catalog = available_rules()
+    timings = CheckProfile() if profile else None
+    with profile_run(timings), measure("stage", "catalog"):
+        catalog = available_rules()
     try:
         rules = catalog.select(select.split(",") if select is not None else None)
     except UnknownRulesError as error:
         raise typer.BadParameter(str(error), param_hint="--select") from error
     if deterministic:
         rules = tuple(rule for rule in rules if isinstance(rule, Rule))
-    result = run_checks(paths or [Path(".")], rules, fix=fix)
+    result = run_checks(paths or [Path(".")], rules, fix=fix, profile=timings)
     result.pending_reviews = [
         replace(task, source=catalog.source(task.rule_id)) for task in result.pending_reviews
     ]
     if output_format == OutputFormat.JSON:
-        typer.echo(json.dumps(asdict(result), indent=2))
+        report = asdict(result)
+        if timings is not None:
+            report["profile"] = timings.to_dict()
+        typer.echo(json.dumps(report, indent=2))
     else:
         for finding in result.findings:
             typer.echo(f"{finding.path}:{finding.line}: {finding.rule_id} {finding.message}")
@@ -81,6 +90,22 @@ def check(
             typer.echo("Use the ryni-check skill in your agent to complete these reviews.")
         if deterministic:
             typer.echo("Agent reviews excluded (--deterministic).")
+        if timings is not None:
+            typer.echo("Profile: inclusive wall time; nested rows overlap. Startup/output excluded.")
+            for timing in timings.to_dict()["timings"]:
+                detail = (
+                    f"{count_label(timing['calls'], 'call')} · "
+                    f"{count_label(timing['failures'], 'failure')}"
+                )
+                if timing["kind"] == "helper":
+                    detail += (
+                        f" · {timing['cache_hits']} cache hits"
+                        f" · {timing['cache_misses']} cache misses"
+                    )
+                typer.echo(
+                    f"  {timing['kind']} {timing['name']}  "
+                    f"{timing['seconds'] * 1000:.3f} ms · {detail}"
+                )
     raise typer.Exit(result.exit_code)
 
 
