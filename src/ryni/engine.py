@@ -2,6 +2,7 @@ import os
 from collections.abc import Sequence
 from pathlib import Path
 
+from ryni.cache import check_cache, clear_check_cache
 from ryni.models import CheckResult, Finding, ReviewRule, ReviewTask, Rule, RuleScope
 
 EXCLUDED_DIRECTORIES = {
@@ -47,18 +48,40 @@ def discover(paths: list[Path], result: CheckResult) -> list[Path]:
 def check(
     paths: list[Path], rules: Sequence[Rule | ReviewRule], *, fix: bool = False
 ) -> CheckResult:
+    try:
+        with check_cache():
+            return _check(paths, rules, fix=fix)
+    finally:
+        # A nested fixing check can also change data cached by its caller.
+        if fix:
+            clear_check_cache()
+
+
+def _check(
+    paths: list[Path], rules: Sequence[Rule | ReviewRule], *, fix: bool = False
+) -> CheckResult:
     result = CheckResult()
     repository_rules = [rule for rule in rules if rule.scope == RuleScope.REPOSITORY]
-    file_rules = [rule for rule in rules if rule.scope == RuleScope.FILE]
+    file_rules: dict[str, list[Rule | ReviewRule]] = {}
+    for rule in rules:
+        if rule.scope == RuleScope.FILE:
+            file_rules.setdefault(rule.filename, []).append(rule)
     if repository_rules:
         roots = {repository_root(path) for path in paths if path.exists()}
         for root in sorted(roots):
             _evaluate(root, repository_rules, result, fix=fix)
-    for path in discover(paths, result):
-        applicable = [rule for rule in file_rules if path.name == rule.filename]
-        if not applicable:
-            continue
-        _evaluate(path, applicable, result, fix=fix)
+    if file_rules:
+        for path in discover(paths, result):
+            applicable = file_rules.get(path.name)
+            if applicable:
+                _evaluate(path, applicable, result, fix=fix)
+    else:
+        # Validate explicit inputs without walking files that no rule can use.
+        for path in paths:
+            if not (path.is_file() or path.is_symlink() or path.is_dir()):
+                result.errors.append(
+                    f"Path does not exist or is not a regular file/directory: {path}"
+                )
     if fix:
         # Recheck every rule after all edits, including effects on other rules/targets.
         remaining = check(paths, rules)
@@ -94,6 +117,9 @@ def _evaluate(
             except Exception as error:
                 result.errors.append(f"Cannot fix {path} with {rule.id}: {error}")
                 complete = False
+            finally:
+                # Fixers can change any file, even when they fail partway through.
+                clear_check_cache()
     if complete and evaluated:
         result.checked_files.append(str(path))
 

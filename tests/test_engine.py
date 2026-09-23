@@ -110,3 +110,33 @@ def test_repository_rule_outputs_use_same_validation(tmp_path: Path) -> None:
     assert result.exit_code == 2
     assert result.findings == []
     assert result.checked_files == []
+
+
+@pytest.mark.parametrize("with_rule", [False, True])
+def test_without_file_rules_skips_walk_but_validates_inputs(tmp_path, monkeypatch, with_rule):
+    def unexpected_walk(*args, **kwargs):
+        pytest.fail("No file rules need a directory walk")
+
+    monkeypatch.setattr("ryni.engine.os.walk", unexpected_walk)
+    rules = [Rule("REPO", "repo", "Repository", "", lambda path: [], RuleScope.REPOSITORY)]
+    result = check([tmp_path, tmp_path / "missing"], rules if with_rule else [])
+    assert result.checked_files == ([str(tmp_path)] if with_rule else [])
+    assert result.exit_code == 2
+    assert len(result.errors) == 1
+    assert "missing" in result.errors[0]
+
+
+def test_indexed_rules_preserve_file_and_rule_order(tmp_path):
+    for name in ("b.txt", "a.txt"):
+        (tmp_path / name).touch()
+    calls = []
+
+    def rule(code, filename):
+        def evaluate(path):
+            calls.append((path.name, code))
+            return []
+        return Rule(code, code, code, filename, evaluate)
+
+    result = check([tmp_path], [rule("B", "b.txt"), rule("A2", "a.txt"), rule("A1", "a.txt")])
+    assert result.exit_code == 0
+    assert calls == [("a.txt", "A2"), ("a.txt", "A1"), ("b.txt", "B")]

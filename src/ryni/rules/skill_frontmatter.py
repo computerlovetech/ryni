@@ -2,9 +2,11 @@ from pathlib import Path
 
 import yaml
 
+from ryni.cache import cached_per_check
 from ryni.models import Finding, Rule
 
 
+@cached_per_check
 def read_frontmatter(path: Path) -> tuple[dict, list[Finding]]:
     """Read metadata; structural failures belong to SKILL001 alone."""
     def finding(message: str, line: int = 1) -> Finding:

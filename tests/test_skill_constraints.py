@@ -144,3 +144,20 @@ def test_baseline_does_not_require_or_validate_agents_md(tmp_path):
     result = check([tmp_path], BUILTINS)
     assert result.exit_code == 0
     assert result.checked_files == []
+
+
+def test_skill_rules_share_one_parse_per_file_and_run(tmp_path, monkeypatch):
+    path = skill_file(tmp_path)
+    loads = []
+    original = yaml.safe_load
+
+    def load(text):
+        loads.append(text)
+        return original(text)
+
+    monkeypatch.setattr(yaml, "safe_load", load)
+    assert check([path], BUILTINS).exit_code == 0
+    assert len(loads) == 1
+    skill_file(tmp_path, name="wrong")
+    assert [finding.rule_id for finding in check([path], BUILTINS).findings] == ["SKILL003"]
+    assert len(loads) == 2

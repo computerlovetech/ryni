@@ -33,6 +33,27 @@ The function receives the repository root and returns findings—or an empty lis
 when the check passes. The `Rule` gives the check an identity and tells Rýni when
 to run it.
 
+### Share expensive reads between checks
+
+For rules that inspect the same files, decorate shared discovery, reading or
+parsing helpers with `ryni.cache.cached_per_check`:
+
+```python
+from ryni.cache import cached_per_check
+
+
+@cached_per_check
+def read_document(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+```
+
+Calls with the same arguments reuse their result during one check run. Arguments
+must be hashable; treat returned data as read-only. The cache is discarded after
+the run and cleared after every attempted fix, including failed fixes. Direct
+calls outside the engine are not cached. Keep rule evaluation read-only and put
+edits in the rule's `fix` function so later checks see fresh data. Do not decorate
+rule evaluation or fix functions.
+
 ## Put it in a rule pack
 
 A rule pack is a Python package. Save the rule above in `require_instructions.py`:
