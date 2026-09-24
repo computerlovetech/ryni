@@ -70,12 +70,20 @@ def inventory(root: Path) -> tuple[Path, ...]:
             check=True,
             capture_output=True,
         ).stdout
-        paths = [Path(os.fsdecode(name)) for name in output.split(b"\0") if name]
-        return tuple(
-            sorted(
-                {root / p for p in paths if not EXCLUDED.intersection(p.parts) and is_harness(p)}
-            )
-        )
+        # Most large-repository paths cannot be harness documents. Reject those
+        # before allocating and parsing pathlib objects; keep Git's ignore semantics.
+        paths = set()
+        for raw in output.split(b"\0"):
+            if not raw:
+                continue
+            name = os.fsdecode(raw)
+            basename = name.rsplit("/", 1)[-1]
+            if basename not in NAMES and not name.endswith((".md", ".mdc")):
+                continue
+            path = Path(name)
+            if not EXCLUDED.intersection(path.parts) and is_harness(path):
+                paths.add(root / path)
+        return tuple(sorted(paths))
     paths = []
 
     def fail(error):

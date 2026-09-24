@@ -175,3 +175,15 @@ def test_rule_failure_preserves_other_findings(tmp_path):
     result = check([tmp_path], [PACK.rules[1], extra])
     assert result.exit_code == 2
     assert "TEAM002" in result.errors[0]
+
+
+def test_inventory_prefilter_keeps_extensionless_and_unicode_paths(tmp_path):
+    subprocess.run(['git', 'init', '-q', str(tmp_path)], check=True)
+    expected = {
+        put(tmp_path, '.cursorrules', 'rules'),
+        put(tmp_path, 'é space/AGENTS.md', 'rules'),
+        put(tmp_path, '.cursor/rules/demo.mdc', 'rules'),
+    }
+    put(tmp_path, 'ordinary.py', 'pass')
+    put(tmp_path, 'docs/ordinary.md', 'not a seed')
+    assert set(analysis.inventory(tmp_path)) == expected
