@@ -12,8 +12,8 @@ nav:
   - Efficient rule packs: efficient-rule-packs.md
 theme:
   name: material
-  logo: assets/ryni-logo.png
-  favicon: assets/ryni-logo.png
+  logo: assets/ryni-logo.svg
+  favicon: assets/ryni-logo.svg
   font: false
   palette:
     - scheme: default

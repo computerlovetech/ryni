@@ -118,7 +118,8 @@ Installed rules are active automatically. If the repository has no `AGENTS.md`,
 your rule reports:
 
 ```text
-AGENTS.md:1: TEAM001 Add an AGENTS.md at the repository root.
+AGENTS.md
+  1  TEAM001  Add an AGENTS.md at the repository root.
 ```
 
 Add the file and rerun the check. Commit `pyproject.toml` and `uv.lock` to record

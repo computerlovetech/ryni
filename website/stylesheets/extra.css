@@ -1,19 +1,82 @@
+/* Shared visual language with clt/apps/umbod-website/styles.css. */
 :root {
-  --md-primary-fg-color: #155e59;
-  --md-primary-fg-color--light: #207d75;
-  --md-primary-fg-color--dark: #104b47;
+  --ink: #14201c;
+  --muted: #5d6b64;
+  --line: #dce4df;
+  --soft: #f4f7f5;
+  --teal: #10cda0;
+  --teal-dark: #07634e;
+  --md-text-font: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --md-code-font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
-.md-typeset h1 { font-weight: 700; letter-spacing: -.035em; }
-.md-typeset h2 { font-weight: 600; letter-spacing: -.02em; }
-.md-typeset code { border-radius: .2rem; }
-.md-typeset .admonition { border-radius: .35rem; }
-
-/* The supplied logo is dark on transparent; keep it legible in the header. */
-.md-header .md-logo img,
-.md-nav--primary .md-logo img {
-  width: 2.4rem;
-  height: 2.4rem;
-  max-width: none;
-  margin: -.6rem;
-  filter: brightness(0) invert(1);
+[data-md-color-scheme="default"] {
+  --md-default-fg-color: var(--ink);
+  --md-default-fg-color--light: var(--muted);
+  --md-default-fg-color--lighter: #829188;
+  --md-default-bg-color: #fff;
+  --md-primary-fg-color: #fff;
+  --md-primary-bg-color: var(--ink);
+  --md-primary-bg-color--light: var(--muted);
+  --md-accent-fg-color: var(--teal-dark);
+  --md-typeset-a-color: var(--teal-dark);
+  --md-code-bg-color: var(--soft);
+  --md-code-fg-color: var(--ink);
+}
+[data-md-color-scheme="slate"] {
+  --ink: #e4f2e9;
+  --muted: #b7c5bd;
+  --line: #3d4d43;
+  --soft: #1d3027;
+  --teal-dark: #67d7b0;
+  --md-default-fg-color: var(--ink);
+  --md-default-fg-color--light: var(--muted);
+  --md-default-bg-color: #14201c;
+  --md-code-hl-keyword-color: #9dc8ec;
+  --md-code-hl-function-color: #d5b5ee;
+  --md-code-hl-string-color: #9bdbb3;
+  --md-code-hl-number-color: #e9c28d;
+  --md-code-hl-comment-color: #acbeb2;
+  --md-primary-fg-color: #14201c;
+  --md-primary-bg-color: var(--ink);
+  --md-primary-bg-color--light: var(--muted);
+  --md-accent-fg-color: var(--teal-dark);
+  --md-typeset-a-color: var(--teal-dark);
+  --md-code-bg-color: var(--soft);
+  --md-code-fg-color: var(--ink);
+}
+body { -webkit-font-smoothing: antialiased; }
+.md-grid { max-width: 64rem; }
+.md-header { color: var(--ink); border-bottom: 1px solid var(--line); box-shadow: none; }
+.md-header__inner { min-height: 3.8rem; }
+.md-header__title { font-weight: 650; letter-spacing: -.04em; }
+.md-header .md-logo img, .md-nav--primary .md-logo img {
+  width: 2rem; height: 2rem; max-width: none; object-fit: contain;
+}
+[data-md-color-scheme="slate"] .md-logo img { filter: brightness(0) invert(1); }
+.md-search__form { background: var(--soft); border: 1px solid var(--line); border-radius: 7px; }
+.md-search__input::placeholder { color: var(--muted); }
+.md-main__inner { margin-top: 1.5rem; }
+.md-nav { font-size: .68rem; line-height: 1.6; }
+.md-nav__title { color: var(--ink); }
+.md-nav__link { color: var(--muted); }
+.md-nav__link--active, .md-nav__link:hover { color: var(--teal-dark); }
+.md-typeset { font-size: .8rem; line-height: 1.8; }
+.md-typeset h1 { color: var(--ink); font-weight: 600; letter-spacing: -.052em; line-height: 1.12; }
+.md-typeset h2 { font-weight: 550; letter-spacing: -.042em; line-height: 1.2; margin-top: 1.8em; }
+.md-typeset h3 { font-weight: 550; letter-spacing: -.025em; }
+.md-typeset a:not(.md-button):hover { text-decoration: underline; text-underline-offset: 4px; }
+.md-typeset hr { border-color: var(--line); margin: 2rem 0; }
+.md-typeset code { border-radius: 4px; }
+.md-typeset pre > code { border: 1px solid var(--line); border-radius: 9px; padding: 1rem; line-height: 1.8; }
+.md-typeset .admonition, .md-typeset details { border-radius: 9px; box-shadow: none; }
+.md-typeset table:not([class]) { border-color: var(--line); border-radius: 8px; }
+.md-footer { background: var(--soft); color: var(--ink); border-top: 1px solid var(--line); }
+.md-footer-meta { background: transparent; }
+.md-copyright, .md-copyright a { color: var(--muted) !important; }
+:focus-visible { outline: 3px solid var(--teal-dark); outline-offset: 4px; }
+@media (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__title[for="__drawer"] { background: var(--soft); color: var(--ink); }
+}
+@media (max-width: 700px) {
+  .md-main__inner { margin-top: 1.3rem; }
 }
