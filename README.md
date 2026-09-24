@@ -29,6 +29,28 @@ Installed rules are active automatically. The CLI runs deterministic checks and
 reports agent reviews as pending. Commit `pyproject.toml` and `uv.lock` to share
 the same versions with your team.
 
+The terminal report groups findings by file and shows checked file counts and
+elapsed time:
+
+```text
+Rýni  check
+
+.agents/skills/example/SKILL.md
+  1  SKILL004  Shorten the skill description to at most 1024 characters
+               (currently 1461).
+
+Changes needed
+1 finding
+142 files checked · 0.28s
+```
+
+Counts cover unique targets that completed deterministic checks; directory targets
+are listed separately. Time includes rule loading, discovery, checks, and any
+fix/recheck, excluding process startup and report rendering. Color adapts to the
+terminal and respects `NO_COLOR`; redirected output is plain text. Use
+`--output-format compact` for the original one-line diagnostics, or
+`--output-format json` for structured output.
+
 ## Run with your agent
 
 Install the bundled skill for your agent, then invoke it in the same repository:

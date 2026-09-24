@@ -2,6 +2,7 @@ import json
 from dataclasses import asdict, replace
 from enum import StrEnum
 from pathlib import Path
+from time import perf_counter
 from typing import Annotated
 
 import typer
@@ -9,6 +10,7 @@ import typer
 from ryni.engine import check as run_checks
 from ryni.models import ReviewRule, Rule
 from ryni.profiling import CheckProfile, measure, profile_run
+from ryni.reporting import count_label, render_report
 from ryni.rules import CatalogLoadError, RuleCatalog, UnknownRulesError, load_catalog
 from ryni.skill import app as skill_app
 
@@ -21,8 +23,10 @@ class OutputFormat(StrEnum):
     JSON = "json"
 
 
-def count_label(count: int, noun: str) -> str:
-    return f"{count} {noun}{'s' if count != 1 else ''}"
+class CheckOutputFormat(StrEnum):
+    TEXT = "text"
+    JSON = "json"
+    COMPACT = "compact"
 
 
 def available_rules() -> RuleCatalog:
@@ -48,11 +52,12 @@ def check(
     profile: Annotated[
         bool, typer.Option(help="Report rule timings and shared-helper cache statistics.")
     ] = False,
-    output_format: Annotated[OutputFormat, typer.Option(help="Diagnostic output format.")] = (
-        OutputFormat.TEXT
+    output_format: Annotated[CheckOutputFormat, typer.Option(help="Diagnostic output format.")] = (
+        CheckOutputFormat.TEXT
     ),
 ) -> None:
     """Run checks and prepare agent reviews. Exit 0: clean, 1: findings, 2: error, 3: reviews pending."""
+    started = perf_counter()
     timings = CheckProfile() if profile else None
     with profile_run(timings), measure("stage", "catalog"):
         catalog = available_rules()
@@ -66,11 +71,14 @@ def check(
     result.pending_reviews = [
         replace(task, source=catalog.source(task.rule_id)) for task in result.pending_reviews
     ]
-    if output_format == OutputFormat.JSON:
+    elapsed = perf_counter() - started
+    if output_format == CheckOutputFormat.JSON:
         report = asdict(result)
         if timings is not None:
             report["profile"] = timings.to_dict()
         typer.echo(json.dumps(report, indent=2))
+    elif output_format == CheckOutputFormat.TEXT:
+        render_report(result, elapsed=elapsed, deterministic=deterministic)
     else:
         for finding in result.findings:
             typer.echo(f"{finding.path}:{finding.line}: {finding.rule_id} {finding.message}")
@@ -90,22 +98,20 @@ def check(
             typer.echo("Use the ryni-check skill in your agent to complete these reviews.")
         if deterministic:
             typer.echo("Agent reviews excluded (--deterministic).")
-        if timings is not None:
-            typer.echo("Profile: inclusive wall time; nested rows overlap. Startup/output excluded.")
-            for timing in timings.to_dict()["timings"]:
-                detail = (
-                    f"{count_label(timing['calls'], 'call')} · "
-                    f"{count_label(timing['failures'], 'failure')}"
+    if timings is not None and output_format != CheckOutputFormat.JSON:
+        typer.echo("Profile: inclusive wall time; nested rows overlap. Startup/output excluded.")
+        for timing in timings.to_dict()["timings"]:
+            detail = (
+                f"{count_label(timing['calls'], 'call')} · "
+                f"{count_label(timing['failures'], 'failure')}"
+            )
+            if timing["kind"] == "helper":
+                detail += (
+                    f" · {timing['cache_hits']} cache hits · {timing['cache_misses']} cache misses"
                 )
-                if timing["kind"] == "helper":
-                    detail += (
-                        f" · {timing['cache_hits']} cache hits"
-                        f" · {timing['cache_misses']} cache misses"
-                    )
-                typer.echo(
-                    f"  {timing['kind']} {timing['name']}  "
-                    f"{timing['seconds'] * 1000:.3f} ms · {detail}"
-                )
+            typer.echo(
+                f"  {timing['kind']} {timing['name']}  {timing['seconds'] * 1000:.3f} ms · {detail}"
+            )
     raise typer.Exit(result.exit_code)
 
 

@@ -526,6 +526,7 @@ version = "0.1.11"
 source = { editable = "." }
 dependencies = [
     { name = "pyyaml" },
+    { name = "rich" },
     { name = "typer" },
 ]
 
@@ -543,6 +544,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "pyyaml", specifier = ">=6" },
+    { name = "rich", specifier = ">=14" },
     { name = "typer", specifier = ">=0.20" },
 ]
 
