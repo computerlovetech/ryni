@@ -7,3 +7,5 @@ dist/
 site/
 .agents/skills/
 .claude/skills/
+.worktrees/
+test-repos/

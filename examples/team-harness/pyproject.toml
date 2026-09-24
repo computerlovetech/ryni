@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "team-harness"
+version = "0.1.0"
+description = "Research-informed, deterministic team harness hygiene rules for Ryni"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = ["ryni>=0.1.11,<0.2", "markdown-it-py>=3,<5"]
+
+[project.entry-points."ryni.rules"]
+team_harness = "team_harness:PACK"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/team_harness"]

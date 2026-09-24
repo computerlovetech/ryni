@@ -1,0 +1,86 @@
+[
+  {
+    "repository": "microsoft/vscode",
+    "url": "https://github.com/microsoft/vscode",
+    "commit": "4212437dd11e9c7e728caa26a269540c87343930",
+    "tracked_files": 19194,
+    "directory": "microsoft--vscode"
+  },
+  {
+    "repository": "vercel/next.js",
+    "url": "https://github.com/vercel/next.js",
+    "commit": "76117ccd71fdfaf4d5377b7ed08d238de845321b",
+    "tracked_files": 33138,
+    "directory": "vercel--next.js"
+  },
+  {
+    "repository": "facebook/react",
+    "url": "https://github.com/facebook/react",
+    "commit": "d083ec1da1e5252abd3ddfdde6dfbc09701a2c51",
+    "tracked_files": 7252,
+    "directory": "facebook--react"
+  },
+  {
+    "repository": "pytorch/pytorch",
+    "url": "https://github.com/pytorch/pytorch",
+    "commit": "a0afa8eb62be71420b047d18c0980c7f503607af",
+    "tracked_files": 22669,
+    "directory": "pytorch--pytorch"
+  },
+  {
+    "repository": "kubernetes/kubernetes",
+    "url": "https://github.com/kubernetes/kubernetes",
+    "commit": "7b4bd5d3773ef7714586687ded42c9719ca5325b",
+    "tracked_files": 31392,
+    "directory": "kubernetes--kubernetes"
+  },
+  {
+    "repository": "rust-lang/rust",
+    "url": "https://github.com/rust-lang/rust",
+    "commit": "3670d2532bdf51abbe0b8fea22284d7ca340ffe3",
+    "tracked_files": 63122,
+    "directory": "rust-lang--rust"
+  },
+  {
+    "repository": "golang/go",
+    "url": "https://github.com/golang/go",
+    "commit": "6b3800e1dd90925b4184acd6391f68bffd16b6a5",
+    "tracked_files": 15951,
+    "directory": "golang--go"
+  },
+  {
+    "repository": "django/django",
+    "url": "https://github.com/django/django",
+    "commit": "703283b5b455a8410b4ce0a2e6ea0e1bde7f3047",
+    "tracked_files": 7091,
+    "directory": "django--django"
+  },
+  {
+    "repository": "fastapi/fastapi",
+    "url": "https://github.com/fastapi/fastapi",
+    "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+    "tracked_files": 3139,
+    "directory": "fastapi--fastapi"
+  },
+  {
+    "repository": "nodejs/node",
+    "url": "https://github.com/nodejs/node",
+    "commit": "a2c8da59f2e319860985ff1275d66a6d16d611b0",
+    "tracked_files": 51849,
+    "directory": "nodejs--node"
+  },
+  {
+    "repository": "grafana/grafana",
+    "url": "https://github.com/grafana/grafana",
+    "commit": "74866a5b02af2a8bee397f4005f92f1b6d89ca1b",
+    "tracked_files": 23465,
+    "directory": "grafana--grafana"
+  },
+  {
+    "repository": "microsoft/TypeScript",
+    "url": "https://github.com/microsoft/TypeScript",
+    "commit": "df1a31e6d5c4aa4485f276fdfb4218a7bfcdf348",
+    "tracked_files": 66671,
+    "directory": "microsoft--TypeScript"
+  }
+]
