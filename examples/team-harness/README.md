@@ -16,7 +16,7 @@ For isolation use `--select TEAM001,TEAM002,...,TEAM018` (expand the list).
 | --- | --- | --- |
 | Give everyone a shared starting point | TEAM001–002 | Root AGENTS.md, CLAUDE.md or GEMINI.md exists; discovered guidance is nonempty. |
 | Keep recurring context small | TEAM003–004 | Always-loaded named instructions ≤250 lines AND ≤16 KiB UTF-8; SKILL.md ≤500 lines. |
-| Keep the map usable after changes | TEAM005–008 | No Git start/end/base conflict markers; local Markdown links and standalone @imports exist; no @import cycles. |
+| Keep the map usable after changes | TEAM005–008 | No Git start/end/base conflict markers outside code examples; local Markdown links and standalone @imports exist; no @import cycles. |
 | Make guidance work on teammates' machines | TEAM009 | No literal user-specific home paths in ordinary prose. |
 | Maintain one source of truth | TEAM010–011 | No identical adjacent AGENTS/CLAUDE/GEMINI copies ≥200 characters; no verbatim inherited prose paragraph ≥160 characters. |
 | Make skills identifiable and discoverable | TEAM012–015 | YAML name/description required; ASCII kebab-case name ≤64 chars matches folder; description ≤1024 chars; names unique per skills-directory namespace. |
@@ -39,7 +39,9 @@ Symlink targets outside the repository, unreadable files and invalid UTF-8 are
 execution errors, never clean results. No network link checks or shell execution.
 
 References use CommonMark inline/reference links and images, not code examples.
-@imports are recognized only when the whole prose line is `@relative/path`.
+@imports are recognized only when the whole prose line is `@relative/file.md`
+or uses an explicit `@./path`, `@../path`, `@~/path`, `@/path` prefix. Use `./`
+for extensionless paths; bare GitHub organization/team mentions are ignored.
 Remote URLs, website-root paths, fragments, query semantics, bare code paths,
 dynamic documentation routes, MDX, and semantic contradictions are outside scope.
 TEAM009 ignores inline/fenced code to avoid flagging examples. TEAM010 catches

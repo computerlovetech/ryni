@@ -66,6 +66,8 @@ uv run ryni check . --deterministic --profile
 - [Overview and rule examples](website/index.md)
 - [Efficient rule packs and profiling](website/efficient-rule-packs.md)
 - [tidy-harness rules](examples/tidy-harness/README.md)
+- [Research-informed team-harness rules](examples/team-harness/README.md)
+- [Twelve-repository performance study](benchmarks/harness-hygiene/RESULTS.md)
 
 ## Contributing
 

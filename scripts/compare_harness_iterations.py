@@ -1,4 +1,4 @@
-"""Alternate historical and current engine/pack combinations on unchanged checkouts."""
+"""Alternate pinned historical engine/pack combinations on unchanged checkouts."""
 
 import argparse
 from dataclasses import asdict
@@ -15,14 +15,33 @@ import time
 import types
 import sys
 
-from ryni.engine import check
 from ryni.rules.skill_frontmatter import RULE
 from ryni.rules.skill_constraints import NAME_RULE, DIRECTORY_RULE, DESCRIPTION_RULE
-from team_harness import PACK
 
 
 def historical_file(revision, path):
     return subprocess.check_output(["git", "show", f"{revision}:{path}"])
+
+
+def load_engine(revision, name):
+    module = types.ModuleType(name)
+    exec(compile(historical_file(revision, "src/ryni/engine.py"), name, "exec"), module.__dict__)
+    return module.check
+
+
+def load_pack(revision, package, module_name):
+    package.mkdir()
+    for name in ("__init__.py", "analysis.py"):
+        (package / name).write_bytes(
+            historical_file(revision, f"examples/team-harness/src/team_harness/{name}")
+        )
+    spec = importlib.util.spec_from_file_location(
+        module_name, package / "__init__.py", submodule_search_locations=[str(package)]
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module.PACK
 
 
 def main():
@@ -30,30 +49,19 @@ def main():
     parser.add_argument("repos", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--baseline", default="62fa1a6")
+    parser.add_argument("--optimized", default="47afeb6")
     parser.add_argument("--repeat", type=int, default=7)
     args = parser.parse_args()
-    old_engine = types.ModuleType("baseline_engine")
-    exec(
-        compile(historical_file(args.baseline, "src/ryni/engine.py"), "<baseline engine>", "exec"),
-        old_engine.__dict__,
-    )
+    old_check = load_engine(args.baseline, "baseline_engine")
+    new_check = load_engine(args.optimized, "optimized_engine")
     with tempfile.TemporaryDirectory(prefix="ryni-comparison-") as directory:
-        package = Path(directory)
-        for name in ("__init__.py", "analysis.py"):
-            (package / name).write_bytes(
-                historical_file(args.baseline, f"examples/team-harness/src/team_harness/{name}")
-            )
-        spec = importlib.util.spec_from_file_location(
-            "baseline_pack", package / "__init__.py", submodule_search_locations=[directory]
-        )
-        old_pack = importlib.util.module_from_spec(spec)
-        sys.modules[spec.name] = old_pack
-        spec.loader.exec_module(old_pack)
+        old_pack = load_pack(args.baseline, Path(directory) / "old", "baseline_pack")
+        new_pack = load_pack(args.optimized, Path(directory) / "new", "optimized_pack")
         builtin = (RULE, NAME_RULE, DIRECTORY_RULE, DESCRIPTION_RULE)
         variants = {
-            "baseline": (old_engine.check, (*old_pack.PACK.rules, *builtin)),
-            "inventory_only": (old_engine.check, (*PACK.rules, *builtin)),
-            "final": (check, (*PACK.rules, *builtin)),
+            "baseline": (old_check, (*old_pack.rules, *builtin)),
+            "inventory_only": (old_check, (*new_pack.rules, *builtin)),
+            "final": (new_check, (*new_pack.rules, *builtin)),
         }
         rng = random.Random(42)
         rows = []
@@ -90,6 +98,7 @@ def main():
                 json.dumps(
                     dict(
                         baseline=args.baseline,
+                        optimized=args.optimized,
                         python=sys.version,
                         platform=platform.platform(),
                         repetitions=args.repeat,

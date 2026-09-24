@@ -66,12 +66,14 @@ def skill_budget(root):
 
 
 def conflict_markers(root):
-    return [
-        finding(p, "TEAM005", "Resolve the Git conflict marker.", number)
-        for p in documents(root)
-        for number, line in enumerate(read(p, root).splitlines(), 1)
-        if re.match(r"^(<<<<<<< |>>>>>>> |\|\|\|\|\|\|\| )", line)
-    ]
+    findings = []
+    for p in documents(root):
+        text = read(p, root)
+        code_lines = parse(text).code_lines
+        for number, line in enumerate(text.splitlines(), 1):
+            if number not in code_lines and re.match(r"^(<<<<<<< |>>>>>>> |\|\|\|\|\|\|\| )", line):
+                findings.append(finding(p, "TEAM005", "Resolve the Git conflict marker.", number))
+    return findings
 
 
 def links(root):
@@ -294,6 +296,27 @@ CHECKS = (
     ("skill-procedure", skill_body),
     ("shared-imports", ignored_reference),
 )
+DESCRIPTIONS = (
+    "Provide a root AGENTS.md, CLAUDE.md or GEMINI.md for shared project guidance.",
+    "Discovered harness documents must contain non-whitespace text.",
+    "Keep named always-loaded instructions within 250 lines and 16 KiB UTF-8.",
+    "Keep SKILL.md within 500 lines; link supporting references.",
+    "Resolve Git start/end/base conflict markers outside Markdown code examples.",
+    "Local CommonMark links/images reachable from harness files must exist; fragments are not checked.",
+    "Standalone file @imports must exist; use ./ for extensionless paths. GitHub mentions are ignored.",
+    "Break cycles between standalone local Markdown @imports.",
+    "Avoid literal machine-specific home paths in prose outside code examples.",
+    "Replace identical adjacent vendor instruction copies of at least 200 characters with pointers.",
+    "Avoid verbatim AGENTS.md paragraphs of at least 160 characters repeated from an ancestor.",
+    "Start SKILL.md with YAML frontmatter containing nonempty string name and description fields.",
+    "Use an ASCII kebab-case skill name matching the directory, at most 64 characters.",
+    "Keep parsed skill descriptions within 1024 characters.",
+    "Skill names must be unique within each skills-directory namespace; vendors are separate.",
+    "Complete prose placeholders beginning TODO/FIXME followed by fill, write, add or replace.",
+    "Supply body prose, links or a fenced procedure after skill frontmatter.",
+    "Keep standalone @imports out of personal home directories; use shared repository guidance.",
+)
+
 PACK = RulePack(
     "team-harness",
     "Keep team guidance discoverable, lean, portable and maintained.",
@@ -301,7 +324,7 @@ PACK = RulePack(
         Rule(
             f"TEAM{i:03}",
             name,
-            function.__name__.replace("_", " "),
+            DESCRIPTIONS[i - 1],
             "",
             function,
             RuleScope.REPOSITORY,

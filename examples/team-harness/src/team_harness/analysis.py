@@ -110,6 +110,7 @@ class Document:
     links: tuple[tuple[str, int], ...]
     imports: tuple[tuple[str, int], ...]
     prose: tuple[tuple[str, int], ...]
+    code_lines: frozenset[int]
 
 
 @cached_per_check
@@ -122,7 +123,10 @@ def parse(text: str) -> Document:
             lines[: end + 1] = ["\n"] * (end + 1)
     tokens = PARSER.parse("".join(lines))
     links, imports, prose = [], [], []
+    code_lines = set()
     for token in tokens:
+        if token.type in {"fence", "code_block"} and token.map:
+            code_lines.update(range(token.map[0] + 1, token.map[1] + 1))
         if token.type != "inline":
             continue
         line = token.map[0] + 1
@@ -135,8 +139,14 @@ def parse(text: str) -> Document:
         for offset, raw in enumerate(token.content.splitlines()):
             match = re.fullmatch(r"\s*@([^\s]+)\s*", raw)
             if match:
-                imports.append((match[1], line + offset))
-    return Document(tuple(links), tuple(imports), tuple(prose))
+                target = match[1]
+                # GitHub @org/team mentions are prose, not file imports. Require
+                # explicit path notation or a filename extension.
+                if target.startswith(("./", "../", "~/", "/")) or re.search(
+                    r"\.[A-Za-z0-9]+$", target
+                ):
+                    imports.append((target, line + offset))
+    return Document(tuple(links), tuple(imports), tuple(prose), frozenset(code_lines))
 
 
 def local(source: Path, href: str, root: Path) -> Path | None:

@@ -178,12 +178,32 @@ def test_rule_failure_preserves_other_findings(tmp_path):
 
 
 def test_inventory_prefilter_keeps_extensionless_and_unicode_paths(tmp_path):
-    subprocess.run(['git', 'init', '-q', str(tmp_path)], check=True)
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
     expected = {
-        put(tmp_path, '.cursorrules', 'rules'),
-        put(tmp_path, 'é space/AGENTS.md', 'rules'),
-        put(tmp_path, '.cursor/rules/demo.mdc', 'rules'),
+        put(tmp_path, ".cursorrules", "rules"),
+        put(tmp_path, "é space/AGENTS.md", "rules"),
+        put(tmp_path, ".cursor/rules/demo.mdc", "rules"),
     }
-    put(tmp_path, 'ordinary.py', 'pass')
-    put(tmp_path, 'docs/ordinary.md', 'not a seed')
+    put(tmp_path, "ordinary.py", "pass")
+    put(tmp_path, "docs/ordinary.md", "not a seed")
     assert set(analysis.inventory(tmp_path)) == expected
+
+
+def test_conflict_demonstrations_are_not_conflicts(tmp_path):
+    put(
+        tmp_path,
+        "AGENTS.md",
+        "# Resolve conflicts\n```console\n"
+        "<<<<<<< HEAD\nexample\n=======\nother example\n>>>>>>> commit\n"
+        "```\n\n<<<<<<< actual-branch\n",
+    )
+    findings = run(tmp_path, "TEAM005").findings
+    assert len(findings) == 1
+    assert findings[0].line == 10
+
+
+def test_github_mentions_are_not_imports(tmp_path):
+    put(tmp_path, "AGENTS.md", "@nodejs/tsc.\n\n@nodejs/tsc\n\n@./missing\n")
+    findings = run(tmp_path, "TEAM007").findings
+    assert len(findings) == 1
+    assert "missing" in findings[0].message
