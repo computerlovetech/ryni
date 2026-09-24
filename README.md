@@ -3,25 +3,31 @@
   <img src="website/assets/ryni-wordmark-light.svg" alt="Rýni" width="180" height="48">
 </picture>
 
-Rýni is a command-line linter for agent instructions and skills. It includes
-checks for `SKILL.md` frontmatter, names, directory matching, and description
-length. Install rule packs to check additional files and conventions.
+**A linter for your agent harness.**
 
-[Documentation](https://computerlovetech.github.io/ryni/) · [Rule pack tutorial](website/first-rule-pack.md)
+[Documentation](https://computerlovetech.github.io/ryni/)
+
+Harness engineering is hard. Keeping a team aligned on it is harder. Rýni checks
+your `AGENTS.md`, instructions, skills, and Markdown docs against shared
+conventions, so your agents get a consistent and coherent working environment.
+
+- 🔍 **Lint your harness.** Catch structural issues with deterministic checks.
+- 📝 **Review your markdown docs.** Structure non-deterministic checks that require judgment.
+- 📦 **Share your conventions.** Turn your team’s standards into rule packs you can use across repositories.
 
 ## Get started
 
-Requires Python 3.14 or later. From your project directory:
+Requires Python 3.14 or later. Add Rýni and
+[tidy-harness](examples/tidy-harness/README.md), an opinionated example rule pack, as development dependencies:
 
 ```bash
-uv add --dev ryni
+uv add --dev ryni tidy-harness
 uv run ryni check .
 ```
 
-Run `uv run ryni rule` to list active rules, or `uv run ryni rule SKILL004`
-to explain one. For additional checks, install a rule pack such as
-[tidy-harness](examples/tidy-harness/README.md) with `uv add --dev tidy-harness`.
-Installed rules are active automatically.
+Installed rules are active automatically. The CLI runs deterministic checks and
+reports agent reviews as pending. Commit `pyproject.toml` and `uv.lock` to share
+the same versions with your team.
 
 The terminal report groups findings by file and shows checked file counts and
 elapsed time:
@@ -38,10 +44,12 @@ Changes needed
 142 files checked · 0.28s
 ```
 
-Use `--output-format json` for structured output or `--output-format compact`
-for one-line diagnostics. Use `--deterministic` to exclude agent reviews.
-See the [command reference](https://computerlovetech.github.io/ryni/#check-options)
-for options, exit codes, and report details.
+Counts cover unique targets that completed deterministic checks; directory targets
+are listed separately. Time includes rule loading, discovery, checks, and any
+fix/recheck, excluding process startup and report rendering. Color adapts to the
+terminal and respects `NO_COLOR`; redirected output is plain text. Use
+`--output-format compact` for the original one-line diagnostics, or
+`--output-format json` for structured output.
 
 ## Run with your agent
 
@@ -56,12 +64,14 @@ The skill runs deterministic checks, delegates reviews to sub-agents, and combin
 the findings. Your agent must support sub-agents to complete reviews. Rýni itself
 runs no model and needs no API key.
 
-## Write a rule pack
+## Make it your own
 
-A rule pack is a Python package containing checks and optional review instructions.
-Follow the [rule pack tutorial](website/first-rule-pack.md) to create and install one.
+A rule pack can combine deterministic checks with instructions for agent reviews.
+Write your team's conventions once and share them across repositories.
 
-To write rules with an agent, install the bundled authoring skill:
+**[Build your first rule pack →](website/first-rule-pack.md)**
+
+To build rules with an agent, install the bundled authoring skill:
 
 ```bash
 uv run ryni skill install .agents/skills --name ryni-rule-author
@@ -75,7 +85,7 @@ of installed deterministic checks:
 uv run ryni check . --deterministic --profile
 ```
 
-- [Usage and command reference](website/index.md)
+- [Overview and rule examples](website/index.md)
 - [Efficient rule packs and profiling](website/efficient-rule-packs.md)
 - [tidy-harness rules](examples/tidy-harness/README.md)
 - [Research-informed team-harness rules](examples/team-harness/README.md)
@@ -91,5 +101,11 @@ uv run --group docs mkdocs build --strict
 uv run --group docs mkdocs serve
 ```
 
+See [our jobs to be done](JTBD.md) for the project's direction.
+
 Maintainers: see [the release guide](docs/releasing.md) for Rýni's PyPI
 releases, dry runs, and the `ryni-release` skill.
+
+---
+
+*[Rýni](https://en.wiktionary.org/wiki/r%C3%BDni#Etymology) — from Old Norse, “scrutiny” or “contemplation.”*

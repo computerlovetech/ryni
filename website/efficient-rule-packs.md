@@ -1,9 +1,11 @@
 # Efficient rule packs
 
-Use `cached_per_check` to share reads and parsing between rules. Use `--profile`
-to measure where a check run spends time.
+Rýni manages execution and shared work; each pack defines what that work means.
+The engine does not need to know about a pack's file formats, Git queries, or
+conventions. Existing rules keep the same `evaluate(path)` and optional `fix(path)`
+API.
 
-## Share reads and parsing
+## Make shared work explicit
 
 File rules declare the basename they need. Rýni filters names during discovery,
 keeps deterministic ordering, and skips the file walk when only repository rules
@@ -49,16 +51,15 @@ direct helper calls outside the engine see fresh data. Keep evaluations read-onl
 and put edits in `fix`; do not cache evaluations or mutations. Avoid global
 filesystem caches that can become stale.
 
-## Profile a check run
+## Find the expensive work
 
 ```bash
 uv run ryni check . --deterministic --profile
 uv run ryni check . --deterministic --profile --output-format json
 ```
 
-The default text report includes total elapsed time. `--profile` adds detailed
-timings and cache counts; JSON reports add a `profile.timings` field. Profiling
-does not change findings or exit codes.
+Profiling is opt-in. Normal output, JSON fields, findings, and exit codes are
+unchanged without it. JSON reports add `profile.timings` only when requested.
 Every timing contains a `kind`, `name`, call count, `seconds`, failure count, and
 cache hit/miss counts (the latter apply to helpers).
 
@@ -82,7 +83,7 @@ runs incur instrumentation overhead: use them to identify costs, then compare
 repeated unprofiled runs on the same workload. Verify equal findings, errors, and
 ordering. Use work-count assertions in tests instead of fixed timing thresholds.
 
-To profile a `RulePack` named `PACK` from Python:
+Python callers can supply their own collector without changing rule signatures:
 
 ```python
 from pathlib import Path
@@ -109,8 +110,10 @@ For Claude Code, use `.claude/skills`. Invoke `$ryni-rule-author` in Codex or
 The installer includes an API reference and a runnable TOML example with three
 rules sharing analysis. It preserves existing customized skill files.
 
-The skill covers rule scope, shared analysis, packaging, tests, and performance
-measurements.
+The skill guides the agent through scope, shared analysis, packaging, correctness
+tests, and representative performance measurements. It works with ordinary
+Python rules; it does not require a special parser, domain model, parallel
+scheduler, or framework changes for each pack.
 
 For packaging and rule registration, start with
 [Your first rule pack](first-rule-pack.md).
