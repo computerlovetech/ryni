@@ -117,7 +117,7 @@ def test_without_file_rules_skips_walk_but_validates_inputs(tmp_path, monkeypatc
     def unexpected_walk(*args, **kwargs):
         pytest.fail("No file rules need a directory walk")
 
-    monkeypatch.setattr("ryni.engine.os.walk", unexpected_walk)
+    monkeypatch.setattr("ryni.engine.os.scandir", unexpected_walk)
     rules = [Rule("REPO", "repo", "Repository", "", lambda path: [], RuleScope.REPOSITORY)]
     result = check([tmp_path, tmp_path / "missing"], rules if with_rule else [])
     assert result.checked_files == ([str(tmp_path)] if with_rule else [])
@@ -135,6 +135,7 @@ def test_indexed_rules_preserve_file_and_rule_order(tmp_path):
         def evaluate(path):
             calls.append((path.name, code))
             return []
+
         return Rule(code, code, code, filename, evaluate)
 
     result = check([tmp_path], [rule("B", "b.txt"), rule("A2", "a.txt"), rule("A1", "a.txt")])
@@ -152,9 +153,7 @@ def test_filtered_discovery_preserves_paths_and_deduplicates_inputs(tmp_path, mo
     other.touch()
     result = CheckResult()
 
-    found = discover(
-        [nested, tmp_path, target.absolute(), other], result, filenames={"file.txt"}
-    )
+    found = discover([nested, tmp_path, target.absolute(), other], result, filenames={"file.txt"})
 
     assert found == [target]
     assert result.errors == []
@@ -186,11 +185,10 @@ def test_filtered_discovery_preserves_directories_and_symlinks(tmp_path, explici
 
 
 def test_filtered_discovery_reports_missing_inputs_and_walk_errors(tmp_path, monkeypatch):
-    def failed_walk(path, *, onerror):
-        onerror(PermissionError("Cannot read directory"))
-        return iter(())
+    def failed_scandir(path):
+        raise PermissionError("Cannot read directory")
 
-    monkeypatch.setattr("ryni.engine.os.walk", failed_walk)
+    monkeypatch.setattr("ryni.engine.os.scandir", failed_scandir)
     missing = tmp_path / "unrelated.txt"
     result = check([tmp_path, missing], [_rule(lambda path: [])])
 
@@ -199,3 +197,40 @@ def test_filtered_discovery_reports_missing_inputs_and_walk_errors(tmp_path, mon
         f"Path does not exist or is not a regular file/directory: {missing}",
     ]
     assert result.exit_code == 2
+
+
+def test_discovery_avoids_directory_lstat_and_preserves_exclusions(tmp_path, monkeypatch):
+    import os
+
+    target = tmp_path / "nested" / "file.txt"
+    target.parent.mkdir()
+    target.touch()
+    excluded = tmp_path / "node_modules"
+    excluded.mkdir()
+    (excluded / "file.txt").touch()
+    (tmp_path / "link").symlink_to(target.parent, target_is_directory=True)
+    original = os.lstat
+    calls = []
+
+    def lstat(path, *args, **kwargs):
+        calls.append(path)
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(os, "lstat", lstat)
+    result = CheckResult()
+    assert discover([tmp_path], result, filenames={"file.txt"}) == [target]
+    # One possible explicit-input check; no per-directory lstat on descent.
+    assert not any(str(p).endswith("/nested") for p in calls)
+    assert result.errors == []
+
+
+def test_unfiltered_discovery_keeps_files_directories_and_dangling_links(tmp_path):
+    folder = tmp_path / "sub"
+    folder.mkdir()
+    file = folder / "a.txt"
+    file.touch()
+    dangling = tmp_path / "dangling"
+    dangling.symlink_to("missing")
+    result = CheckResult()
+    assert discover([tmp_path], result) == sorted([tmp_path, folder, file, dangling], key=str)
+    assert result.errors == []

@@ -24,6 +24,39 @@ def repository_root(path: Path) -> Path:
     return directory
 
 
+def _walk_targets(path: Path, result: CheckResult, filenames: Collection[str] | None):
+    """Use DirEntry metadata while live, avoiding os.walk's directory lstat pass.
+
+    Evaluation happens after discovery, so no caller can prune or replace entries
+    between yielding a directory and descending into it. Never follow directory
+    symlinks. Sort descent for deterministic error order as well as final targets.
+    """
+    pending = [str(path)]
+    while pending:
+        root = pending.pop()
+        directories = []
+        targets = []
+        try:
+            with os.scandir(root) as entries:
+                for entry in entries:
+                    try:
+                        is_directory = entry.is_dir()
+                    except OSError:
+                        # Match os.walk: an entry with unknown type is a file.
+                        is_directory = False
+                    if is_directory and entry.name in EXCLUDED_DIRECTORIES:
+                        continue
+                    if filenames is None or entry.name in filenames:
+                        targets.append(Path(root) / entry.name)
+                    if is_directory and not entry.is_symlink():
+                        directories.append(entry.path)
+        except OSError as error:
+            result.errors.append(str(error))
+            continue
+        yield from targets
+        pending.extend(sorted(directories, reverse=True))
+
+
 def discover(
     paths: list[Path], result: CheckResult, *, filenames: Collection[str] | None = None
 ) -> list[Path]:
@@ -36,18 +69,8 @@ def discover(
         elif path.is_dir():
             if filenames is None or path.name in filenames:
                 files.setdefault(path.absolute(), path)
-            for root, directories, names in os.walk(
-                path, onerror=lambda error: result.errors.append(str(error))
-            ):
-                directories[:] = sorted(
-                    name for name in directories if name not in EXCLUDED_DIRECTORIES
-                )
-                # Preserve named directories too: a directory named SKILL.md is invalid.
-                for name in names + directories:
-                    if filenames is not None and name not in filenames:
-                        continue
-                    candidate = Path(root) / name
-                    files.setdefault(candidate.absolute(), candidate)
+            for candidate in _walk_targets(path, result, filenames):
+                files.setdefault(candidate.absolute(), candidate)
         else:
             result.errors.append(f"Path does not exist or is not a regular file/directory: {path}")
     return sorted(files.values(), key=str)

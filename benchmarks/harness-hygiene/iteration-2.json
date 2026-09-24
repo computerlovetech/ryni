@@ -1,0 +1,3784 @@
+{
+  "python": "3.14.3 (main, Mar 10 2026, 18:02:52) [Clang 21.1.4 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "repetitions": 5,
+  "cache": "warm OS cache; fresh per-check cache",
+  "rows": [
+    {
+      "repository": "django--django",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/django--django"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/django--django/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM001",
+            "message": "Add a root agent entry point with shared commands and guidance links."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "4950e985c8a1ce2ab0c1459b99e92c954e5e00d16d617d4ff6194459bf943bc9",
+      "findings_by_rule": {
+        "TEAM001": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.19376512500457466,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 2.962502185255289e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 0.00027908297488465905,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.14703516598092392,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.14668375003384426,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 10,
+            "seconds": 0.00031574908643960953,
+            "failures": 0,
+            "cache_hits": 9,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 9.249954018741846e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 2.459040842950344e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.0003198749618604779,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.00028541701612994075,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 7,
+            "seconds": 0.0002780838985927403,
+            "failures": 0,
+            "cache_hits": 6,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 4.874949809163809e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 3.1249946914613247e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 3.245804691687226e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 4.0458980947732925e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.8750433810055256e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 1.7500133253633976e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 2.2500171326100826e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.374981366097927e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 1.207983586937189e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 3.333028871566057e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 3.4750031773000956e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 1.2500095181167126e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 3.0410010367631912e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.04591229103971273,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.11082899995381013,
+        0.10669354104902595,
+        0.10878687497461215,
+        0.10725608398206532,
+        0.10940533399116248
+      ],
+      "cli_seconds": [
+        0.17101112502859905,
+        0.16307725000660866,
+        0.16284116700990126,
+        0.1605041670263745,
+        0.16039420798188075
+      ],
+      "engine_median": 0.10878687497461215,
+      "cli_median": 0.16284116700990126
+    },
+    {
+      "repository": "facebook--react",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/extract-errors/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/feature-flags/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/fix/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/flags/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/flow/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/test/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/.claude/skills/verify/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/compiler-commit/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/compiler-orchestrator/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/compiler-port/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/compiler-review/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/compiler-verify/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/plan-update/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/.claude/skills/rust-port-status/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/facebook--react/compiler/CLAUDE.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "d2738a037d0c97b5769238e159e599ec46f3b803380a9937b9e529b593e47550",
+      "findings_by_rule": {
+        "TEAM003": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.07617295801173896,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 3.891700180247426e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 2.72089964710176e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.04222083301283419,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.03879674902418628,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 219,
+            "seconds": 0.00333029986359179,
+            "failures": 0,
+            "cache_hits": 198,
+            "cache_misses": 21
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 4.32920060120523e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 6.162497447803617e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.009312834008596838,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.009059001051355153,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 161,
+            "seconds": 0.008955169003456831,
+            "failures": 0,
+            "cache_hits": 140,
+            "cache_misses": 21
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 4.216702654957771e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 3.7375022657215595e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.0006912910030223429,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0004268329939804971,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 5.316699389368296e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 3.4170225262641907e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.010242999996989965,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 112,
+            "seconds": 0.010215044138021767,
+            "failures": 0,
+            "cache_hits": 98,
+            "cache_misses": 14
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 7.604097481817007e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 1.529202563688159e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 0.00010966701665893197,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.00031920900801196694,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 2.716702874749899e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 3.633397864177823e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.012142958003096282,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 14,
+            "seconds": 3.387511242181063e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 14,
+            "seconds": 5.062494892627001e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 14,
+            "seconds": 3.662204835563898e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 14,
+            "seconds": 1.8332968465983868e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.06050699995830655,
+        0.06556191598065197,
+        0.06185875000664964,
+        0.06313954101642594,
+        0.05890025000553578
+      ],
+      "cli_seconds": [
+        0.12579220801126212,
+        0.11791674996493384,
+        0.11841016699327156,
+        0.12054562498815358,
+        0.11914374999469146
+      ],
+      "engine_median": 0.06185875000664964,
+      "cli_median": 0.11914374999469146
+    },
+    {
+      "repository": "fastapi--fastapi",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/fastapi--fastapi",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/fastapi--fastapi/fastapi/.agents/skills/fastapi/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/fastapi--fastapi/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM001",
+            "message": "Add a root agent entry point with shared commands and guidance links."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "7e3d38fa8a08a63b8c0034f259f8e1e3385538c5b1dee1cd4fa9f81147d906a3",
+      "findings_by_rule": {
+        "TEAM001": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.0593290000106208,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.237500252202153e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 0.00018983299378305674,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.04685937502654269,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.045573665120173246,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 65,
+            "seconds": 0.001229422865435481,
+            "failures": 0,
+            "cache_hits": 58,
+            "cache_misses": 7
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 3.833032678812742e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 2.59590451605618e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.003639250004198402,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.0034758749534375966,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 50,
+            "seconds": 0.002420955861452967,
+            "failures": 0,
+            "cache_hits": 43,
+            "cache_misses": 7
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.000876624952070415,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 1.433398574590683e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.0002030839677900076,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.00013279204722493887,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 2.4160253815352917e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 2.707995008677244e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.00023858400527387857,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 8,
+            "seconds": 0.00023450003936886787,
+            "failures": 0,
+            "cache_hits": 7,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 7.0829992182552814e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 2.7500209398567677e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 1.9040948245674372e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 9.099999442696571e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 3.3329706639051437e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 1.3500044587999582e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.0068276249803602695,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 1,
+            "seconds": 5.208014044910669e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 1,
+            "seconds": 7.2909751906991005e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 1,
+            "seconds": 3.541994374245405e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 1,
+            "seconds": 1.7909915186464787e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.0372828749823384,
+        0.03736675000982359,
+        0.03653566702269018,
+        0.03668287501204759,
+        0.035779417026787996
+      ],
+      "cli_seconds": [
+        0.09652650001225993,
+        0.09396149998065084,
+        0.09828570898389444,
+        0.12443187501048669,
+        0.10610895801801234
+      ],
+      "engine_median": 0.03668287501204759,
+      "cli_median": 0.09828570898389444
+    },
+    {
+      "repository": "golang--go",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/golang--go"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/golang--go/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM001",
+            "message": "Add a root agent entry point with shared commands and guidance links."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "6b9b2530c286d5e5cbe5563858046b6a4fd9b2f9220c2ef6289bea407578cea7",
+      "findings_by_rule": {
+        "TEAM001": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.1711094580241479,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.2000028770416975e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 0.000222250004298985,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.14028862497070804,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.1402694980497472,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 9.791983757168055e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 2.4170149117708206e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 8.749950211495161e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 4.167028237134218e-06,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 2.4999608285725117e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 1.249951310455799e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 3.4589902497828007e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 2.4170149117708206e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.0410440154373646e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 1.9160215742886066e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 2.249958924949169e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.0830117389559746e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 2.249958924949169e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 2.4999608285725117e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 1.00000761449337e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 1.0409858077764511e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 2.7919886633753777e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.030425333010498434,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.07877795799868181,
+        0.07791937503498048,
+        0.07867333298781887,
+        0.07677666703239083,
+        0.07695854204939678
+      ],
+      "cli_seconds": [
+        0.13391299999784678,
+        0.13418316701427102,
+        0.13865550002083182,
+        0.13876483403146267,
+        0.13968341698637232
+      ],
+      "engine_median": 0.07791937503498048,
+      "cli_median": 0.13865550002083182
+    },
+    {
+      "repository": "grafana--grafana",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana/.claude/skills/add-e2e-selectors/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana/.claude/skills/frontend-testing-strategy/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana/.claude/skills/panel-testing-strategy/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana/e2e-playwright/dashboard-new-layouts/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana/pkg/router/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/grafana--grafana/public/app/features/alerting/unified/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "86ed3fa437189391e89fea575bd8d540a21771dfdae75beab1fc66b472e9d5c0",
+      "findings_by_rule": {
+        "TEAM003": 3
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.43792370799928904,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 3.5958015359938145e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.1416967026889324e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.32869991700863466,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.32521599787287414,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 241,
+            "seconds": 0.0055025010369718075,
+            "failures": 0,
+            "cache_hits": 216,
+            "cache_misses": 25
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 0.00022849999368190765,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 5.6917022448033094e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.03293687500990927,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.032092667010147125,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 181,
+            "seconds": 0.028176205581985414,
+            "failures": 0,
+            "cache_hits": 156,
+            "cache_misses": 25
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.0011869579902850091,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 8.395797340199351e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.0006661660154350102,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0013296249671839178,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.895800232887268e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 0.0002959999837912619,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.0007680829730816185,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 24,
+            "seconds": 0.0007596237701363862,
+            "failures": 0,
+            "cache_hits": 21,
+            "cache_misses": 3
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.3375014532357454e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 5.250039976090193e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 3.766699228435755e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.0009697909699752927,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 9.542040061205626e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 3.116601146757603e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.0704077499685809,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 3,
+            "seconds": 1.3458018656820059e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 3,
+            "seconds": 1.4291959814727306e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 3,
+            "seconds": 1.2958073057234287e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 3,
+            "seconds": 4.375004209578037e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.2129549160017632,
+        0.2129501669551246,
+        0.2230556249851361,
+        0.2305127500439994,
+        0.21481158398091793
+      ],
+      "cli_seconds": [
+        0.2716262500034645,
+        0.27373191696824506,
+        0.2779666249989532,
+        0.27052012499189004,
+        0.27360241604037583
+      ],
+      "engine_median": 0.21481158398091793,
+      "cli_median": 0.27360241604037583
+    },
+    {
+      "repository": "kubernetes--kubernetes",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/kubernetes--kubernetes"
+        ],
+        "findings": [],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "f994826b003add14fa17236ac4cf5757779c3652d3ae28a015602e53a3ef555a",
+      "findings_by_rule": {},
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.32354770798701793,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.333397373557091e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.712498487904668e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.22546675003832206,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.22515275102341548,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 11,
+            "seconds": 0.00028129108250141144,
+            "failures": 0,
+            "cache_hits": 10,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 9.083014447242022e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 2.3750471882522106e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.00044429098488762975,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.0004282919690012932,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 8,
+            "seconds": 0.00042058288818225265,
+            "failures": 0,
+            "cache_hits": 7,
+            "cache_misses": 1
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 6.332993507385254e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 2.9159709811210632e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 3.104202914983034e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 1.770805101841688e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.4579854905605316e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 2.216600114479661e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 2.334010787308216e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.208973117172718e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 1.2500095181167126e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 3.0830269679427147e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 1.2333039194345474e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 1.1249794624745846e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 2.9159709811210632e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.0974010830395855,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.23425587499514222,
+        0.22994237503735349,
+        0.2333809160045348,
+        0.22950004099402577,
+        0.2984557499876246
+      ],
+      "cli_seconds": [
+        0.3490797500126064,
+        0.3236964590032585,
+        0.3023806249839254,
+        0.29613245802465826,
+        0.3065995420329273
+      ],
+      "engine_median": 0.2333809160045348,
+      "cli_median": 0.3065995420329273
+    },
+    {
+      "repository": "microsoft--TypeScript",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--TypeScript",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--TypeScript/.github/skills/api-client/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--TypeScript/.github/skills/compiler-and-fourslash-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--TypeScript/.github/skills/restack/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--TypeScript/.github/skills/security-report-check/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--TypeScript/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM001",
+            "message": "Add a root agent entry point with shared commands and guidance links."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "c5e9fd112bd821dfa10a50d8b69f258fa621bc9f9ce5eee149125f0b2e96b4be",
+      "findings_by_rule": {
+        "TEAM001": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.13919529202394187,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.762498429045081e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 3.9832957554608583e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.09278137498768046,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.09170958190225065,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 54,
+            "seconds": 0.001019627961795777,
+            "failures": 0,
+            "cache_hits": 49,
+            "cache_misses": 5
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 1.7792044673115015e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 4.79590380564332e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.004046333022415638,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.0038949180161580443,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 39,
+            "seconds": 0.0038407929823733866,
+            "failures": 0,
+            "cache_hits": 34,
+            "cache_misses": 5
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 1.1374999303370714e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 9.749957825988531e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.00014112499775364995,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.00022412498947232962,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.9160215742886066e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 2.2500171326100826e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.0004574169870465994,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 32,
+            "seconds": 0.00045075418893247843,
+            "failures": 0,
+            "cache_hits": 28,
+            "cache_misses": 4
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.4041026588529348e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 5.541020072996616e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 4.175002686679363e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.00016454100841656327,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 8.542032446712255e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 9.70897963270545e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.040981374972034246,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 4,
+            "seconds": 1.8331920728087425e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 4,
+            "seconds": 1.9460974726825953e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 4,
+            "seconds": 1.5958037693053484e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 4,
+            "seconds": 6.082991603761911e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.1552017090143636,
+        0.13019545801216736,
+        0.1247127500246279,
+        0.13840270799119025,
+        0.13252258399734274
+      ],
+      "cli_seconds": [
+        0.19149120803922415,
+        0.19898570800432935,
+        0.1916745839989744,
+        0.17979470803402364,
+        0.18231849995208904
+      ],
+      "engine_median": 0.13252258399734274,
+      "cli_median": 0.19149120803922415
+    },
+    {
+      "repository": "microsoft--vscode",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.agents/skills/launch/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/accessibility/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/agent-host-chat-contributions/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/agent-host-e2e-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/agent-host-logs/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/author-contributions/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/auto-perf-optimize/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/azure-pipelines/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/build-champ-triage/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/chat-customizations-editor/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/chat-perf/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/chat-pet-sprite-creation/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/code-oss-logs/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/codenotify/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/component-fixtures/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/component/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/cpu-profile-analysis/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/customizations-in-the-agent-host/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/design-philosophy/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/doc-comments/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/feedback-learning/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/fix-ci-failures/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/fixissueno/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/flaky-smoke-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/heap-snapshot-analysis/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/integrated-browser/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/integration-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/issue-grouping/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/memory-leak-audit/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/migrate-issues/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/otel/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/policy-and-managed-settings/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/sessions/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/setup-environment/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/smoke-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/sweeper-fix/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/symbolicate-crash-dump/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/unit-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/update-instructions/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/update-screenshots/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/ux-css-layout/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/ux-theming/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/validate-ui-scenario/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/vscode-dev-workbench/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/.agents/skills/github-copilot-upgrader/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/.agents/skills/launch/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/agent-customization/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/chronicle/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/create-agent/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/create-hook/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/create-instructions/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/create-prompt/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/create-skill/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/get-search-view-results/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/init/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/install-vscode-extension/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/project-setup-info-context7/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/project-setup-info-local/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/troubleshoot/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/act-on-feedback/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/code-review/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/commit/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/create-draft-pr/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/create-pr/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/fix-ci/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/generate-run-commands/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/merge/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/sync-upstream/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/sync/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/troubleshoot/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/update-pr/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/sessions/skills/update-skills/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/.github/copilot-instructions.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/src/extension/chatSessions/copilotcli/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/src/vs/platform/agentHost/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/skills/cpu-profile-analysis/SKILL.md",
+            "line": 1,
+            "rule_id": "TEAM004",
+            "message": "Keep SKILL.md within 500 lines; move detail to references."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/instructions/buildNext.instructions.md",
+            "line": 34,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: index.ts"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/.github/instructions/buildNext.instructions.md",
+            "line": 42,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: nls-plugin.ts"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/agent-customization/references/agents.md",
+            "line": 133,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: ../hooks.md"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/project-setup-info-context7/SKILL.md",
+            "line": 1,
+            "rule_id": "TEAM014",
+            "message": "Keep skill discovery descriptions within 1024 chars."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/project-setup-info-local/SKILL.md",
+            "line": 1,
+            "rule_id": "TEAM014",
+            "message": "Keep skill discovery descriptions within 1024 chars."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/project-setup-info-context7/SKILL.md",
+            "line": 1,
+            "rule_id": "SKILL004",
+            "message": "Shorten the skill description to at most 1024 characters (currently 1461)."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/microsoft--vscode/extensions/copilot/assets/prompts/skills/project-setup-info-local/SKILL.md",
+            "line": 1,
+            "rule_id": "SKILL004",
+            "message": "Shorten the skill description to at most 1024 characters (currently 1376)."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "175c8f6f5ed1f9ceac83285f855be683e6e37fcae0d07e474530d1dee4621653",
+      "findings_by_rule": {
+        "TEAM003": 3,
+        "TEAM004": 1,
+        "TEAM006": 3,
+        "TEAM014": 2,
+        "SKILL004": 2
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.4942089579999447,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 3.98330157622695e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.3999990187585354e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.24043150001671165,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.22158979409141466,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 1252,
+            "seconds": 0.02289201825624332,
+            "failures": 0,
+            "cache_hits": 1124,
+            "cache_misses": 128
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 0.00021662504877895117,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 0.0006674579926766455,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.14996462495764717,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.146192291053012,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 932,
+            "seconds": 0.13376287062419578,
+            "failures": 0,
+            "cache_hits": 804,
+            "cache_misses": 128
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.006387499975971878,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 0.00024804199347272515,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.003702874993905425,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0066546250018291175,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.1749973054975271e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 0.0002470000181347132,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.009118790971115232,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 576,
+            "seconds": 0.009049611166119576,
+            "failures": 0,
+            "cache_hits": 504,
+            "cache_misses": 72
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 0.00014454202027991414,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 7.350003579631448e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 0.00049437495181337,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.004616499994881451,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 0.00012808397877961397,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 0.0001854579895734787,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.07014679198618978,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 72,
+            "seconds": 0.000108787149656564,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 72,
+            "seconds": 0.00012820691335946321,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 72,
+            "seconds": 0.00014088302850723267,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 72,
+            "seconds": 9.437889093533158e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.3530262910062447,
+        0.3678359579644166,
+        0.36269300000276417,
+        0.3556247499655001,
+        0.3539975419989787
+      ],
+      "cli_seconds": [
+        0.4274057080037892,
+        0.44518720800988376,
+        0.4420075000380166,
+        0.4305830000084825,
+        0.43456399999558926
+      ],
+      "engine_median": 0.3556247499655001,
+      "cli_median": 0.43456399999558926
+    },
+    {
+      "repository": "nodejs--node",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/nodejs--node"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/nodejs--node/GOVERNANCE.md",
+            "line": 166,
+            "rule_id": "TEAM007",
+            "message": "Repair missing file import: nodejs/tsc."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "d2534a3ca41d0ad14b0702b12469903ea8857ca2f255e1397d8dac337f5e3006",
+      "findings_by_rule": {
+        "TEAM007": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 1.3028180829714984,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.958396311849356e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.333397813141346e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.15924762497888878,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.1584931240649894,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 551,
+            "seconds": 0.03245793067617342,
+            "failures": 0,
+            "cache_hits": 443,
+            "cache_misses": 108
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 3.179203486070037e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 2.4589826352894306e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.9709499999880791,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.9430907500209287,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 439,
+            "seconds": 0.7950119761517271,
+            "failures": 0,
+            "cache_hits": 331,
+            "cache_misses": 108
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.09094304201425985,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 0.00029399996856227517,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.00285445898771286,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0001792090479284525,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 1.1749973054975271e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 2.2083986550569534e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 1.8329592421650887e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.625041477382183e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 1.374981366097927e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 2.7500209398567677e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.00011604197788983583,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 1.333013642579317e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 4.875008016824722e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.0780324999941513,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        1.2811854999745265,
+        1.1689345420454629,
+        1.17994554201141,
+        1.1396911659976467,
+        1.7792076659970917
+      ],
+      "cli_seconds": [
+        1.6450662499992177,
+        1.3039490419905633,
+        1.2933806660003029,
+        1.194303874974139,
+        1.2136457500164397
+      ],
+      "engine_median": 1.17994554201141,
+      "cli_median": 1.2933806660003029
+    },
+    {
+      "repository": "pytorch--pytorch",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/add-uint-support/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/aoti-debug/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/at-dispatch-v2/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/ci-metrics/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/cuda-index-width/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/distributed-triage/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/docstring/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/document-public-apis/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/fix-issue/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/ghstack-ci/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/metal-kernel/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/pr-review-readiness/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/pr-review/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/pt2-bug-basher/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/pyrefly-type-coverage/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/scrub-issue/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/skill-writer/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/triaging-issues/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/CLAUDE.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/torch/_dynamo/CLAUDE.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/metal-kernel/SKILL.md",
+            "line": 1,
+            "rule_id": "TEAM004",
+            "message": "Keep SKILL.md within 500 lines; move detail to references."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/.claude/skills/skill-writer/SKILL.md",
+            "line": 179,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: reference.md"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/tools/README.md",
+            "line": 46,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: docker"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/torch/csrc/jit/OVERVIEW.md",
+            "line": 125,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: llvm.org"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/torch/csrc/jit/README.md",
+            "line": 23,
+            "rule_id": "TEAM006",
+            "message": "Repair missing local link: generated"
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/pytorch--pytorch/CLAUDE.md",
+            "line": 1,
+            "rule_id": "TEAM010",
+            "message": "Replace the duplicated adjacent AGENTS.md copy with a link/import or symlink."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "02e4b3fabd5f10faf6965970093164ddaad97cdf6bf0e10cf471b0d45b6c9b2d",
+      "findings_by_rule": {
+        "TEAM003": 3,
+        "TEAM004": 1,
+        "TEAM006": 4,
+        "TEAM010": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.27494116697926074,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.354200791567564e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.9041995983570814e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.13492874999064952,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.12971374910557643,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 370,
+            "seconds": 0.008284918032586575,
+            "failures": 0,
+            "cache_hits": 328,
+            "cache_misses": 42
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 8.191697997972369e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 0.00026545801665633917,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.0934137079748325,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.09118724992731586,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 274,
+            "seconds": 0.07989388436544687,
+            "failures": 0,
+            "cache_hits": 233,
+            "cache_misses": 41
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.007455249957274646,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 7.670902414247394e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.0010623339912854135,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0033999999868683517,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 3.208295674994588e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 2.5916961021721363e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.0027774159680120647,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 144,
+            "seconds": 0.0027560374001041055,
+            "failures": 0,
+            "cache_hits": 126,
+            "cache_misses": 18
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 3.925000783056021e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 1.8749968148767948e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 0.00011591595830395818,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.0023537499946542084,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 3.383302828297019e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 5.1333976443856955e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.028505333000794053,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 18,
+            "seconds": 3.125099465250969e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 18,
+            "seconds": 3.766512963920832e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 18,
+            "seconds": 3.812112845480442e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 18,
+            "seconds": 2.333306474611163e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.19090041698655114,
+        0.19074737501796335,
+        0.18969816697062925,
+        0.18877512501785532,
+        0.2085508340387605
+      ],
+      "cli_seconds": [
+        0.2583288329769857,
+        0.2526286670472473,
+        0.25623166700825095,
+        0.25816033402225,
+        0.25003295799251646
+      ],
+      "engine_median": 0.19074737501796335,
+      "cli_median": 0.25623166700825095
+    },
+    {
+      "repository": "rust-lang--rust",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/rust-lang--rust"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/rust-lang--rust/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/rust-lang--rust/src/doc/rustc-dev-guide/src/git.md",
+            "line": 323,
+            "rule_id": "TEAM005",
+            "message": "Resolve the Git conflict marker."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/rust-lang--rust/src/doc/rustc-dev-guide/src/git.md",
+            "line": 327,
+            "rule_id": "TEAM005",
+            "message": "Resolve the Git conflict marker."
+          },
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/rust-lang--rust/src/tools/rust-analyzer/CLAUDE.md",
+            "line": 1,
+            "rule_id": "TEAM010",
+            "message": "Replace the duplicated adjacent AGENTS.md copy with a link/import or symlink."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "4c7af2af6d8e5c25c9c9b117a0b999489a28d0b58adbaa46d35cfea97e7fbbab",
+      "findings_by_rule": {
+        "TEAM003": 1,
+        "TEAM005": 2,
+        "TEAM010": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.6505779169965535,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 3.7209014408290386e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.1374999303370714e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.2877630830043927,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.28695608500856906,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 697,
+            "seconds": 0.029248045873828232,
+            "failures": 0,
+            "cache_hits": 563,
+            "cache_misses": 134
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 4.824995994567871e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 2.6249908842146397e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.2456883750273846,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.24087924999184906,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 551,
+            "seconds": 0.18203603668371215,
+            "failures": 0,
+            "cache_hits": 418,
+            "cache_misses": 133
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.025878333020955324,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 0.00027591700199991465,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.00370608305092901,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0002072920324280858,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 2.5749963242560625e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 4.854198778048158e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 1.8749851733446121e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 1.6660196706652641e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 1.3329554349184036e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 2.2500171326100826e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.00013195903738960624,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 1.4579854905605316e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 8.541974239051342e-06,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.0866844590054825,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.5224774589878507,
+        0.5114208749728277,
+        0.49528395797824487,
+        0.502923958003521,
+        0.49882191698998213
+      ],
+      "cli_seconds": [
+        0.5384410829865374,
+        0.5395540419849567,
+        0.5405831250245683,
+        0.5313509579864331,
+        0.5327292499714531
+      ],
+      "engine_median": 0.502923958003521,
+      "cli_median": 0.5384410829865374
+    },
+    {
+      "repository": "vercel--next.js",
+      "result": {
+        "checked_files": [
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/authoring-skills/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/backport-pr/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/create-pr/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/dce-edge/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/deploy-release-test/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/flags/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/gate-tests/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/gh-stack/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/insight-error-page/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/next-rspack/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/pr-status-triage/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/react-sync/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/react-vendoring/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/router-act/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/runtime-debug/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/sandbox-bench/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/update-docs/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/v8-jit/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/write-api-reference/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/.agents/skills/write-guide/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/skills/next-cache-components-adoption/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/skills/next-cache-components-optimizer/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/skills/next-dev-loop/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/skills/next-partial-prefetching-adoption/SKILL.md",
+          "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/skills/next-partial-prefetching-optimizer/SKILL.md"
+        ],
+        "findings": [
+          {
+            "path": "/Users/kasperjunge/Agent/code/computerlovetech/private/ryni/test-repos/vercel--next.js/AGENTS.md",
+            "line": 1,
+            "rule_id": "TEAM003",
+            "message": "Keep always-loaded guidance within 250 lines and 16 KiB; link task details."
+          }
+        ],
+        "errors": [],
+        "pending_reviews": []
+      },
+      "digest": "32eee0e00411c24192cb45c705d40aa68837778b21e93d88a9f7d393af1a5c68",
+      "findings_by_rule": {
+        "TEAM003": 1
+      },
+      "profile": {
+        "timings": [
+          {
+            "kind": "stage",
+            "name": "check",
+            "calls": 1,
+            "seconds": 0.7478141249739565,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "repository_roots",
+            "calls": 1,
+            "seconds": 4.75830165669322e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM001",
+            "calls": 1,
+            "seconds": 1.4959019608795643e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM002",
+            "calls": 1,
+            "seconds": 0.45074145804392174,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.inventory",
+            "calls": 14,
+            "seconds": 0.44127112411661074,
+            "failures": 0,
+            "cache_hits": 13,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.read",
+            "calls": 722,
+            "seconds": 0.010702854138799012,
+            "failures": 0,
+            "cache_hits": 653,
+            "cache_misses": 69
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM003",
+            "calls": 1,
+            "seconds": 0.00010575004853308201,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM004",
+            "calls": 1,
+            "seconds": 0.0003065000055357814,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM005",
+            "calls": 1,
+            "seconds": 0.0528371250256896,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.documents",
+            "calls": 4,
+            "seconds": 0.05141129094408825,
+            "failures": 0,
+            "cache_hits": 3,
+            "cache_misses": 1
+          },
+          {
+            "kind": "helper",
+            "name": "team_harness.analysis.parse",
+            "calls": 528,
+            "seconds": 0.047826211084611714,
+            "failures": 0,
+            "cache_hits": 477,
+            "cache_misses": 51
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM006",
+            "calls": 1,
+            "seconds": 0.0009505419875495136,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM007",
+            "calls": 1,
+            "seconds": 0.0006163750076666474,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM008",
+            "calls": 1,
+            "seconds": 0.00247391703305766,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM009",
+            "calls": 1,
+            "seconds": 0.0027173749986104667,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM010",
+            "calls": 1,
+            "seconds": 8.404202526435256e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM011",
+            "calls": 1,
+            "seconds": 0.00037229200825095177,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM012",
+            "calls": 1,
+            "seconds": 0.0038854589802213013,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "helper",
+            "name": "ryni.rules.skill_frontmatter.read_frontmatter",
+            "calls": 200,
+            "seconds": 0.0038512476603500545,
+            "failures": 0,
+            "cache_hits": 175,
+            "cache_misses": 25
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM013",
+            "calls": 1,
+            "seconds": 5.500001134350896e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM014",
+            "calls": 1,
+            "seconds": 2.6917026843875647e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM015",
+            "calls": 1,
+            "seconds": 0.000157458009198308,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM016",
+            "calls": 1,
+            "seconds": 0.0018717499915510416,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM017",
+            "calls": 1,
+            "seconds": 4.6250002924352884e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "TEAM018",
+            "calls": 1,
+            "seconds": 0.00010424997890368104,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "stage",
+            "name": "discovery",
+            "calls": 1,
+            "seconds": 0.230070874968078,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL001",
+            "calls": 25,
+            "seconds": 4.891894059255719e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL002",
+            "calls": 25,
+            "seconds": 5.0915987230837345e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL003",
+            "calls": 25,
+            "seconds": 5.7292752899229527e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          },
+          {
+            "kind": "rule",
+            "name": "SKILL004",
+            "calls": 25,
+            "seconds": 3.220501821488142e-05,
+            "failures": 0,
+            "cache_hits": 0,
+            "cache_misses": 0
+          }
+        ]
+      },
+      "engine_seconds": [
+        0.6301789589924738,
+        0.6231547499774024,
+        0.6341608329676092,
+        0.6288329159724526,
+        0.6203150000073947
+      ],
+      "cli_seconds": [
+        0.6779020419926383,
+        0.668794832949061,
+        0.6735369160305709,
+        0.6578594169695862,
+        0.6789408750482835
+      ],
+      "engine_median": 0.6288329159724526,
+      "cli_median": 0.6735369160305709
+    }
+  ]
+}
