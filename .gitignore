@@ -2,3 +2,5 @@
 /.worktrees/
 .agents/skills/
 .claude/skills/
+/.venv/
+/site/

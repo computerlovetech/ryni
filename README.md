@@ -9,6 +9,7 @@
 
 <p align="center">
   <a href="#install">Install</a> ·
+  <a href="https://computerlovetech.github.io/ryni/">Documentation</a> ·
   <a href="#built-in-rules">Built-in rules</a> ·
   <a href="https://github.com/computerlovetech/ryni/releases">Releases</a>
 </p>
@@ -143,3 +144,17 @@ cargo fmt --check
 
 Checking this repository discovers the valid skill fixture in
 `tests/fixtures/skills`. Rule implementations live in `src/rules/mod.rs`.
+
+## Documentation development
+
+The MkDocs source lives in `website/`, with the original Material theme and
+styling. Use [uv](https://docs.astral.sh/uv/) to preview or build it:
+
+```sh
+uv run --locked --only-group docs mkdocs serve
+uv run --locked --only-group docs mkdocs build --strict
+```
+
+Python is only used for documentation tooling; the CLI is written in Rust.
+Documentation pull requests are built in CI. Changes merged to `main` deploy to
+[GitHub Pages](https://computerlovetech.github.io/ryni/).

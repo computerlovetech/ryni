@@ -7,6 +7,9 @@ Notable changes to ryni are documented here, following
 
 ### Added
 
+- Restore the MkDocs documentation site with the original styling, current Rust
+  CLI guides, uv-managed dependencies, and GitHub Pages deployment.
+
 - A repository release skill that prepares the version and changelog, publishes
   the release, and verifies the published installer.
 
