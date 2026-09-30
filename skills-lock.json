@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "ryni-release": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "05fd4906e2a197ca515bbf113a4cf82f0ffb27da91ad46906c2c765d3f0000c9"
+    }
+  }
+}

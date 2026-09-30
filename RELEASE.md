@@ -5,7 +5,18 @@ required. GitHub Actions uses the repository's automatic `GITHUB_TOKEN`.
 
 ## Publish a version
 
-Run the repository skill with `$ryni-release` or `$ryni-release 0.3.0`.
+The skill source lives in `skills/ryni-release`. From the repository root,
+install it for Codex and Claude Code:
+
+```sh
+npx skills add ./skills --skill ryni-release --agent codex claude-code --yes
+```
+
+Installed files in `.agents/skills/` and `.claude/skills/` are ignored by Git.
+After editing the source skill, rerun the install command to refresh them.
+
+In Codex, run the repository skill with `$ryni-release` or `$ryni-release 0.3.0`.
+In Claude Code, use `/ryni-release` with the same optional version.
 It follows the steps below through publication and verification. Ask for
 "prepare only" to update and validate the release files without publishing.
 

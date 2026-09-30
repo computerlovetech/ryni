@@ -5,7 +5,8 @@ description: Release ryni with an optional version number. Use when asked to pub
 
 # Release ryni
 
-Follow [RELEASE.md](../../../RELEASE.md) as the single source of truth.
+Read `RELEASE.md` at the root of the ryni repository as the single source of
+truth. Resolve it from the repository root, not the installed skill directory.
 
 - Accept an optional version: `$ryni-release 0.3.0`. With no version, choose it
   using the guide's version policy and proceed without a version confirmation.
