@@ -12,6 +12,8 @@ Notable changes to ryni are documented here, following
 
 ### Changed
 
+- Show diagnostics with source snippets, underlined Markdown links, terminal
+  colors, and a concise error count.
 - Maintain dated, categorized release notes and version comparison links.
 
 ## [0.2.1] - 2026-09-30

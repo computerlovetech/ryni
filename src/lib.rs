@@ -2,7 +2,9 @@ mod rules;
 
 use std::{
     fs,
+    ops::Range,
     path::{Path, PathBuf},
+    sync::Arc,
 };
 use walkdir::WalkDir;
 
@@ -12,6 +14,9 @@ pub struct Diagnostic {
     pub rule: String,
     pub location: Option<(usize, usize)>,
     pub message: String,
+    /// Original source and byte range, retained for diagnostic rendering.
+    pub source: Arc<str>,
+    pub span: Option<Range<usize>>,
 }
 
 #[derive(Debug)]
@@ -54,10 +59,12 @@ pub fn check(project: &Path) -> Result<CheckReport, String> {
             Vec::new()
         };
         diagnostics.extend(rules::markdown::check(&path, &source)?);
+        let source: Arc<str> = source.into();
         report
             .diagnostics
             .extend(diagnostics.into_iter().map(|mut diagnostic| {
                 diagnostic.path = relative.to_path_buf();
+                diagnostic.source = Arc::clone(&source);
                 diagnostic
             }));
     }

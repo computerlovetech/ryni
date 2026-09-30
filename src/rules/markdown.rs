@@ -78,6 +78,8 @@ pub(crate) fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String
             diagnostics.push(Diagnostic {
                 path: path.to_path_buf(),
                 location: Some((line, column)),
+                source: Default::default(),
+                span: Some(range),
                 rule: "markdown-local-link".into(),
                 message,
             });

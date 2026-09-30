@@ -31,6 +31,8 @@ pub(crate) fn check(path: &Path, source: &str) -> Vec<Diagnostic> {
         diagnostics.push(Diagnostic {
             path: path.to_path_buf(),
             location: None,
+            source: Default::default(),
+            span: None,
             rule: rule.id().into(),
             message,
         });

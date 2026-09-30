@@ -1,5 +1,7 @@
+mod output;
+
 use clap::{Parser, Subcommand};
-use std::{path::PathBuf, process::ExitCode};
+use std::{io::IsTerminal, path::PathBuf, process::ExitCode};
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -30,20 +32,15 @@ fn main() -> ExitCode {
                 ExitCode::SUCCESS
             }
             Ok(report) => {
+                let color = std::io::stdout().is_terminal()
+                    && std::env::var_os("NO_COLOR").is_none()
+                    && std::env::var("TERM").as_deref() != Ok("dumb");
                 for diagnostic in &report.diagnostics {
-                    let location = match diagnostic.location {
-                        Some((line, column)) => format!(":{line}:{column}"),
-                        None => String::new(),
-                    };
-                    println!(
-                        "{}{}: {} {}",
-                        diagnostic.path.to_string_lossy().replace('\\', "/"),
-                        location,
-                        diagnostic.rule,
-                        diagnostic.message
-                    );
+                    println!("{}\n", output::render(diagnostic, color));
                 }
-                println!("\nFound {} violation(s).", report.diagnostics.len());
+                let count = report.diagnostics.len();
+                let noun = if count == 1 { "error" } else { "errors" };
+                println!("Found {count} {noun}.");
                 ExitCode::from(1)
             }
             Err(error) => {
