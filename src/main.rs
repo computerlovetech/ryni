@@ -31,9 +31,14 @@ fn main() -> ExitCode {
             }
             Ok(report) => {
                 for diagnostic in &report.diagnostics {
+                    let location = match diagnostic.location {
+                        Some((line, column)) => format!(":{line}:{column}"),
+                        None => String::new(),
+                    };
                     println!(
-                        "{}: {} {}",
+                        "{}{}: {} {}",
                         diagnostic.path.display(),
+                        location,
                         diagnostic.rule,
                         diagnostic.message
                     );

@@ -1,3 +1,5 @@
+pub(crate) mod markdown;
+
 use crate::Diagnostic;
 use serde_yaml_ng::{Mapping, Value};
 use std::path::Path;
@@ -28,6 +30,7 @@ pub(crate) fn check(path: &Path, source: &str) -> Vec<Diagnostic> {
     let mut report = |rule: Rule, message: String| {
         diagnostics.push(Diagnostic {
             path: path.to_path_buf(),
+            location: None,
             rule: rule.id().into(),
             message,
         });

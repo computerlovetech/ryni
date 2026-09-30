@@ -105,7 +105,7 @@ fn a_single_skill_directory_can_be_checked() {
 #[test]
 fn empty_scan_is_explicit_and_successful() {
     let project = tempfile::tempdir().unwrap();
-    fs::write(project.path().join("README.md"), "# Project").unwrap();
+    fs::write(project.path().join("README.txt"), "# Project").unwrap();
     let output = run(project.path());
     assert_eq!(output.status.code(), Some(0));
     assert_eq!(
@@ -153,4 +153,37 @@ fn help_and_version_are_available() {
                 .success()
         );
     }
+}
+
+#[test]
+fn ordinary_markdown_files_are_checked_without_skill_metadata_rules() {
+    let project = tempfile::tempdir().unwrap();
+    for name in ["README.md", "GUIDE.MD", "notes.markdown"] {
+        fs::write(project.path().join(name), "[Missing](missing.txt)\n").unwrap();
+    }
+    let output = run(project.path());
+    assert_eq!(output.status.code(), Some(1));
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert!(!stdout.contains("skill-frontmatter"));
+    assert!(
+        stdout.contains("README.md:1:1: markdown-local-link Target \"missing.txt\" does not exist")
+    );
+    assert!(stdout.ends_with("Found 3 violation(s).\n"));
+    fs::write(project.path().join("missing.txt"), "target").unwrap();
+    assert_eq!(run(project.path()).status.code(), Some(0));
+}
+
+#[test]
+fn skill_files_also_receive_the_markdown_link_check() {
+    let project = project();
+    fs::write(
+        project.path().join("skills/demo-skill/SKILL.md"),
+        format!("{VALID}\n[Link](missing.md)\n"),
+    )
+    .unwrap();
+    let output = run(project.path());
+    assert_eq!(output.status.code(), Some(1));
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert!(stdout.contains("markdown-local-link"));
+    assert!(stdout.ends_with("Found 1 violation(s).\n"));
 }

@@ -10,6 +10,7 @@ use walkdir::WalkDir;
 pub struct Diagnostic {
     pub path: PathBuf,
     pub rule: String,
+    pub location: Option<(usize, usize)>,
     pub message: String,
 }
 
@@ -29,8 +30,12 @@ pub fn check(project: &Path) -> Result<CheckReport, String> {
     }
     let mut paths = Vec::new();
     for entry in WalkDir::new(&project).follow_links(false) {
-        let entry = entry.map_err(|error| format!("cannot discover skills: {error}"))?;
-        if entry.file_type().is_file() && entry.file_name() == "SKILL.md" {
+        let entry = entry.map_err(|error| format!("cannot discover Markdown files: {error}"))?;
+        if entry.file_type().is_file()
+            && entry.path().extension().is_some_and(|extension| {
+                extension.eq_ignore_ascii_case("md") || extension.eq_ignore_ascii_case("markdown")
+            })
+        {
             paths.push(entry.into_path());
         }
     }
@@ -43,16 +48,18 @@ pub fn check(project: &Path) -> Result<CheckReport, String> {
         let source = fs::read_to_string(&path)
             .map_err(|error| format!("cannot read {}: {error}", path.display()))?;
         let relative = path.strip_prefix(&project).unwrap_or(&path);
+        let mut diagnostics = if path.file_name().is_some_and(|name| name == "SKILL.md") {
+            rules::check(&path, &source)
+        } else {
+            Vec::new()
+        };
+        diagnostics.extend(rules::markdown::check(&path, &source)?);
         report
             .diagnostics
-            .extend(
-                rules::check(&path, &source)
-                    .into_iter()
-                    .map(|mut diagnostic| {
-                        diagnostic.path = relative.to_path_buf();
-                        diagnostic
-                    }),
-            );
+            .extend(diagnostics.into_iter().map(|mut diagnostic| {
+                diagnostic.path = relative.to_path_buf();
+                diagnostic
+            }));
     }
     Ok(report)
 }
