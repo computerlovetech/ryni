@@ -5,23 +5,77 @@ required. GitHub Actions uses the repository's automatic `GITHUB_TOKEN`.
 
 ## Publish a version
 
-1. Update the package version in `Cargo.toml` and run `cargo check` to update
-   `Cargo.lock`. Add release notes to `CHANGELOG.md`.
-2. Run `cargo test --locked`, `cargo clippy --all-targets --locked -- -D warnings`,
-   and `cargo fmt --check`. Commit and push the changes to `main`.
-3. Tag that commit with the matching version and push just that tag:
+Run the repository skill with `$ryni-release` or `$ryni-release 0.3.0`.
+It follows the steps below through publication and verification. Ask for
+"prepare only" to update and validate the release files without publishing.
+
+1. Inspect the working tree, branch, and remote. Fetch `origin` and its tags.
+   Release from `main`, including the current `origin/main`; never force-push.
+   Preserve unrelated work. If uncommitted changes affect the release and their
+   intended inclusion is unclear, stop and explain rather than silently include
+   or discard them. Confirm GitHub authentication and repository access.
+2. Review the changes since the latest **published** GitHub release, together
+   with `CHANGELOG.md`. Failed release tags are reserved versions, not published
+   history. If there is nothing to release, report that and stop.
+3. Use the supplied version (an optional `v` prefix is accepted). Otherwise,
+   choose the next patch for fixes or maintenance, or the next minor for new
+   features. Before 1.0, incompatible changes also require a minor bump; never
+   infer a 1.0 release. Choose a valid SemVer version newer than the current
+   package and published releases, skipping existing local and remote tags.
+   An explicit version must meet those constraints; report conflicts instead of
+   substituting another version. State the chosen version and proceed.
+4. Update `Cargo.toml` and run `cargo check` to update `Cargo.lock`. Prepare the
+   changelog as described below. Check that both manifests and the changelog
+   agree on the version, and inspect the diff for unintended changes.
+5. Run `cargo fmt --check`, `cargo test --locked`,
+   `cargo clippy --all-targets --locked -- -D warnings`, and
+   `cargo run --locked -- check .`. If distribution settings changed, regenerate
+   and validate the workflow as described below. Stop on failing checks.
+6. Commit only the intended release files with `Release vVERSION`, push `main`,
+   then create an annotated tag on that exact commit and push just that tag
+   (replace `VERSION` with the chosen version):
 
    ```sh
-   git tag v0.2.1
-   git push origin v0.2.1
+   git tag -a vVERSION -m "Release vVERSION"
+   git push origin vVERSION
    ```
+
+7. Watch the Release workflow for that tag **and commit**, using `gh run list`,
+   `gh run watch`, and `gh run view`. Verify the public GitHub release contains
+   the correct changelog notes, five platform archives, checksums, and both
+   installers. A successful tag push alone is not completion.
+8. Download the published, version-pinned installer for the current supported
+   platform. Run it with `RYNI_UNMANAGED_INSTALL` pointing to a temporary
+   directory, then invoke that binary's `--version` and `check` on the existing
+   valid fixture at `tests/fixtures/skills/demo-skill`. Check the version matches
+   and the check succeeds. Clean up temporary downloads and installs. Report
+   the release URL and install command; use the pinned URL for prereleases.
 
 Use a new version for subsequent releases; do not replace published tags.
 The Release workflow tests, builds five platform archives, generates shell and
 PowerShell installers with checksums, and smoke-tests installs/reinstalls on all
 five platforms before creating the public GitHub Release. Failed builds or smoke
-tests prevent publication. After correcting a transient CI failure, rerun the
-failed jobs. For source fixes, create a new version and tag.
+tests prevent publication. Retry failed jobs once for a clearly transient
+failure. Otherwise stop and report the failure and publication state. Source
+fixes require a new version and tag; do not move/delete tags or start a chain of
+automatic version bumps.
+
+## Maintain the changelog
+
+Follow [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).
+Keep one `## [Unreleased]` section at the top and add notable changes there as
+work lands. During a release, reconcile it with the actual changes since the
+last published release: summarize changes for people, not individual commits.
+
+Move those notes into `## [VERSION] - YYYY-MM-DD` using the current release date,
+and leave a fresh `Unreleased` section. Use only nonempty `Added`, `Changed`,
+`Deprecated`, `Removed`, `Fixed`, and `Security` categories. Explain incompatible
+changes explicitly. Preserve earlier entries and dates; keep newest releases
+first. Update the comparison links at the bottom: `Unreleased` compares the new
+tag to `HEAD`, and the new version compares the previous published tag to it.
+
+cargo-dist reads the changelog to include the version's notes in the GitHub
+release, alongside its generated installation and download information.
 
 ## Install and update
 
