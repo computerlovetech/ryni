@@ -151,16 +151,22 @@ mod tests {
             "my guide.md",
             "café.md",
             "hash#file.md",
-            "query?file.md",
             "100%.md",
             "a+b.md",
             "a&b.md",
         ] {
             fs::write(root.path().join("docs").join(name), "").unwrap();
         }
-        let source = "[A](my%20guide.md#section) [B](caf%C3%A9.md) [C](hash%23file.md) [D](query%3Ffile.md?raw=1) [E](100%25.md) [F](a+b.md) [G](a&amp;b.md) [H](<my guide.md>)";
+        let query_link = if cfg!(windows) {
+            ""
+        } else {
+            fs::write(root.path().join("docs/query?file.md"), "").unwrap();
+            "[D](query%3Ffile.md?raw=1)"
+        };
+        let source = "[A](my%20guide.md#section) [B](caf%C3%A9.md) [C](hash%23file.md) {query_link} [E](100%25.md) [F](a+b.md) [G](a&amp;b.md) [H](<my guide.md>)";
+        let source = source.replace("{query_link}", query_link);
         assert!(
-            check(&root.path().join("docs/index.md"), source)
+            check(&root.path().join("docs/index.md"), &source)
                 .unwrap()
                 .is_empty()
         );

@@ -1,7 +1,8 @@
 [package]
 name = "ryni"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
+repository = "https://github.com/computerlovetech/ryni"
 description = "A linter for repository structure and agent documentation"
 
 [dependencies]
@@ -13,3 +14,8 @@ percent-encoding = "2"
 
 [dev-dependencies]
 tempfile = "3"
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"

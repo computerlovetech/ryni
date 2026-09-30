@@ -7,15 +7,30 @@ Ryni checks local Markdown links and
 
 ## Install
 
-With Rust and Cargo installed, run from this repository:
+macOS and Linux:
+
+```sh
+curl -LsSf https://github.com/computerlovetech/ryni/releases/latest/download/ryni-installer.sh | sh
+```
+
+Windows PowerShell:
+
+```powershell
+powershell -ExecutionPolicy Bypass -c "irm https://github.com/computerlovetech/ryni/releases/latest/download/ryni-installer.ps1 | iex"
+```
+
+No Rust installation is needed. Follow the installer's PATH instructions, then
+run `ryni --version`. Rerun the installer to update. Prebuilt archives are also
+available on [GitHub Releases](https://github.com/computerlovetech/ryni/releases).
+
+For development, install from this repository with Rust and Cargo:
 
 ```sh
 cargo install --path . --locked
 ```
 
-This installs `ryni` into Cargo's binary directory (normally `~/.cargo/bin`), which
-must be on your PATH. Rerun this command after source changes to update your
-installed executable. Prebuilt releases and a curl installer are not available yet.
+See [RELEASE.md](RELEASE.md) for version pinning, custom install locations, and
+the release process.
 
 ## Check
 
@@ -100,4 +115,4 @@ cargo fmt --check
 
 Checking this repository discovers the valid skill fixture in
 `tests/fixtures/skills`. Rule implementations live in `src/rules/mod.rs`.
-Team rule authoring and binary distribution remain deferred.
+Team rule authoring remains deferred.

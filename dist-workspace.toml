@@ -1,0 +1,32 @@
+[workspace]
+members = ["cargo:."]
+
+[dist]
+cargo-dist-version = "0.33.0"
+ci = ["github"]
+installers = ["shell", "powershell"]
+targets = [
+    "aarch64-apple-darwin",
+    "x86_64-apple-darwin",
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-musl",
+    "x86_64-pc-windows-msvc",
+]
+install-path = "~/.local/bin"
+install-updater = false
+checksum = "sha256"
+plan-jobs = ["./ci"]
+publish-jobs = ["./installer-smoke"]
+github-release = "announce"
+publish-prereleases = true
+pr-run-mode = "plan"
+
+[dist.github-custom-runners]
+aarch64-unknown-linux-musl = "ubuntu-24.04-arm"
+x86_64-unknown-linux-musl = "ubuntu-22.04"
+aarch64-apple-darwin = "macos-14"
+x86_64-apple-darwin = "macos-15-intel"
+x86_64-pc-windows-msvc = "windows-2022"
+
+[dist.github-custom-job-permissions]
+installer-smoke = { contents = "read" }

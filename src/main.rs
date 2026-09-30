@@ -37,7 +37,7 @@ fn main() -> ExitCode {
                     };
                     println!(
                         "{}{}: {} {}",
-                        diagnostic.path.display(),
+                        diagnostic.path.to_string_lossy().replace('\\', "/"),
                         location,
                         diagnostic.rule,
                         diagnostic.message
