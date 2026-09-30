@@ -1,6 +1,17 @@
-# ryni
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/ryni-wordmark-dark.svg">
+    <img src="assets/ryni-wordmark-light.svg" alt="Rýni" width="270" height="72">
+  </picture>
+</h1>
 
-**A harness linter, written in Rust.**
+<p align="center"><strong>A harness linter, written in Rust.</strong></p>
+
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#built-in-rules">Built-in rules</a> ·
+  <a href="https://github.com/computerlovetech/ryni/releases">Releases</a>
+</p>
 
 Harness engineering is hard. Keeping a team aligned on it is harder. Your coding
 agents depend on instructions, skills, and Markdown docs that stay consistent as
