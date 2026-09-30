@@ -1,111 +1,77 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="website/assets/ryni-wordmark-dark.svg">
-  <img src="website/assets/ryni-wordmark-light.svg" alt="Rýni" width="180" height="48">
-</picture>
+# ryni
 
-**A linter for your agent harness.**
+A Rust CLI for checking repository conventions used by coding agents.
 
-[Documentation](https://computerlovetech.github.io/ryni/)
+Ryni currently ships five built-in checks for
+[Agent Skills metadata](https://agentskills.io/specification).
 
-Harness engineering is hard. Keeping a team aligned on it is harder. Rýni checks
-your `AGENTS.md`, instructions, skills, and Markdown docs against shared
-conventions, so your agents get a consistent and coherent working environment.
+## Install
 
-- 🔍 **Lint your harness.** Catch structural issues with deterministic checks.
-- 📝 **Review your markdown docs.** Structure non-deterministic checks that require judgment.
-- 📦 **Share your conventions.** Turn your team’s standards into rule packs you can use across repositories.
+With Rust and Cargo installed, run from this repository:
 
-## Get started
-
-Requires Python 3.14 or later. Add Rýni and
-[tidy-harness](examples/tidy-harness/README.md), an opinionated example rule pack, as development dependencies:
-
-```bash
-uv add --dev ryni tidy-harness
-uv run ryni check .
+```sh
+cargo install --path . --locked
 ```
 
-Installed rules are active automatically. The CLI runs deterministic checks and
-reports agent reviews as pending. Commit `pyproject.toml` and `uv.lock` to share
-the same versions with your team.
+This installs `ryni` into Cargo's binary directory (normally `~/.cargo/bin`), which
+must be on your PATH. Rerun this command after source changes to update your
+installed executable. Prebuilt releases and a curl installer are not available yet.
 
-The terminal report groups findings by file and shows checked file counts and
-elapsed time:
+## Check
+
+```sh
+ryni check                # Current directory
+ryni check ./my-project   # A project directory
+ryni check ./skills/review # A single skill directory
+```
+
+No configuration is needed. Ryni recursively finds files named exactly `SKILL.md`
+and runs all five built-in rules. Hidden directories such as `.agents/skills` are
+included. Nested symlinks are skipped. No ignore-file filtering is applied.
+Existing `ryni.toml` files are ignored and can be deleted.
+
+Example output:
 
 ```text
-Rýni  check
+skills/review/SKILL.md: skill-description Field 'description' must be a nonempty string of at most 1024 characters
 
-.agents/skills/example/SKILL.md
-  1  SKILL004  Shorten the skill description to at most 1024 characters
-               (currently 1461).
-
-Changes needed
-1 finding
-142 files checked · 0.28s
+Found 1 violation(s).
 ```
 
-Counts cover unique targets that completed deterministic checks; directory targets
-are listed separately. Time includes rule loading, discovery, checks, and any
-fix/recheck, excluding process startup and report rendering. Color adapts to the
-terminal and respects `NO_COLOR`; redirected output is plain text. Use
-`--output-format compact` for the original one-line diagnostics, or
-`--output-format json` for structured output.
+A clean scan prints `All checks passed!`. When no supported files are found,
+ryni prints `No supported files found.` and exits successfully.
 
-## Run with your agent
+Exit codes: `0` passed or no supported files, `1` violations, `2` execution error.
+Use the same command in CI. Checks never modify project files.
 
-Install the bundled skill for your agent, then invoke it in the same repository:
+## Built-in rules
 
-| Agent | Install in your terminal | Send in your agent |
-| --- | --- | --- |
-| Claude Code | `uv run ryni skill install .claude/skills` | `/ryni-check` |
-| Codex | `uv run ryni skill install .agents/skills` | `$ryni-check` |
+| Rule | Check |
+| --- | --- |
+| `skill-frontmatter` | Opening and closing `---` delimiters, valid YAML, and a mapping with string keys. Duplicate YAML keys are rejected. |
+| `skill-name` | Required string of 1–64 characters, lowercase Unicode letters/numbers and hyphens, with no leading, trailing, or consecutive hyphens. |
+| `skill-directory-name` | The name exactly matches the directory containing `SKILL.md`. |
+| `skill-description` | Required nonblank string, at most 1,024 characters. |
+| `skill-optional-fields` | `license` and `allowed-tools` must be strings; `compatibility` must be a nonblank string of at most 500 characters; `metadata` must map strings to strings. |
 
-The skill runs deterministic checks, delegates reviews to sub-agents, and combines
-the findings. Your agent must support sub-agents to complete reviews. Rýni itself
-runs no model and needs no API key.
+Malformed frontmatter produces one `skill-frontmatter` finding. Dependent checks
+are skipped for that file. Character limits count Unicode
+characters, not UTF-8 bytes. Names are not trimmed or Unicode-normalized.
 
-## Make it your own
+These checks cover the requirements above, not full semantic compliance. They do
+not judge description quality, validate instruction bodies, require optional
+directories, or reject additional frontmatter fields. The earlier generic
+`path-exists` and `required-headings` rules are no longer supported.
 
-A rule pack can combine deterministic checks with instructions for agent reviews.
-Write your team's conventions once and share them across repositories.
+## Development
 
-**[Build your first rule pack →](website/first-rule-pack.md)**
-
-To build rules with an agent, install the bundled authoring skill:
-
-```bash
-uv run ryni skill install .agents/skills --name ryni-rule-author
+```sh
+cargo run -- check .
+cargo test --locked
+cargo clippy --all-targets --locked -- -D warnings
+cargo fmt --check
 ```
 
-Use `.claude/skills` for Claude Code. Invoke `ryni-rule-author` to build or extend
-a pack with shared analysis, tests, and measured performance. To inspect the cost
-of installed deterministic checks:
-
-```bash
-uv run ryni check . --deterministic --profile
-```
-
-- [Overview and rule examples](website/index.md)
-- [Efficient rule packs and profiling](website/efficient-rule-packs.md)
-- [tidy-harness rules](examples/tidy-harness/README.md)
-- [Research-informed team-harness rules](examples/team-harness/README.md)
-- [Twelve-repository performance study](benchmarks/harness-hygiene/RESULTS.md)
-
-## Contributing
-
-```bash
-uv run pytest tests
-uv run --with-editable . --with-editable ./examples/tidy-harness pytest examples/tidy-harness/tests
-uv run ruff check .
-uv run --group docs mkdocs build --strict
-uv run --group docs mkdocs serve
-```
-
-See [our jobs to be done](JTBD.md) for the project's direction.
-
-Maintainers: see [the release guide](docs/releasing.md) for Rýni's PyPI
-releases, dry runs, and the `ryni-release` skill.
-
----
-
-*[Rýni](https://en.wiktionary.org/wiki/r%C3%BDni#Etymology) — from Old Norse, “scrutiny” or “contemplation.”*
+Checking this repository discovers the valid skill fixture in
+`tests/fixtures/skills`. Rule implementations live in `src/rules/mod.rs`.
+Team rule authoring and binary distribution remain deferred.
