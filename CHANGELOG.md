@@ -14,6 +14,8 @@ Notable changes to ryni are documented here, following
 
 - Show diagnostics with source snippets, underlined Markdown links, terminal
   colors, and a concise error count.
+- Introduce ryni as a harness linter written in Rust, with built-in rule
+  documentation and a preview of upcoming team rule packs in the README.
 - Maintain dated, categorized release notes and version comparison links.
 
 ## [0.2.1] - 2026-09-30

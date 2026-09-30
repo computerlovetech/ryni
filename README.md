@@ -1,9 +1,18 @@
 # ryni
 
-A Rust CLI for checking repository conventions used by coding agents.
+**A harness linter, written in Rust.**
 
-Ryni checks local Markdown links and
-[Agent Skills metadata](https://agentskills.io/specification).
+Harness engineering is hard. Keeping a team aligned on it is harder. Your coding
+agents depend on instructions, skills, and Markdown docs that stay consistent as
+projects change. Ryni catches broken local links and invalid Agent Skills
+metadata before they get in the way.
+
+- **Check your harness.** Built-in checks for Markdown links and Agent Skills.
+- **Run anywhere.** Written in Rust, distributed as a standalone binary.
+- **Start immediately.** Run `ryni check .`. No configuration required.
+
+**Team rule packs are coming soon:** define your team's conventions once and
+share them across repositories. Today, ryni runs its built-in rules.
 
 ## Install
 
@@ -35,7 +44,7 @@ the release process.
 ## Check
 
 ```sh
-ryni check                # Current directory
+ryni check .              # Current directory
 ryni check ./my-project   # A project directory
 ryni check ./skills/review # A single skill directory
 ```
@@ -44,15 +53,23 @@ No configuration is needed. Ryni recursively checks `.md` and `.markdown` files
 (case-insensitive extensions) for broken local links. Files named exactly
 `SKILL.md` also receive all five Agent Skills metadata checks. Hidden directories such as `.agents/skills` are
 included. Nested symlinks are skipped. No ignore-file filtering is applied.
-Existing `ryni.toml` files are ignored and can be deleted.
 
 Example output:
 
 ```text
-skills/review/SKILL.md: skill-description Field 'description' must be a nonempty string of at most 1024 characters
+markdown-local-link: Target "docs/testing.md" does not exist
+ --> README.md:3:1
+  |
+3 | [Testing](docs/testing.md)
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Found 1 violation(s).
+Found 1 error.
 ```
+
+Diagnostics show the rule, file location, and source context. Broken links are
+underlined; skill metadata findings show a preview of the file without guessing
+an individual field location. Terminal output uses color; redirected output is
+plain text. Set `NO_COLOR` to disable color.
 
 A clean scan prints `All checks passed!`. When no supported files are found,
 ryni prints `No supported files found.` and exits successfully.
@@ -77,8 +94,7 @@ characters, not UTF-8 bytes. Names are not trimmed or Unicode-normalized.
 
 These checks cover the requirements above, not full semantic compliance. They do
 not judge description quality, validate instruction bodies, require optional
-directories, or reject additional frontmatter fields. The earlier generic
-`path-exists` and `required-headings` rules are no longer supported.
+directories, or reject additional frontmatter fields.
 
 ## Local Markdown links
 
@@ -87,7 +103,8 @@ paths. Images and reference-style links are checked too. Diagnostics point to th
 link's start (or its reference use), with one-based line and character column:
 
 ```text
-README.md:12:1: markdown-local-link Target "docs/testing.md" does not exist
+markdown-local-link: Target "docs/testing.md" does not exist
+ --> README.md:12:1
 ```
 
 `[Guide](guide.md#installation)` checks that `guide.md` exists; it does not check
@@ -115,4 +132,3 @@ cargo fmt --check
 
 Checking this repository discovers the valid skill fixture in
 `tests/fixtures/skills`. Rule implementations live in `src/rules/mod.rs`.
-Team rule authoring remains deferred.
