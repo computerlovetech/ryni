@@ -16,6 +16,9 @@ Notable changes to ryni are documented here, following
 
 ### Changed
 
+- Align the documentation with Umbod’s shared styling, including a neutral
+  header, navigation, typography, and light/dark palettes.
+
 - Show diagnostics with source snippets, underlined Markdown links, terminal
   colors, and a concise error count.
 - Introduce ryni as a harness linter written in Rust, with built-in rule

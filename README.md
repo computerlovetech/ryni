@@ -147,8 +147,8 @@ Checking this repository discovers the valid skill fixture in
 
 ## Documentation development
 
-The MkDocs source lives in `website/`, with the original Material theme and
-styling. Use [uv](https://docs.astral.sh/uv/) to preview or build it:
+The MkDocs source lives in `website/`, with MkDocs Material and the shared
+Computerlove styling used by Umbod. Use [uv](https://docs.astral.sh/uv/) to preview or build it:
 
 ```sh
 uv run --locked --only-group docs mkdocs serve

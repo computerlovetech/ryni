@@ -2,32 +2,39 @@ site_name: Rýni
 site_url: https://computerlovetech.github.io/ryni/
 site_description: A harness linter, written in Rust.
 docs_dir: website
+exclude_docs: |
+  overrides/
 repo_url: https://github.com/computerlovetech/ryni
 repo_name: computerlovetech/ryni
 edit_uri: edit/main/website/
 strict: true
 nav:
   - Home: index.md
-  - Installation: installation.md
-  - CLI usage: usage.md
-  - Built-in rules: rules.md
+  - Getting started:
+      - Installation: installation.md
+      - CLI usage: usage.md
+  - Reference:
+      - Built-in rules: rules.md
 theme:
   name: material
+  custom_dir: website/overrides
   logo: assets/ryni-logo.png
   favicon: assets/ryni-logo.png
   font: false
   palette:
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: custom
-      accent: teal
+      accent: custom
       toggle:
-        icon: material/weather-night
+        icon: material/brightness-7
         name: Switch to dark mode
-    - scheme: slate
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       primary: custom
-      accent: teal
+      accent: custom
       toggle:
-        icon: material/weather-sunny
+        icon: material/brightness-4
         name: Switch to light mode
   features:
     - navigation.sections
@@ -39,6 +46,8 @@ plugins:
   - search
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed:
