@@ -5,11 +5,12 @@ Notable changes to ryni are documented here, following
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-09-30
+
 ### Added
 
 - Restore the MkDocs documentation site with the original styling, current Rust
   CLI guides, uv-managed dependencies, and GitHub Pages deployment.
-
 - A repository release skill that prepares the version and changelog, publishes
   the release, and verifies the published installer.
 
@@ -65,6 +66,7 @@ Notable changes to ryni are documented here, following
 - Test tidy-harness directly from the working tree so a cached build cannot hide
   changes to its rules.
 
-[Unreleased]: https://github.com/computerlovetech/ryni/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/computerlovetech/ryni/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/computerlovetech/ryni/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/computerlovetech/ryni/compare/v0.1.11...v0.2.1
 [0.1.11]: https://github.com/computerlovetech/ryni/releases/tag/v0.1.11
