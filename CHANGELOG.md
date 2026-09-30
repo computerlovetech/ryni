@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## 0.2.1
 
 - Replace the earlier Python implementation with a standalone Rust CLI.
 - Automatically validate Agent Skills metadata and local Markdown links.

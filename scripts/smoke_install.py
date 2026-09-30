@@ -26,6 +26,12 @@ def main():
                 root = Path(temporary)
                 install_dir = root / "bin with spaces"
                 env = os.environ.copy()
+                if windows:
+                    # Python inherits PowerShell 7's module path on GitHub runners.
+                    # Let Windows PowerShell reconstruct its own compatible paths.
+                    for key in list(env):
+                        if key.lower() == "psmodulepath":
+                            del env[key]
                 env["RYNI_DOWNLOAD_URL"] = f"http://127.0.0.1:{server.server_port}"
                 env["RYNI_UNMANAGED_INSTALL"] = str(install_dir)
                 env["RYNI_NO_MODIFY_PATH"] = "1"

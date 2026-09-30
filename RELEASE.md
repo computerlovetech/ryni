@@ -12,8 +12,8 @@ required. GitHub Actions uses the repository's automatic `GITHUB_TOKEN`.
 3. Tag that commit with the matching version and push just that tag:
 
    ```sh
-   git tag v0.2.0
-   git push origin v0.2.0
+   git tag v0.2.1
+   git push origin v0.2.1
    ```
 
 Use a new version for subsequent releases; do not replace published tags.
@@ -38,7 +38,7 @@ powershell -ExecutionPolicy Bypass -c "irm https://github.com/computerlovetech/r
 ```
 
 Rerun the command to update. To pin a release, replace `latest/download` with
-`download/v0.2.0`. Installers use `~/.local/bin` (the user's home directory on
+`download/v0.2.1`. Installers use `~/.local/bin` (the user's home directory on
 Windows too) and configure PATH. Follow their instructions to restart your
 terminal or activate PATH in the current shell. Rust is not needed.
 
