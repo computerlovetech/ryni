@@ -64,7 +64,24 @@ ryni check ./skills/review # A single skill directory
 No configuration is needed. Ryni recursively checks `.md` and `.markdown` files
 (case-insensitive extensions) for broken local links. Files named exactly
 `SKILL.md` also receive all five Agent Skills metadata checks. Hidden directories such as `.agents/skills` are
-included. Nested symlinks are skipped. No ignore-file filtering is applied.
+included unless ignored. Nested symlinks are skipped.
+
+Ryni respects `.gitignore`, `.ignore`, `.git/info/exclude`, and global Git
+excludes, including applicable parent and nested ignore files. Git ignore rules
+apply inside Git repositories; `.ignore` also works outside them. Matching files
+are skipped even if tracked by Git. Global excludes can make scan coverage differ
+between your machine and CI.
+
+```sh
+ryni check . --no-ignore                  # Disable ignore-file filtering
+ryni check . --exclude 'vendor/**' --exclude 'third_party/**'
+```
+
+`--exclude` accepts repeatable gitignore-style globs relative to the scan root
+and still applies with `--no-ignore`. Patterns containing a slash are relative
+to that root; patterns such as `*.md` match at any depth. Quote globs to prevent
+shell expansion. Filtering only controls which files are scanned: links to
+existing targets inside excluded directories remain valid.
 
 Example output:
 

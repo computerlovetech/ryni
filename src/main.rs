@@ -17,12 +17,22 @@ enum Command {
         /// Directory to scan recursively.
         #[arg(default_value = ".")]
         project: PathBuf,
+        /// Disable ignore-file filtering (explicit exclusions still apply).
+        #[arg(long)]
+        no_ignore: bool,
+        /// Exclude a gitignore-style glob relative to the scan root; repeatable.
+        #[arg(long, value_name = "GLOB")]
+        exclude: Vec<String>,
     },
 }
 
 fn main() -> ExitCode {
     match Cli::parse().command {
-        Command::Check { project } => match ryni::check(&project) {
+        Command::Check {
+            project,
+            no_ignore,
+            exclude,
+        } => match ryni::check_with_options(&project, &ryni::CheckOptions { no_ignore, exclude }) {
             Ok(report) if report.files_checked == 0 => {
                 println!("No supported files found.");
                 ExitCode::SUCCESS

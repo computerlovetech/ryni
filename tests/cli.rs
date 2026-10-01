@@ -239,3 +239,136 @@ fn multiline_and_unicode_links_render_without_panicking() {
     assert!(stdout.contains("continued](missing.md)"), "{stdout}");
     assert!(stdout.contains('^'), "{stdout}");
 }
+
+fn run_with_args(path: &Path, args: &[&str]) -> Output {
+    Command::new(env!("CARGO_BIN_EXE_ryni"))
+        .arg("check")
+        .arg(path)
+        .args(args)
+        .output()
+        .unwrap()
+}
+
+fn write_file(root: &Path, name: &str, content: &str) {
+    let path = root.join(name);
+    fs::create_dir_all(path.parent().unwrap()).unwrap();
+    fs::write(path, content).unwrap();
+}
+
+#[test]
+fn ignore_files_and_explicit_exclusions_control_scan_scope() {
+    let project = tempfile::tempdir().unwrap();
+    let root = project.path();
+    // A repository marker enables Git ignore rules without invoking Git.
+    fs::create_dir(root.join(".git")).unwrap();
+    write_file(root, ".gitignore", "node_modules/\n.agents/ignored/\n");
+    write_file(root, ".ignore", "generated/\n");
+    write_file(root, ".git/info/exclude", "local/\n");
+    write_file(root, "docs/.gitignore", "skip.md\n");
+    for path in [
+        "node_modules/vendor/README.md",
+        "generated/README.md",
+        "local/README.md",
+        "docs/skip.md",
+        ".agents/ignored/SKILL.md",
+        "vendor/README.md",
+        "third_party/README.md",
+    ] {
+        write_file(root, path, "[Broken](missing.txt)\n");
+    }
+    write_file(root, ".claude/skills/demo-skill/SKILL.md", VALID);
+    write_file(
+        root,
+        "README.md",
+        "[Dependency](node_modules/vendor/README.md)\n[Vendor](vendor/README.md)\n",
+    );
+    let output = run(root);
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert_eq!(output.status.code(), Some(1));
+    assert!(stdout.ends_with("Found 2 errors.\n"), "{stdout}");
+    assert_eq!(
+        run_with_args(
+            root,
+            &["--exclude", "vendor/**", "--exclude", "third_party/**"]
+        )
+        .status
+        .code(),
+        Some(0)
+    );
+    let output = run_with_args(
+        root,
+        &[
+            "--no-ignore",
+            "--exclude",
+            "vendor/**",
+            "--exclude",
+            "third_party/**",
+            "--exclude",
+            ".agents/**",
+        ],
+    );
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert_eq!(output.status.code(), Some(1));
+    assert!(stdout.ends_with("Found 4 errors.\n"), "{stdout}");
+}
+
+#[test]
+fn ignore_file_works_without_git_and_preserves_negations() {
+    let project = tempfile::tempdir().unwrap();
+    let root = project.path();
+    write_file(root, ".ignore", "*.md\n!keep.md\n");
+    write_file(root, "skip.md", "[Broken](missing.txt)");
+    write_file(root, "keep.md", "[Broken](missing.txt)");
+    let output = run(root);
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert_eq!(output.status.code(), Some(1));
+    assert!(stdout.contains("keep.md:1:1"), "{stdout}");
+    assert!(stdout.ends_with("Found 1 error.\n"), "{stdout}");
+    let output = run_with_args(root, &["--no-ignore"]);
+    assert!(
+        String::from_utf8(output.stdout)
+            .unwrap()
+            .ends_with("Found 2 errors.\n")
+    );
+}
+
+#[test]
+fn invalid_exclusion_is_an_execution_error() {
+    let project = project();
+    let output = run_with_args(project.path(), &["--exclude", "["]);
+    assert_eq!(output.status.code(), Some(2));
+    assert!(
+        String::from_utf8(output.stderr)
+            .unwrap()
+            .contains("invalid exclusion")
+    );
+}
+
+#[test]
+fn global_git_excludes_can_be_disabled() {
+    let project = tempfile::tempdir().unwrap();
+    let config = tempfile::tempdir().unwrap();
+    fs::create_dir(project.path().join(".git")).unwrap();
+    write_file(project.path(), "global-only.md", "[Broken](missing.txt)");
+    let excludes = config.path().join("excludes");
+    fs::write(&excludes, "global-only.md\n").unwrap();
+    let config_path = config.path().join("config");
+    fs::write(
+        &config_path,
+        format!(
+            "[core]\nexcludesFile = {}\n",
+            excludes.to_string_lossy().replace('\\', "/")
+        ),
+    )
+    .unwrap();
+    for (args, expected) in [(vec![], 0), (vec!["--no-ignore"], 1)] {
+        let output = Command::new(env!("CARGO_BIN_EXE_ryni"))
+            .arg("check")
+            .arg(project.path())
+            .args(args)
+            .env("GIT_CONFIG_GLOBAL", &config_path)
+            .output()
+            .unwrap();
+        assert_eq!(output.status.code(), Some(expected), "{output:?}");
+    }
+}
