@@ -5,6 +5,29 @@ Notable changes to ryni are documented here, following
 
 ## [Unreleased]
 
+### Added
+
+- Versioned local team packs and strict `ryni.toml` configuration, with rule
+  selection, preview gating, exclusions and optional ignore-file filtering.
+- Preview checks for required metadata, headings, project files and duplicate
+  skill names, plus `rule` and `settings` inspection commands.
+- Schema-versioned JSON findings, execution errors and proposed edits.
+- Opt-in unsafe directory/name fixes with source freshness checks, overlap
+  rejection, atomic file replacement and post-fix checking.
+- Per-scan target caching, opt-in parallel checking and phase timings.
+- Semantic corpus baselines, rule fixtures, terminal snapshots, generated-input
+  invariants and generated rule documentation checks.
+
+### Changed
+
+- Separate source snapshots, document parsing, discovery, settings, diagnostics
+  and project analysis within the existing Rust crate.
+- Accept individual Markdown files. Recoverable execution errors retain findings
+  from other files while exiting with code 2.
+- Configuration files are now validated rather than ignored. Diagnostic ordering
+  is explicitly path, source position, rule ID and message.
+- Declare Rust 1.88 as the minimum supported version. The CLI remains standalone.
+
 ## [0.2.2] - 2026-09-30
 
 ### Added

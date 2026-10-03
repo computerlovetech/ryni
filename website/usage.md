@@ -32,7 +32,7 @@ A clean scan prints `All checks passed!`. When no supported files are found,
 ryni prints `No supported files found.` and exits successfully.
 
 Exit codes: `0` passed or no supported files, `1` violations, `2` execution error.
-Use the same command in CI. Checks never modify project files.
+Use the same command in CI. Checks modify files only when `--fix` is explicitly enabled.
 
 ## CI
 
@@ -40,7 +40,19 @@ Install a pinned version using the [installer](installation.md#custom-locations-
 then run `ryni check .` in your checkout. A finding fails the command with exit
 code `1`, so CI can use the same checks as local development.
 
-All built-in rules are always active. There are no rule-selection settings,
-configuration files, suppressions, or automatic fixes yet.
+The six stable rules run by default. [Configuration and team packs](configuration.md)
+can select rules, enable preview conventions and control discovery. There are no
+inline suppressions yet.
+
+```sh
+ryni check README.md --select markdown-local-link
+ryni check . --output-format json
+ryni check . --exclude vendor --respect-ignore
+ryni check . --threads 4 --timings
+```
+
+See [structured output and fixes](output.md) for machine integration and opt-in
+fix application. Recoverable execution errors retain other findings and exit with
+code `2`.
 
 See the [rule reference](rules.md) for the standards checked and edge cases.

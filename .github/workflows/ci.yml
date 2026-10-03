@@ -26,3 +26,23 @@ jobs:
       - run: cargo test --locked
       - run: cargo clippy --all-targets --locked -- -D warnings
       - run: cargo run --locked -- check tests/fixtures/skills
+  tooling:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: cargo build --locked
+      - run: python3 scripts/generate_rules.py --check
+      - run: python3 -m unittest discover -s benchmarks -p 'test_*.py'
+      - run: cargo doc --locked --no-deps
+        env:
+          RUSTDOCFLAGS: '-D warnings'
+  msrv:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@1.88.0
+      - run: cargo check --locked --all-targets

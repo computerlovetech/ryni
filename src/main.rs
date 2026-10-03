@@ -25,7 +25,11 @@ enum Command {
     /// Discover supported files and check the selected standards.
     Check(CheckArgs),
     /// Explain one rule, or list all rules when no ID is given.
-    Rule { id: Option<String> },
+    Rule {
+        id: Option<String>,
+        #[arg(long, value_enum, default_value = "text")]
+        output_format: OutputFormat,
+    },
     /// Print resolved settings and pack versions as JSON.
     Settings(CommonArgs),
 }
@@ -197,37 +201,44 @@ fn execute(cli: Cli) -> io::Result<u8> {
             }
             report.exit_code()
         }
-        Command::Rule { id } => {
-            if let Some(id) = id {
-                if let Some(rule) = Rule::from_id(&id) {
-                    let metadata = rule.metadata();
-                    writeln!(
-                        stdout,
-                        "{} ({:?}, {:?})\n{}",
-                        metadata.id, metadata.stability, metadata.scope, metadata.explanation
-                    )?;
-                    0
-                } else {
-                    eprintln!("error: unknown rule {id:?}");
-                    2
-                }
+        Command::Rule { id, output_format } => {
+            let rules = match id {
+                Some(id) => match Rule::from_id(&id) {
+                    Some(rule) => vec![rule],
+                    None => {
+                        eprintln!("error: unknown rule {id:?}");
+                        return Ok(2);
+                    }
+                },
+                None => Rule::ALL.to_vec(),
+            };
+            if matches!(output_format, OutputFormat::Json) {
+                writeln!(
+                    stdout,
+                    "{}",
+                    serde_json::to_string_pretty(
+                        &rules.iter().map(|rule| rule.metadata()).collect::<Vec<_>>()
+                    )?
+                )?;
             } else {
-                for rule in Rule::ALL {
+                for rule in rules {
                     let metadata = rule.metadata();
                     writeln!(
                         stdout,
-                        "{}\t{:?}\t{}",
-                        rule.id(),
+                        "{} ({:?}, {:?}, {})\n{}",
+                        metadata.id,
                         metadata.stability,
+                        metadata.scope,
                         if metadata.default_enabled {
                             "default"
                         } else {
                             "opt-in"
-                        }
+                        },
+                        metadata.explanation
                     )?;
                 }
-                0
             }
+            0
         }
         Command::Settings(args) => match args.settings() {
             Ok(settings) => {

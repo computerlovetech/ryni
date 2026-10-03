@@ -23,8 +23,9 @@ metadata before they get in the way.
 - **Run anywhere.** Written in Rust, distributed as a standalone binary.
 - **Start immediately.** Run `ryni check .`. No configuration required.
 
-**Team rule packs are coming soon:** define your team's conventions once and
-share them across repositories. Today, ryni runs its built-in rules.
+**Share team conventions:** versioned local TOML packs select rules and configure
+preview checks for metadata, document sections, required files and duplicate skill
+names. See [configuration and packs](website/configuration.md).
 
 ## Install
 
@@ -87,18 +88,20 @@ A clean scan prints `All checks passed!`. When no supported files are found,
 ryni prints `No supported files found.` and exits successfully.
 
 Exit codes: `0` passed or no supported files, `1` violations, `2` execution error.
-Use the same command in CI. Checks never modify project files.
+Use the same command in CI. Files change only when `--fix` is explicitly enabled.
 
 ## Built-in rules
 
-| Rule | Check |
-| --- | --- |
-| `markdown-local-link` | Relative Markdown links and images must point to existing files or directories. |
-| `skill-frontmatter` | Opening and closing `---` delimiters, valid YAML, and a mapping with string keys. Duplicate YAML keys are rejected. |
-| `skill-name` | Required string of 1–64 characters, lowercase Unicode letters/numbers and hyphens, with no leading, trailing, or consecutive hyphens. |
-| `skill-directory-name` | The name exactly matches the directory containing `SKILL.md`. |
-| `skill-description` | Required nonblank string, at most 1,024 characters. |
-| `skill-optional-fields` | `license` and `allowed-tools` must be strings; `compatibility` must be a nonblank string of at most 500 characters; `metadata` must map strings to strings. |
+<!-- rules:start -->
+| Rule | Status | Check |
+| --- | --- | --- |
+| `skill-frontmatter` | stable | SKILL.md must start with delimited YAML containing a mapping with unique string keys. |
+| `skill-name` | stable | The name must contain 1–64 lowercase Unicode letters, numbers or hyphens, without leading, trailing or consecutive hyphens. |
+| `skill-directory-name` | stable | The skill name must exactly match its containing directory. |
+| `skill-description` | stable | The description must be a nonblank string of at most 1,024 Unicode characters. |
+| `skill-optional-fields` | stable | Validate license, allowed-tools, compatibility and metadata against the Agent Skills field requirements. |
+| `markdown-local-link` | stable | Relative Markdown links and images must point to existing files or directories. URL schemes and document anchors are skipped. |
+<!-- rules:end -->
 
 Malformed frontmatter produces one `skill-frontmatter` finding. Dependent checks
 are skipped for that file. Character limits count Unicode
@@ -133,6 +136,27 @@ Paths are checked literally: no automatic `.md` extension, website routing, or
 build-template expansion. Generated targets must already exist when checking;
 intentional broken links are reported too. There are no suppressions yet.
 
+## Configuration and automation
+
+```sh
+ryni check README.md --select markdown-local-link
+ryni check . --output-format json
+ryni check . --exclude vendor --respect-ignore
+ryni settings .
+ryni rule skill-directory-name
+ryni check . --fix --unsafe-fixes
+```
+
+The six stable rules remain the default. Optional `ryni.toml` configuration and
+versioned local packs can select rules and add preview conventions. JSON results
+include structured findings, source positions, proposed fixes and execution errors.
+Incomplete scans retain available findings and exit with code `2`.
+
+The directory/name fix is unsafe: it changes skill identity and rewrites YAML
+formatting and comments. It requires explicit opt-in. See
+[configuration](website/configuration.md), [output and fixes](website/output.md),
+and the [architecture guide](website/architecture.md).
+
 ## Development
 
 ```sh
@@ -143,7 +167,7 @@ cargo fmt --check
 ```
 
 Checking this repository discovers the valid skill fixture in
-`tests/fixtures/skills`. Rule implementations live in `src/rules/mod.rs`.
+`tests/fixtures/skills`. Rule implementations live under `src/rules/`.
 
 The opt-in [repository benchmark](benchmarks/README.md) scans 15 pinned open-source
 projects across 15 languages, records timings and diagnostics, and compares

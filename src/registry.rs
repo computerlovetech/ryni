@@ -13,19 +13,22 @@ pub enum Rule {
     DuplicateSkillName,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[serde(rename_all = "kebab-case")]
 pub enum Scope {
     Skill,
     Markdown,
     Project,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[serde(rename_all = "kebab-case")]
 pub enum Stability {
     Stable,
     Preview,
 }
 
+#[derive(serde::Serialize)]
 pub struct RuleMetadata {
     pub id: &'static str,
     pub scope: Scope,

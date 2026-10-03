@@ -175,3 +175,23 @@ fn invalid_ignore_patterns_make_the_scan_incomplete() {
     assert_eq!(result["errors"][0]["operation"], "discover");
     assert_eq!(result["files_checked"], 1);
 }
+
+#[test]
+fn one_versioned_pack_produces_identical_findings_in_two_repositories() {
+    let workspace = tempfile::tempdir().unwrap();
+    fs::write(workspace.path().join("team.toml"), "schema-version = 1\nname = 'team'\nversion = '1.0.0'\nrequires-ryni = '>=0.2, <1'\n[lint]\npreview = true\nselect = ['markdown-required-sections']\nrequired-sections = ['Usage']\n").unwrap();
+    let mut outputs = Vec::new();
+    for name in ["repository-a", "repository-b"] {
+        let root = workspace.path().join(name);
+        fs::create_dir(&root).unwrap();
+        fs::write(
+            root.join("ryni.toml"),
+            "schema-version = 1\npacks = [{path = '../team.toml', version = '1.0.0'}]\n",
+        )
+        .unwrap();
+        fs::write(root.join("README.md"), "# Overview\n").unwrap();
+        outputs.push(json(&root, &[]));
+    }
+    assert_eq!(outputs[0].0, 1);
+    assert_eq!(outputs[0], outputs[1]);
+}

@@ -60,4 +60,4 @@ cargo install --path . --locked
 ```
 
 The current CLI replaces the earlier Python implementation. Python rule packs
-are not supported. Team rule packs for the Rust tool are coming soon.
+are not supported. The Rust CLI supports [versioned local TOML packs](configuration.md).

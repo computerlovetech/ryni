@@ -91,6 +91,6 @@ fn plain_diagnostic_snapshot() {
         String::from_utf8(output.stdout)
             .unwrap()
             .replace("\r\n", "\n"),
-        include_str!("snapshots/local-link.txt")
+        include_str!("snapshots/local-link.txt").replace("\r\n", "\n")
     );
 }

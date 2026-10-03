@@ -1,24 +1,35 @@
 # Built-in rules
 
-These rules run automatically. The five `skill-*` rules apply only to files
+The six stable rules run automatically. The five stable `skill-*` rules apply only to files
 named exactly `SKILL.md` and follow the
 [Agent Skills specification](https://agentskills.io/specification).
 `markdown-local-link` applies to all scanned Markdown files.
 
-| Rule | Check |
-| --- | --- |
-| `markdown-local-link` | Relative Markdown links and images must point to existing files or directories. |
-| `skill-frontmatter` | Opening and closing `---` delimiters, valid YAML, and a mapping with string keys. Duplicate YAML keys are rejected. |
-| `skill-name` | Required string of 1–64 characters, lowercase Unicode letters/numbers and hyphens, with no leading, trailing, or consecutive hyphens. |
-| `skill-directory-name` | The name exactly matches the directory containing `SKILL.md`. |
-| `skill-description` | Required nonblank string, at most 1,024 characters. |
-| `skill-optional-fields` | `license` and `allowed-tools` must be strings; `compatibility` must be a nonblank string of at most 500 characters; `metadata` must map strings to strings. |
+<!-- rules:start -->
+| Rule | Status | Check |
+| --- | --- | --- |
+| `skill-frontmatter` | stable | SKILL.md must start with delimited YAML containing a mapping with unique string keys. |
+| `skill-name` | stable | The name must contain 1–64 lowercase Unicode letters, numbers or hyphens, without leading, trailing or consecutive hyphens. |
+| `skill-directory-name` | stable | The skill name must exactly match its containing directory. |
+| `skill-description` | stable | The description must be a nonblank string of at most 1,024 Unicode characters. |
+| `skill-optional-fields` | stable | Validate license, allowed-tools, compatibility and metadata against the Agent Skills field requirements. |
+| `markdown-local-link` | stable | Relative Markdown links and images must point to existing files or directories. URL schemes and document anchors are skipped. |
+| `skill-required-metadata` | preview | Skills must contain each configured metadata field with a nonblank string value. |
+| `markdown-required-sections` | preview | Markdown documents must contain each configured heading, matched exactly as rendered text. |
+| `project-required-files` | preview | Each configured project-relative file must exist. |
+| `skill-duplicate-name` | preview | Skill names must be unique among successfully parsed skills in the scan. |
+<!-- rules:end -->
+
+Preview conventions require both preview mode and explicit selection. Configure
+their requirements in [configuration and team packs](configuration.md). The
+`skill-duplicate-name` rule runs across included skill files; `project-required-files`
+checks the scan root even if no Markdown files were discovered.
 
 Malformed frontmatter produces one `skill-frontmatter` finding. Dependent checks
 are skipped for that file. Character limits count Unicode
 characters, not UTF-8 bytes. Names are not trimmed or Unicode-normalized.
 
-These checks cover the requirements above, not full semantic compliance. They do
+The stable checks cover the requirements above, not full semantic compliance. They do
 not judge description quality, validate instruction bodies, require optional
 directories, or reject additional frontmatter fields.
 
