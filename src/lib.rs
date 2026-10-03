@@ -1,9 +1,11 @@
 pub mod diagnostic;
 mod discovery;
 pub mod document;
+pub mod error;
 pub mod filesystem;
 pub mod registry;
 mod rules;
+pub mod settings;
 pub mod source;
 
 pub use diagnostic::Diagnostic;

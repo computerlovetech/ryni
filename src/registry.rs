@@ -7,6 +7,10 @@ pub enum Rule {
     Description,
     OptionalFields,
     MarkdownLocalLink,
+    RequiredMetadata,
+    RequiredSections,
+    RequiredFiles,
+    DuplicateSkillName,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -38,6 +42,10 @@ impl Rule {
         Self::Description,
         Self::OptionalFields,
         Self::MarkdownLocalLink,
+        Self::RequiredMetadata,
+        Self::RequiredSections,
+        Self::RequiredFiles,
+        Self::DuplicateSkillName,
     ];
 
     pub fn metadata(self) -> RuleMetadata {
@@ -62,6 +70,22 @@ impl Rule {
                 "skill-optional-fields",
                 "Validate license, allowed-tools, compatibility and metadata against the Agent Skills field requirements.",
             ),
+            Self::RequiredMetadata => (
+                "skill-required-metadata",
+                "Skills must contain each configured metadata field with a nonblank string value.",
+            ),
+            Self::RequiredSections => (
+                "markdown-required-sections",
+                "Markdown documents must contain each configured heading, matched exactly as rendered text.",
+            ),
+            Self::RequiredFiles => (
+                "project-required-files",
+                "Each configured project-relative file must exist.",
+            ),
+            Self::DuplicateSkillName => (
+                "skill-duplicate-name",
+                "Skill names must be unique among successfully parsed skills in the scan.",
+            ),
             Self::MarkdownLocalLink => (
                 "markdown-local-link",
                 "Relative Markdown links and images must point to existing files or directories. URL schemes and document anchors are skipped.",
@@ -70,13 +94,29 @@ impl Rule {
         RuleMetadata {
             id,
             explanation,
-            scope: if self == Self::MarkdownLocalLink {
-                Scope::Markdown
-            } else {
-                Scope::Skill
+            scope: match self {
+                Self::MarkdownLocalLink | Self::RequiredSections => Scope::Markdown,
+                Self::RequiredFiles | Self::DuplicateSkillName => Scope::Project,
+                _ => Scope::Skill,
             },
-            stability: Stability::Stable,
-            default_enabled: true,
+            stability: if matches!(
+                self,
+                Self::RequiredMetadata
+                    | Self::RequiredSections
+                    | Self::RequiredFiles
+                    | Self::DuplicateSkillName
+            ) {
+                Stability::Preview
+            } else {
+                Stability::Stable
+            },
+            default_enabled: !matches!(
+                self,
+                Self::RequiredMetadata
+                    | Self::RequiredSections
+                    | Self::RequiredFiles
+                    | Self::DuplicateSkillName
+            ),
         }
     }
 
@@ -97,5 +137,11 @@ impl std::fmt::Display for Rule {
 impl PartialEq<&str> for Rule {
     fn eq(&self, other: &&str) -> bool {
         self.id() == *other
+    }
+}
+
+impl serde::Serialize for Rule {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_str(self.id())
     }
 }

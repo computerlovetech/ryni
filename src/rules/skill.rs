@@ -28,7 +28,6 @@ pub(crate) fn check(document: &Document, path: &Path) -> Vec<Diagnostic> {
         Rule::OptionalFields,
     ] {
         match rule {
-            Rule::Frontmatter | Rule::MarkdownLocalLink => {}
             Rule::Name => {
                 match text(metadata, "name") {
                     None => report(
@@ -101,6 +100,7 @@ pub(crate) fn check(document: &Document, path: &Path) -> Vec<Diagnostic> {
                     );
                 }
             }
+            _ => {}
         }
     }
     diagnostics

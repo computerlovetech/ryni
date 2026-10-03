@@ -2,6 +2,7 @@
 name = "ryni"
 version = "0.2.2"
 edition = "2024"
+rust-version = "1.88"
 repository = "https://github.com/computerlovetech/ryni"
 description = "A harness linter, written in Rust"
 
@@ -9,12 +10,21 @@ description = "A harness linter, written in Rust"
 clap = { version = "4", features = ["derive"] }
 serde_yaml_ng = "0.10"
 walkdir = "2"
+ignore = "0.4"
+globset = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+semver = "1"
 pulldown-cmark = "0.13"
 percent-encoding = "2"
 annotate-snippets = "0.12.16"
 
 [dev-dependencies]
 tempfile = "3"
+
+[lints.rust]
+unsafe_code = "forbid"
 
 # The profile that 'dist' will build with
 [profile.dist]
