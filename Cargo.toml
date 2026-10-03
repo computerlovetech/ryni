@@ -20,3 +20,6 @@ tempfile = "3"
 [profile.dist]
 inherits = "release"
 lto = "thin"
+
+[target."cfg(unix)".dependencies]
+libc = "0.2"

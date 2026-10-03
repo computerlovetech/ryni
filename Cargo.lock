@@ -295,6 +295,7 @@ version = "0.2.2"
 dependencies = [
  "annotate-snippets",
  "clap",
+ "libc",
  "percent-encoding",
  "pulldown-cmark",
  "serde_yaml_ng",
