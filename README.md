@@ -145,6 +145,10 @@ cargo fmt --check
 Checking this repository discovers the valid skill fixture in
 `tests/fixtures/skills`. Rule implementations live in `src/rules/mod.rs`.
 
+The opt-in [repository benchmark](benchmarks/README.md) scans 15 pinned open-source
+projects across 15 languages, records timings and diagnostics, and compares
+behavior against a reviewed baseline.
+
 ## Documentation development
 
 The MkDocs source lives in `website/`, with MkDocs Material and the shared
@@ -155,6 +159,6 @@ uv run --locked --only-group docs mkdocs serve
 uv run --locked --only-group docs mkdocs build --strict
 ```
 
-Python is only used for documentation tooling; the CLI is written in Rust.
+Python is used for development tooling; the CLI is written in Rust.
 Documentation pull requests are built in CI. Changes merged to `main` deploy to
 [GitHub Pages](https://computerlovetech.github.io/ryni/).

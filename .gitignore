@@ -4,3 +4,5 @@
 .claude/skills/
 /.venv/
 /site/
+/benchmarks/results/
+__pycache__/

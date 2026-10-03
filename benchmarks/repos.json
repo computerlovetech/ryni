@@ -1,0 +1,17 @@
+[
+  {"name": "django", "language": "Python", "url": "https://github.com/django/django.git", "revision": "50eef95591b1e5d8c47b2e8c96066cb0c516753a"},
+  {"name": "rust-analyzer", "language": "Rust", "url": "https://github.com/rust-lang/rust-analyzer.git", "revision": "03fcb77246f2568adb0e9b2fa60d19c6cc1686f4"},
+  {"name": "kubernetes", "language": "Go", "url": "https://github.com/kubernetes/kubernetes.git", "revision": "6d805ebe018f428d503fdc01bb6d57bd9574f598"},
+  {"name": "vscode", "language": "TypeScript", "url": "https://github.com/microsoft/vscode.git", "revision": "dc546cc3c9979a19adafccd439889d7b64298def"},
+  {"name": "webpack", "language": "JavaScript", "url": "https://github.com/webpack/webpack.git", "revision": "e9998de9aed12b06b838fc77971fb6682767869c"},
+  {"name": "spring-boot", "language": "Java", "url": "https://github.com/spring-projects/spring-boot.git", "revision": "ab1843bbf6d855ca066ea6b9ccf7e64b83139469"},
+  {"name": "curl", "language": "C", "url": "https://github.com/curl/curl.git", "revision": "60cf74f438cfaa4cbf133b1a5f712225a787783c"},
+  {"name": "fmt", "language": "C++", "url": "https://github.com/fmtlib/fmt.git", "revision": "5da4e9a3fb15626ba92969199061e0169ebc8a00"},
+  {"name": "rails", "language": "Ruby", "url": "https://github.com/rails/rails.git", "revision": "14d6d42b21be8527dda803ad3e8c790471c2521e"},
+  {"name": "laravel", "language": "PHP", "url": "https://github.com/laravel/framework.git", "revision": "aad74d9d01406901dbb6e359092cf5e261b62b09"},
+  {"name": "elixir", "language": "Elixir", "url": "https://github.com/elixir-lang/elixir.git", "revision": "ffdac87643303e781020ee02b5b25b64c4b936f4"},
+  {"name": "swift-nio", "language": "Swift", "url": "https://github.com/apple/swift-nio.git", "revision": "d09ffc8ad6437bc278897279e33150d8e39ee3d5"},
+  {"name": "ktor", "language": "Kotlin", "url": "https://github.com/ktorio/ktor.git", "revision": "1d177d32df5de4df0dfee67cee159e01e226419f"},
+  {"name": "aspnetcore", "language": "C#", "url": "https://github.com/dotnet/aspnetcore.git", "revision": "eccb9bccc1b243ea45515ae992df98b863be2247"},
+  {"name": "flutter", "language": "Dart", "url": "https://github.com/flutter/flutter.git", "revision": "4e5a09292c1c64a38d604c7ec096537f50d69f93"}
+]

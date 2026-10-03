@@ -1,0 +1,268 @@
+{
+  "created_at": "2026-10-01T06:21:29.121054+00:00",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "binary_sha256": "9d4f0b94548d74b027ce9def60dec67cf26ff958811a31ab0f071115e89748e7",
+  "repeat": 3,
+  "repos": {
+    "django": {
+      "status": "ok",
+      "exit_code": 0,
+      "rules": {},
+      "findings": 0,
+      "output_sha256": "2be13028d76a92ecac62100ae8f7c5a7ea4e6cb2e925599b36f5266e73d2cb4e",
+      "seconds": [
+        0.04431466700043529,
+        0.04116308398079127,
+        0.041268000029958785
+      ],
+      "median_seconds": 0.041268000029958785,
+      "markdown_files": 9,
+      "skill_files": 0,
+      "revision": "50eef95591b1e5d8c47b2e8c96066cb0c516753a"
+    },
+    "rust-analyzer": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 8
+      },
+      "findings": 8,
+      "output_sha256": "36c0e4925abcff43dda5e529e0bb814da09b7ac8967718383e2731377d5d0fdb",
+      "seconds": [
+        0.013177165994420648,
+        0.00860804202966392,
+        0.008691665949299932
+      ],
+      "median_seconds": 0.008691665949299932,
+      "markdown_files": 48,
+      "skill_files": 0,
+      "revision": "03fcb77246f2568adb0e9b2fa60d19c6cc1686f4"
+    },
+    "kubernetes": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 97
+      },
+      "findings": 97,
+      "output_sha256": "8443b81739735cabe16d7eaa1bd44e485000ad56bc66d8c8590a452d96dc07c7",
+      "seconds": [
+        0.2100995829096064,
+        0.1375576660502702,
+        0.13858062506187707
+      ],
+      "median_seconds": 0.13858062506187707,
+      "markdown_files": 589,
+      "skill_files": 0,
+      "revision": "6d805ebe018f428d503fdc01bb6d57bd9574f598"
+    },
+    "vscode": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 296,
+        "skill-description": 2
+      },
+      "findings": 298,
+      "output_sha256": "69203f9b2801c4cc02ec0a81bd21145cdba3540284e18aa09b2f78acebc8e3c7",
+      "seconds": [
+        0.12150704197119921,
+        0.09018166700843722,
+        0.08984604198485613
+      ],
+      "median_seconds": 0.09018166700843722,
+      "markdown_files": 358,
+      "skill_files": 77,
+      "revision": "dc546cc3c9979a19adafccd439889d7b64298def"
+    },
+    "webpack": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 1
+      },
+      "findings": 1,
+      "output_sha256": "a993ce42a5416518f4103f4db6364ee24356142f1517bd03ab9946cb846f5bf2",
+      "seconds": [
+        0.10944066708907485,
+        0.08390020893421024,
+        0.08440758404321969
+      ],
+      "median_seconds": 0.08440758404321969,
+      "markdown_files": 300,
+      "skill_files": 0,
+      "revision": "e9998de9aed12b06b838fc77971fb6682767869c"
+    },
+    "spring-boot": {
+      "status": "ok",
+      "exit_code": 0,
+      "rules": {},
+      "findings": 0,
+      "output_sha256": "2be13028d76a92ecac62100ae8f7c5a7ea4e6cb2e925599b36f5266e73d2cb4e",
+      "seconds": [
+        0.12557641696184874,
+        0.1185094170505181,
+        0.12341958307661116
+      ],
+      "median_seconds": 0.12341958307661116,
+      "markdown_files": 3,
+      "skill_files": 0,
+      "revision": "ab1843bbf6d855ca066ea6b9ccf7e64b83139469"
+    },
+    "curl": {
+      "status": "ok",
+      "exit_code": 0,
+      "rules": {},
+      "findings": 0,
+      "output_sha256": "2be13028d76a92ecac62100ae8f7c5a7ea4e6cb2e925599b36f5266e73d2cb4e",
+      "seconds": [
+        0.07694241602439433,
+        0.023366791079752147,
+        0.02252483309712261
+      ],
+      "median_seconds": 0.023366791079752147,
+      "markdown_files": 930,
+      "skill_files": 0,
+      "revision": "60cf74f438cfaa4cbf133b1a5f712225a787783c"
+    },
+    "fmt": {
+      "status": "ok",
+      "exit_code": 0,
+      "rules": {},
+      "findings": 0,
+      "output_sha256": "2be13028d76a92ecac62100ae8f7c5a7ea4e6cb2e925599b36f5266e73d2cb4e",
+      "seconds": [
+        0.0062840410973876715,
+        0.00461808405816555,
+        0.0046211660373955965
+      ],
+      "median_seconds": 0.0046211660373955965,
+      "markdown_files": 12,
+      "skill_files": 0,
+      "revision": "5da4e9a3fb15626ba92969199061e0169ebc8a00"
+    },
+    "rails": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 486
+      },
+      "findings": 486,
+      "output_sha256": "d1d28dfc60cd0e5ea6b4e35a2321a87d08db59813c93e2e9d791f8134e797daa",
+      "seconds": [
+        0.062159957946278155,
+        0.05223575001582503,
+        0.050455500022508204
+      ],
+      "median_seconds": 0.05223575001582503,
+      "markdown_files": 129,
+      "skill_files": 0,
+      "revision": "14d6d42b21be8527dda803ad3e8c790471c2521e"
+    },
+    "laravel": {
+      "status": "ok",
+      "exit_code": 0,
+      "rules": {},
+      "findings": 0,
+      "output_sha256": "2be13028d76a92ecac62100ae8f7c5a7ea4e6cb2e925599b36f5266e73d2cb4e",
+      "seconds": [
+        0.017535584047436714,
+        0.012503959005698562,
+        0.011590291047468781
+      ],
+      "median_seconds": 0.012503959005698562,
+      "markdown_files": 48,
+      "skill_files": 0,
+      "revision": "aad74d9d01406901dbb6e359092cf5e261b62b09"
+    },
+    "elixir": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 232
+      },
+      "findings": 232,
+      "output_sha256": "d7dcc6e9fd4e328f43cf9fa4184b5902770c8778c4d6f26e88638069dc5374d5",
+      "seconds": [
+        0.016454832977615297,
+        0.010653625009581447,
+        0.010913999984040856
+      ],
+      "median_seconds": 0.010913999984040856,
+      "markdown_files": 61,
+      "skill_files": 0,
+      "revision": "ffdac87643303e781020ee02b5b25b64c4b936f4"
+    },
+    "swift-nio": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 117
+      },
+      "findings": 117,
+      "output_sha256": "962973cb60f614c798cde4d8f2d0510bc7b609d8c646a3ef5e00998395faccca",
+      "seconds": [
+        0.01075108302757144,
+        0.006565083982422948,
+        0.006711874972097576
+      ],
+      "median_seconds": 0.006711874972097576,
+      "markdown_files": 43,
+      "skill_files": 0,
+      "revision": "d09ffc8ad6437bc278897279e33150d8e39ee3d5"
+    },
+    "ktor": {
+      "status": "ok",
+      "exit_code": 0,
+      "rules": {},
+      "findings": 0,
+      "output_sha256": "2be13028d76a92ecac62100ae8f7c5a7ea4e6cb2e925599b36f5266e73d2cb4e",
+      "seconds": [
+        0.04083533294033259,
+        0.03873695898801088,
+        0.03966370795387775
+      ],
+      "median_seconds": 0.03966370795387775,
+      "markdown_files": 16,
+      "skill_files": 1,
+      "revision": "1d177d32df5de4df0dfee67cee159e01e226419f"
+    },
+    "aspnetcore": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 7
+      },
+      "findings": 7,
+      "output_sha256": "086c7453bb31cf5417b6787e808e50e8e18039e48218e638f7d6988a37c6f99f",
+      "seconds": [
+        0.07782454206608236,
+        0.05494004103820771,
+        0.054619458969682455
+      ],
+      "median_seconds": 0.05494004103820771,
+      "markdown_files": 294,
+      "skill_files": 8,
+      "revision": "eccb9bccc1b243ea45515ae992df98b863be2247"
+    },
+    "flutter": {
+      "status": "ok",
+      "exit_code": 1,
+      "rules": {
+        "markdown-local-link": 41
+      },
+      "findings": 41,
+      "output_sha256": "3360c5317dbf435f83da6aa69005c553b0846086e8040d75c8f1792a1e026705",
+      "seconds": [
+        0.10709845798555762,
+        0.08134862501174212,
+        0.07422687509097159
+      ],
+      "median_seconds": 0.08134862501174212,
+      "markdown_files": 480,
+      "skill_files": 14,
+      "revision": "4e5a09292c1c64a38d604c7ec096537f50d69f93"
+    }
+  },
+  "changes": []
+}
