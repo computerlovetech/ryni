@@ -9,7 +9,6 @@ import json
 import os
 from pathlib import Path
 import platform
-import re
 import statistics
 import subprocess
 import sys
@@ -57,7 +56,7 @@ def scan(binary, directory, timeout):
     started = time.perf_counter()
     try:
         result = subprocess.run(
-            [str(binary), "check", "."], cwd=directory,
+            [str(binary), "check", ".", "--isolated", "--no-ignore", "--output-format", "json"], cwd=directory,
             env={**os.environ, "NO_COLOR": "1", "TERM": "dumb"},
             capture_output=True, timeout=timeout,
         )
@@ -70,11 +69,34 @@ def scan(binary, directory, timeout):
     stdout = stdout.decode("utf-8", errors="replace").replace("\r\n", "\n")
     stderr = stderr.decode("utf-8", errors="replace").replace("\r\n", "\n")
     stderr = stderr.replace(str(directory), "<repo>")
-    rules = dict(sorted(Counter(re.findall(r"^([a-z][a-z0-9-]+): ", stdout, re.M)).items()))
-    fingerprint = hashlib.sha256((stdout + "\0" + stderr).encode()).hexdigest()
+    diagnostics = []
+    fingerprint = None
+    files_checked = None
+    if status == "ok":
+        try:
+            payload = json.loads(stdout)
+            if payload.get("schema_version") != 1 or payload.get("complete") is not True:
+                raise ValueError("unsupported or incomplete diagnostic report")
+            diagnostics = payload["diagnostics"]
+            files_checked = payload["files_checked"]
+            if not isinstance(diagnostics, list) or not isinstance(files_checked, int):
+                raise ValueError("invalid diagnostic report")
+            if code != (1 if diagnostics else 0) or payload.get("errors") != []:
+                raise ValueError("exit status disagrees with diagnostic report")
+            for diagnostic in diagnostics:
+                if not all(key in diagnostic for key in ("rule", "path", "message", "severity", "range")):
+                    raise ValueError("incomplete diagnostic")
+            canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+            fingerprint = hashlib.sha256(canonical.encode()).hexdigest()
+        except (ValueError, KeyError, TypeError, AttributeError) as error:
+            status = "error"
+            diagnostics = []
+            stderr += f"\nbenchmark: invalid JSON output: {error}\n"
+    rules = dict(sorted(Counter(diagnostic["rule"] for diagnostic in diagnostics).items()))
     return {
         "status": status, "exit_code": code, "rules": rules,
-        "findings": sum(rules.values()), "output_sha256": fingerprint,
+        "findings": len(diagnostics), "diagnostics_sha256": fingerprint,
+        "diagnostics": diagnostics, "files_checked": files_checked,
     }, elapsed, stdout, stderr
 
 
@@ -95,8 +117,8 @@ def differences(current, baseline):
         if name not in current or name not in baseline:
             changes.append(f"{name}: repository added or removed")
             continue
-        for key in ("revision", "status", "exit_code", "output_sha256"):
-            if current[name][key] != baseline[name][key]:
+        for key in ("revision", "status", "exit_code", "diagnostics_sha256"):
+            if current[name].get(key) != baseline[name].get(key):
                 changes.append(f"{name}: {key} changed")
     return changes
 
@@ -137,7 +159,10 @@ def main():
     binary = args.binary.resolve()
     if not binary.is_file():
         parser.error("binary missing; run cargo build --release --locked")
-    baseline = json.loads(args.baseline.read_text())["repos"] if args.baseline else None
+    baseline_report = json.loads(args.baseline.read_text()) if args.baseline else None
+    if baseline_report is not None and baseline_report.get("schema_version") != 2:
+        parser.error("baseline uses terminal-output hashes; review and regenerate a schema 2 JSON baseline")
+    baseline = baseline_report["repos"] if baseline_report is not None else None
     if baseline is not None and args.repo:
         baseline = {name: value for name, value in baseline.items() if name in args.repo}
     if args.baseline and args.output.resolve() == args.baseline.resolve():
@@ -146,6 +171,7 @@ def main():
     logs = args.output.parent / args.output.stem
     logs.mkdir(exist_ok=True)
     report = {
+        "schema_version": 2,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "platform": platform.platform(),
         "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
@@ -173,7 +199,7 @@ def main():
             result = {**first, "seconds": times, "median_seconds": statistics.median(times)}
             result.update(inventory(directory))
         except (OSError, ValueError, subprocess.SubprocessError) as error:
-            result = {"status": "error", "exit_code": None, "output_sha256": None, "error": str(error)}
+            result = {"status": "error", "exit_code": None, "diagnostics_sha256": None, "error": str(error)}
         result["revision"] = repo["revision"]
         report["repos"][repo["name"]] = result
         failed |= result["status"] != "ok"

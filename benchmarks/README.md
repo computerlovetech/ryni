@@ -16,7 +16,7 @@ executed; submodules and Git LFS assets are not downloaded.
 
 Checkouts live in `~/.cache/ryni-benchmark` (or under `XDG_CACHE_HOME`). Use
 `--cache /absolute/path` to change this for both commands. Keep the corpus
-outside ryni's checkout: ryni scans hidden directories, and `--no-ignore` disables ignore-file
+outside ryni's checkout: ryni scans hidden directories, and benchmark runs disable ignore-file
 filtering, so nesting it could change ordinary scans.
 
 The 15 projects cover Python (Django), Rust (rust-analyzer), Go (Kubernetes),
@@ -47,9 +47,18 @@ it as informational, especially for tiny scans.
 Exit code 1 from ryni means findings and is an expected scan outcome. The runner
 fails on execution errors, crashes, timeouts, dirty/missing checkouts, or differing
 output between repetitions. With `--baseline`, it also fails on changed commits,
-repository membership, exit status, or output hashes. `--repo` can be repeated;
-baseline comparison then covers only those repositories. Output hashes cover
-plain-text diagnostics, including their formatting, with CRLF normalized to LF.
+repository membership, exit status, or diagnostic hashes. `--repo` can be repeated;
+baseline comparison then covers only those repositories. Schema 2 reports retain structured diagnostics and hash canonical JSON from
+`ryni check --isolated --no-ignore --output-format json`. Presentation whitespace
+is excluded from the comparison; rule IDs, messages, positions, proposed fixes,
+scan completeness and checked-file counts remain part of the contract. Terminal
+presentation is covered separately by `tests/snapshots/local-link.txt`.
+Legacy baselines using terminal-output hashes must be reviewed and regenerated.
+
+The checked-in baseline was migrated from terminal output to schema 2 after
+comparing all 15 repositories' revisions, exit statuses, file and rule counts.
+Rule, message and location tuples were also compared with a pre-optimization run.
+The original terminal baseline remains in Git history.
 
 The baseline records observed behavior, not proof that every finding is correct.
 Generated documentation, website routes, test fixtures, absent submodules, and

@@ -1,0 +1,81 @@
+# Rule fixtures are data so intentionally broken Markdown is not scanned as project documentation.
+[[case]]
+name = "valid Unicode skill"
+path = "café/SKILL.md"
+source = "---\nname: café\ndescription: Useful\n---\n"
+select = ["all"]
+expected = []
+
+[[case]]
+name = "frontmatter prerequisite"
+path = "demo/SKILL.md"
+source = "# No metadata"
+select = ["skill-name"]
+expected = ["skill-frontmatter"]
+
+[[case]]
+name = "wrong name type"
+path = "demo/SKILL.md"
+source = "---\nname: 12\n---\n"
+select = ["skill-name"]
+expected = ["skill-name"]
+
+[[case]]
+name = "directory mismatch"
+path = "demo/SKILL.md"
+source = "---\nname: other\n---\n"
+select = ["skill-directory-name"]
+expected = ["skill-directory-name"]
+
+[[case]]
+name = "blank description"
+path = "demo/SKILL.md"
+source = "---\ndescription: '  '\n---\n"
+select = ["skill-description"]
+expected = ["skill-description"]
+
+[[case]]
+name = "bad optional field"
+path = "demo/SKILL.md"
+source = "---\nlicense: 123\n---\n"
+select = ["skill-optional-fields"]
+expected = ["skill-optional-fields"]
+
+[[case]]
+name = "local target must exist"
+path = "README.md"
+source = "[Broken](absent.md) [Web](https://example.com)"
+select = ["markdown-local-link"]
+expected = ["markdown-local-link"]
+
+[[case]]
+name = "missing team metadata"
+path = "demo/SKILL.md"
+source = "---\nname: demo\n---\n"
+select = ["skill-required-metadata"]
+required_metadata = ["owner"]
+expected = ["skill-required-metadata"]
+
+[[case]]
+name = "team metadata is present"
+path = "demo/SKILL.md"
+source = "---\nowner: Team\n---\n"
+select = ["skill-required-metadata"]
+required_metadata = ["owner"]
+expected = []
+
+[[case]]
+name = "code examples do not supply headings"
+path = "README.md"
+source = "```md\n# Usage\n```\n"
+select = ["markdown-required-sections"]
+required_sections = ["Usage"]
+expected = ["markdown-required-sections"]
+
+[[case]]
+name = "formatted heading supplies rendered text"
+path = "README.md"
+source = "# **Usage**\n"
+select = ["markdown-required-sections"]
+required_sections = ["Usage"]
+expected = []

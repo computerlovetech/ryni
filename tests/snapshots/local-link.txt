@@ -1,0 +1,7 @@
+markdown-local-link: Target "docs/testing.md" does not exist
+ --> README.md:3:3
+  |
+3 | é [Testing](docs/testing.md)
+  |   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Found 1 error.
