@@ -1,12 +1,12 @@
 mod rules;
 
+use ignore::{WalkBuilder, overrides::OverrideBuilder};
 use std::{
     fs,
     ops::Range,
     path::{Path, PathBuf},
     sync::Arc,
 };
-use walkdir::WalkDir;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Diagnostic {
@@ -25,18 +25,46 @@ pub struct CheckReport {
     pub diagnostics: Vec<Diagnostic>,
 }
 
+#[derive(Debug, Default)]
+pub struct CheckOptions {
+    pub no_ignore: bool,
+    pub exclude: Vec<String>,
+}
+
 /// Discover supported files and run all applicable built-in rules.
 /// I/O errors are separate from lint violations; an empty scan is explicit.
 pub fn check(project: &Path) -> Result<CheckReport, String> {
+    check_with_options(project, &CheckOptions::default())
+}
+
+pub fn check_with_options(project: &Path, options: &CheckOptions) -> Result<CheckReport, String> {
     let project = fs::canonicalize(project)
         .map_err(|error| format!("cannot open project {}: {error}", project.display()))?;
     if !project.is_dir() {
         return Err(format!("expected a directory: {}", project.display()));
     }
+    let mut exclusions = OverrideBuilder::new(&project);
+    for pattern in &options.exclude {
+        exclusions
+            .add(&format!("!{pattern}"))
+            .map_err(|error| format!("invalid exclusion {pattern:?}: {error}"))?;
+    }
+    let mut walker = WalkBuilder::new(&project);
+    walker
+        .standard_filters(!options.no_ignore)
+        .hidden(false)
+        .follow_links(false)
+        .overrides(exclusions.build().map_err(|error| error.to_string())?);
     let mut paths = Vec::new();
-    for entry in WalkDir::new(&project).follow_links(false) {
+    for entry in walker.build() {
         let entry = entry.map_err(|error| format!("cannot discover Markdown files: {error}"))?;
-        if entry.file_type().is_file()
+        if let Some(error) = entry.error() {
+            return Err(format!(
+                "cannot read ignore rules for {}: {error}",
+                entry.path().display()
+            ));
+        }
+        if entry.file_type().is_some_and(|kind| kind.is_file())
             && entry.path().extension().is_some_and(|extension| {
                 extension.eq_ignore_ascii_case("md") || extension.eq_ignore_ascii_case("markdown")
             })
