@@ -38,9 +38,8 @@ fn valid_skill_passes_without_configuration() {
 }
 
 #[test]
-fn all_semantic_checks_run_and_legacy_config_is_ignored() {
+fn all_semantic_checks_run_with_default_settings() {
     let project = project();
-    fs::write(project.path().join("ryni.toml"), "This is not valid TOML").unwrap();
     fs::write(
         project.path().join("skills/demo-skill/SKILL.md"),
         "---\nname: Different\ndescription: ''\nlicense: 123\n---\n",
@@ -112,11 +111,12 @@ fn empty_scan_is_explicit_and_successful() {
 }
 
 #[test]
-fn missing_directory_file_argument_and_unreadable_skill_are_errors() {
+fn missing_directory_unsupported_file_and_unreadable_skill_are_errors() {
     let project = project();
+    fs::write(project.path().join("unsupported.txt"), "text").unwrap();
     for path in [
         project.path().join("missing"),
-        project.path().join("skills/demo-skill/SKILL.md"),
+        project.path().join("unsupported.txt"),
     ] {
         let output = run(&path);
         assert_eq!(output.status.code(), Some(2));

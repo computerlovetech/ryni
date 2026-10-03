@@ -9,7 +9,6 @@ description = "A harness linter, written in Rust"
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 serde_yaml_ng = "0.10"
-walkdir = "2"
 ignore = "0.4"
 globset = "0.4"
 serde = { version = "1", features = ["derive"] }

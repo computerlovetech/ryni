@@ -401,7 +401,6 @@ dependencies = [
  "serde_yaml_ng",
  "tempfile",
  "toml",
- "walkdir",
 ]
 
 [[package]]

@@ -2,7 +2,11 @@ use crate::{Diagnostic, document::Document, registry::Rule};
 use serde_yaml_ng::{Mapping, Value};
 use std::path::Path;
 
-pub(crate) fn check(document: &Document, path: &Path) -> Vec<Diagnostic> {
+pub(crate) fn check(
+    document: &Document,
+    path: &Path,
+    settings: &crate::settings::Settings,
+) -> Vec<Diagnostic> {
     let Some(parsed) = &document.metadata else {
         return Vec::new();
     };
@@ -27,6 +31,9 @@ pub(crate) fn check(document: &Document, path: &Path) -> Vec<Diagnostic> {
         Rule::Description,
         Rule::OptionalFields,
     ] {
+        if !settings.enabled(*rule) {
+            continue;
+        }
         match rule {
             Rule::Name => {
                 match text(metadata, "name") {
@@ -103,6 +110,16 @@ pub(crate) fn check(document: &Document, path: &Path) -> Vec<Diagnostic> {
             _ => {}
         }
     }
+    if settings.enabled(Rule::RequiredMetadata) {
+        for field in &settings.required_metadata {
+            if text(metadata, field).is_none_or(|value| value.trim().is_empty()) {
+                report(
+                    Rule::RequiredMetadata,
+                    format!("Required field {field:?} must be a nonblank string"),
+                );
+            }
+        }
+    }
     diagnostics
 }
 
@@ -116,7 +133,11 @@ mod tests {
     use crate::source::SourceFile;
     use std::path::Path;
     fn check(path: &Path, source: &str) -> Vec<Diagnostic> {
-        super::check(&Document::parse(SourceFile::new(path, source)), path)
+        super::check(
+            &Document::parse(SourceFile::new(path, source)),
+            path,
+            &crate::settings::Settings::default(),
+        )
     }
 
     fn messages(yaml: &str, rule: Rule) -> Vec<Diagnostic> {

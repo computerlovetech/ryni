@@ -19,6 +19,7 @@ pub enum Operation {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct ScanError {
     pub operation: Operation,
+    #[serde(serialize_with = "serialize_path")]
     pub path: PathBuf,
     pub message: String,
 }
@@ -45,3 +46,10 @@ impl fmt::Display for ScanError {
     }
 }
 impl std::error::Error for ScanError {}
+
+pub(crate) fn serialize_path<S: serde::Serializer>(
+    path: &Path,
+    serializer: S,
+) -> Result<S::Ok, S::Error> {
+    serializer.serialize_str(&path.to_string_lossy().replace('\\', "/"))
+}

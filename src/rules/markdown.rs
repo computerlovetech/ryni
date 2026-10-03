@@ -6,8 +6,8 @@ pub(crate) fn check(
     document: &Document,
     path: &Path,
     filesystem: &dyn FileSystem,
-) -> Result<Vec<Diagnostic>, String> {
-    let mut diagnostics = Vec::new();
+) -> crate::Analysis {
+    let mut result = crate::Analysis::default();
     for link in &document.links {
         let destination = &link.destination;
         if destination.starts_with('/') || destination.starts_with('\\') || has_scheme(destination)
@@ -41,18 +41,19 @@ pub(crate) fn check(
                         Ok(true) => None,
                         Ok(false) => Some(format!("Target {raw_path:?} does not exist")),
                         Err(error) => {
-                            return Err(format!(
-                                "cannot inspect link target {} from {}: {error}",
-                                resolved.display(),
-                                path.display()
+                            result.errors.push(crate::error::ScanError::new(
+                                crate::error::Operation::InspectTarget,
+                                document.source.path(),
+                                format!("cannot inspect link target {raw_path:?}: {error}"),
                             ));
+                            None
                         }
                     }
                 }
             }
         };
         if let Some(message) = message {
-            diagnostics.push(Diagnostic::new(
+            result.diagnostics.push(Diagnostic::new(
                 Rule::MarkdownLocalLink,
                 &document.source,
                 Some(link.span.clone()),
@@ -60,7 +61,7 @@ pub(crate) fn check(
             ));
         }
     }
-    Ok(diagnostics)
+    result
 }
 
 fn has_scheme(destination: &str) -> bool {
@@ -79,11 +80,13 @@ mod tests {
     use crate::{filesystem::OsFileSystem, source::SourceFile};
     use std::fs;
     fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String> {
-        super::check(
+        let result = super::check(
             &Document::parse(SourceFile::new(path, source)),
             path,
             &OsFileSystem,
-        )
+        );
+        assert!(result.errors.is_empty());
+        Ok(result.diagnostics)
     }
     use tempfile::TempDir;
 
