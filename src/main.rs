@@ -1,4 +1,4 @@
-mod output;
+use ryni::output;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use ryni::{
@@ -100,6 +100,15 @@ struct CheckArgs {
     /// Also apply fixes that may change meaning or remove YAML comments.
     #[arg(long, requires = "fix")]
     unsafe_fixes: bool,
+    /// Number of checking threads; discovery remains sequential.
+    #[arg(long, default_value_t = 1, value_parser = clap::value_parser!(u16).range(1..=256))]
+    threads: u16,
+    /// Disable the per-scan target metadata cache.
+    #[arg(long)]
+    no_cache: bool,
+    /// Print phase timings and target lookup counts to stderr.
+    #[arg(long)]
+    timings: bool,
 }
 
 #[derive(Clone, Copy, ValueEnum)]
@@ -127,12 +136,18 @@ fn execute(cli: Cli) -> io::Result<u8> {
     let code = match cli.command {
         Command::Check(args) => {
             let result = args.common.settings().and_then(|settings| {
-                let mut report = ryni::check_with_settings(&args.common.project, &settings)?;
+                let options = ryni::ExecutionOptions {
+                    threads: usize::from(args.threads),
+                    cache_targets: !args.no_cache,
+                };
+                let mut report =
+                    ryni::check_with_options(&args.common.project, &settings, options)?;
                 if args.fix {
                     let root = ryni::project_root(&args.common.project)?;
                     let applied = ryni::fix::apply(&root, &report, args.unsafe_fixes);
                     if applied.files_changed > 0 {
-                        report = ryni::check_with_settings(&args.common.project, &settings)?;
+                        report =
+                            ryni::check_with_options(&args.common.project, &settings, options)?;
                     }
                     report.files_fixed = applied.files_changed;
                     report.errors.extend(applied.errors);
@@ -143,6 +158,9 @@ fn execute(cli: Cli) -> io::Result<u8> {
                 errors: vec![error],
                 ..Default::default()
             });
+            if args.timings {
+                eprintln!("timings: {}", serde_json::to_string(&report.timings)?);
+            }
             match args.output_format {
                 OutputFormat::Json => {
                     writeln!(stdout, "{}", serde_json::to_string_pretty(&report.json())?)?

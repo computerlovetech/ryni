@@ -15,12 +15,14 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 toml = "0.8"
 semver = "1"
+rayon = "1"
 pulldown-cmark = "0.13"
 percent-encoding = "2"
 annotate-snippets = "0.12.16"
 tempfile = "3"
 
 [dev-dependencies]
+proptest = "1"
 
 [lints.rust]
 unsafe_code = "forbid"

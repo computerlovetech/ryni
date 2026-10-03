@@ -13,6 +13,11 @@ pub(crate) struct ProjectIndex {
 }
 
 impl ProjectIndex {
+    pub fn merge(&mut self, other: Self) {
+        for (name, sources) in other.names {
+            self.names.entry(name).or_default().extend(sources);
+        }
+    }
     pub fn insert(&mut self, document: &Document) {
         if let Some(Ok(metadata)) = &document.metadata
             && let Some(name) = super::skill::text(&metadata.fields, "name")

@@ -1,5 +1,5 @@
+use crate::Diagnostic;
 use annotate_snippets::{AnnotationKind, Level, Renderer, Snippet};
-use ryni::Diagnostic;
 
 pub fn render(diagnostic: &Diagnostic, color: bool) -> String {
     let renderer = if color {

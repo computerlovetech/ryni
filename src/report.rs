@@ -8,6 +8,20 @@ pub struct CheckReport {
     pub diagnostics: Vec<Diagnostic>,
     pub errors: Vec<ScanError>,
     pub files_fixed: usize,
+    pub timings: Timings,
+}
+
+/// Phase totals in milliseconds. With parallel execution, file-phase times are summed work.
+/// Kept outside the diagnostic JSON schema so identical runs remain comparable.
+#[derive(Debug, Default, Serialize)]
+pub struct Timings {
+    pub discovery_ms: f64,
+    pub read_ms: f64,
+    pub parse_ms: f64,
+    pub rules_ms: f64,
+    pub project_ms: f64,
+    pub target_lookups: usize,
+    pub target_cache_hits: usize,
 }
 
 impl CheckReport {
