@@ -347,7 +347,10 @@ fn invalid_exclusion_is_an_execution_error() {
 #[test]
 fn global_git_excludes_can_be_disabled() {
     let project = tempfile::tempdir().unwrap();
-    let config = tempfile::tempdir().unwrap();
+    let config = tempfile::Builder::new()
+        .prefix("ryni~config ")
+        .tempdir()
+        .unwrap();
     fs::create_dir(project.path().join(".git")).unwrap();
     write_file(project.path(), "global-only.md", "[Broken](missing.txt)");
     let excludes = config.path().join("excludes");
@@ -355,10 +358,9 @@ fn global_git_excludes_can_be_disabled() {
     let config_path = config.path().join("config");
     fs::write(
         &config_path,
-        format!(
-            "[core]\nexcludesFile = {}\n",
-            excludes.to_string_lossy().replace('\\', "/")
-        ),
+        // `ignore` expands every '~' in this value and cannot parse spaces.
+        // Keep Windows short temp paths (e.g. RUNNER~1) out of the value.
+        "[core]\nexcludesFile = excludes\n",
     )
     .unwrap();
     for (args, expected) in [(vec![], 0), (vec!["--no-ignore"], 1)] {
@@ -366,6 +368,7 @@ fn global_git_excludes_can_be_disabled() {
             .arg("check")
             .arg(project.path())
             .args(args)
+            .current_dir(config.path())
             .env("GIT_CONFIG_GLOBAL", &config_path)
             .output()
             .unwrap();
