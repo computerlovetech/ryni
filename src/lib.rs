@@ -1,28 +1,30 @@
+pub mod diagnostic;
+mod discovery;
+pub mod document;
+pub mod filesystem;
+pub mod registry;
 mod rules;
+pub mod source;
 
-use std::{
-    fs,
-    ops::Range,
-    path::{Path, PathBuf},
-    sync::Arc,
-};
-use walkdir::WalkDir;
-
-#[derive(Debug, PartialEq, Eq)]
-pub struct Diagnostic {
-    pub path: PathBuf,
-    pub rule: String,
-    pub location: Option<(usize, usize)>,
-    pub message: String,
-    /// Original source and byte range, retained for diagnostic rendering.
-    pub source: Arc<str>,
-    pub span: Option<Range<usize>>,
-}
+pub use diagnostic::Diagnostic;
+pub use source::SourceFile;
+use std::{fs, path::Path};
 
 #[derive(Debug)]
 pub struct CheckReport {
     pub files_checked: usize,
     pub diagnostics: Vec<Diagnostic>,
+}
+
+/// Analyze a source snapshot without reading it from disk.
+pub fn analyze(
+    document: &document::Document,
+    path: &Path,
+    filesystem: &dyn filesystem::FileSystem,
+) -> Result<Vec<Diagnostic>, String> {
+    let mut diagnostics = rules::skill::check(document, path);
+    diagnostics.extend(rules::markdown::check(document, path, filesystem)?);
+    Ok(diagnostics)
 }
 
 /// Discover supported files and run all applicable built-in rules.
@@ -33,18 +35,7 @@ pub fn check(project: &Path) -> Result<CheckReport, String> {
     if !project.is_dir() {
         return Err(format!("expected a directory: {}", project.display()));
     }
-    let mut paths = Vec::new();
-    for entry in WalkDir::new(&project).follow_links(false) {
-        let entry = entry.map_err(|error| format!("cannot discover Markdown files: {error}"))?;
-        if entry.file_type().is_file()
-            && entry.path().extension().is_some_and(|extension| {
-                extension.eq_ignore_ascii_case("md") || extension.eq_ignore_ascii_case("markdown")
-            })
-        {
-            paths.push(entry.into_path());
-        }
-    }
-    paths.sort();
+    let paths = discovery::discover(&project)?;
     let mut report = CheckReport {
         files_checked: paths.len(),
         diagnostics: Vec::new(),
@@ -53,20 +44,10 @@ pub fn check(project: &Path) -> Result<CheckReport, String> {
         let source = fs::read_to_string(&path)
             .map_err(|error| format!("cannot read {}: {error}", path.display()))?;
         let relative = path.strip_prefix(&project).unwrap_or(&path);
-        let mut diagnostics = if path.file_name().is_some_and(|name| name == "SKILL.md") {
-            rules::check(&path, &source)
-        } else {
-            Vec::new()
-        };
-        diagnostics.extend(rules::markdown::check(&path, &source)?);
-        let source: Arc<str> = source.into();
+        let document = document::Document::parse(SourceFile::new(relative, source));
         report
             .diagnostics
-            .extend(diagnostics.into_iter().map(|mut diagnostic| {
-                diagnostic.path = relative.to_path_buf();
-                diagnostic.source = Arc::clone(&source);
-                diagnostic
-            }));
+            .extend(analyze(&document, &path, &filesystem::OsFileSystem)?);
     }
     Ok(report)
 }

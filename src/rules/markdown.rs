@@ -1,30 +1,16 @@
-use crate::Diagnostic;
+use crate::{Diagnostic, document::Document, filesystem::FileSystem, registry::Rule};
 use percent_encoding::percent_decode_str;
-use pulldown_cmark::{Event, LinkType, Options, Parser, Tag};
-use std::{fs, io, path::Path};
+use std::path::Path;
 
-/// Check explicit Markdown links and images against the local filesystem.
-/// URL schemes, rooted URLs, and same-document links are outside this rule.
-pub(crate) fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String> {
+pub(crate) fn check(
+    document: &Document,
+    path: &Path,
+    filesystem: &dyn FileSystem,
+) -> Result<Vec<Diagnostic>, String> {
     let mut diagnostics = Vec::new();
-    let line_starts: Vec<usize> = std::iter::once(0)
-        .chain(source.match_indices('\n').map(|(index, _)| index + 1))
-        .collect();
-    let options = Options::ENABLE_TABLES
-        | Options::ENABLE_FOOTNOTES
-        | Options::ENABLE_STRIKETHROUGH
-        | Options::ENABLE_YAML_STYLE_METADATA_BLOCKS
-        | Options::ENABLE_PLUSES_DELIMITED_METADATA_BLOCKS;
-    for (event, range) in Parser::new_ext(source, options).into_offset_iter() {
-        let destination = match event {
-            Event::Start(Tag::Link {
-                link_type: LinkType::Email,
-                ..
-            }) => continue,
-            Event::Start(Tag::Link { dest_url, .. } | Tag::Image { dest_url, .. }) => dest_url,
-            _ => continue,
-        };
-        if destination.starts_with('/') || destination.starts_with('\\') || has_scheme(&destination)
+    for link in &document.links {
+        let destination = &link.destination;
+        if destination.starts_with('/') || destination.starts_with('\\') || has_scheme(destination)
         {
             continue;
         }
@@ -51,16 +37,9 @@ pub(crate) fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String
                         .parent()
                         .unwrap_or(Path::new("."))
                         .join(target.as_ref());
-                    match fs::metadata(&resolved) {
-                        Ok(_) => None,
-                        Err(error)
-                            if matches!(
-                                error.kind(),
-                                io::ErrorKind::NotFound | io::ErrorKind::NotADirectory
-                            ) =>
-                        {
-                            Some(format!("Target {raw_path:?} does not exist"))
-                        }
+                    match filesystem.exists(&resolved) {
+                        Ok(true) => None,
+                        Ok(false) => Some(format!("Target {raw_path:?} does not exist")),
                         Err(error) => {
                             return Err(format!(
                                 "cannot inspect link target {} from {}: {error}",
@@ -73,16 +52,12 @@ pub(crate) fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String
             }
         };
         if let Some(message) = message {
-            let line = line_starts.partition_point(|start| *start <= range.start);
-            let column = source[line_starts[line - 1]..range.start].chars().count() + 1;
-            diagnostics.push(Diagnostic {
-                path: path.to_path_buf(),
-                location: Some((line, column)),
-                source: Default::default(),
-                span: Some(range),
-                rule: "markdown-local-link".into(),
+            diagnostics.push(Diagnostic::new(
+                Rule::MarkdownLocalLink,
+                &document.source,
+                Some(link.span.clone()),
                 message,
-            });
+            ));
         }
     }
     Ok(diagnostics)
@@ -101,6 +76,15 @@ fn has_scheme(destination: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::{filesystem::OsFileSystem, source::SourceFile};
+    use std::fs;
+    fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String> {
+        super::check(
+            &Document::parse(SourceFile::new(path, source)),
+            path,
+            &OsFileSystem,
+        )
+    }
     use tempfile::TempDir;
 
     fn project() -> TempDir {
@@ -128,8 +112,8 @@ mod tests {
         let source = "# Title\r\n\r\né [Missing](missing.md)\r\n![Image](image.png)";
         let diagnostics = check(&root.path().join("docs/index.md"), source).unwrap();
         assert_eq!(diagnostics.len(), 2);
-        assert_eq!(diagnostics[0].location, Some((3, 3)));
-        assert_eq!(diagnostics[1].location, Some((4, 1)));
+        assert_eq!(diagnostics[0].location(), Some((3, 3)));
+        assert_eq!(diagnostics[1].location(), Some((4, 1)));
         assert_eq!(
             diagnostics[0].message,
             "Target \"missing.md\" does not exist"
@@ -143,7 +127,7 @@ mod tests {
             "[Guide][ref]\n\n[ref][]\n\n[ref]\n\n![Image][ref]\n\n[ref]: missing.md \"Title\"\n";
         let diagnostics = check(&root.path().join("docs/index.md"), source).unwrap();
         assert_eq!(diagnostics.len(), 4);
-        assert_eq!(diagnostics[0].location, Some((1, 1)));
+        assert_eq!(diagnostics[0].location(), Some((1, 1)));
     }
 
     #[test]
