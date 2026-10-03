@@ -8,7 +8,8 @@ Notable changes to ryni are documented here, following
 ### Added
 
 - Versioned local team packs and strict `ryni.toml` configuration, with rule
-  selection, preview gating, exclusions and optional ignore-file filtering.
+  selection, preview gating and gitignore-style exclusions. Ignore files are
+  respected by default and can be disabled with `--no-ignore`.
 - Preview checks for required metadata, headings, project files and duplicate
   skill names, plus `rule` and `settings` inspection commands.
 - Schema-versioned JSON findings, execution errors and proposed edits.
@@ -20,6 +21,8 @@ Notable changes to ryni are documented here, following
 
 ### Changed
 
+- Invalid or overlong link paths produce lint findings while unrelated checks
+  continue; other target inspection failures remain execution errors.
 - Separate source snapshots, document parsing, discovery, settings, diagnostics
   and project analysis within the existing Rust crate.
 - Accept individual Markdown files. Recoverable execution errors retain findings

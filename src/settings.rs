@@ -2,7 +2,7 @@ use crate::{
     error::{Operation, ScanError},
     registry::{Rule, Stability},
 };
-use globset::{Glob, GlobSet, GlobSetBuilder};
+use ignore::overrides::{Override, OverrideBuilder};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeSet,
@@ -44,11 +44,20 @@ impl LintOptions {
     }
 }
 
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub struct DiscoveryOptions {
     pub exclude: Vec<String>,
     pub respect_ignore: bool,
+}
+
+impl Default for DiscoveryOptions {
+    fn default() -> Self {
+        Self {
+            exclude: Vec::new(),
+            respect_ignore: true,
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -107,7 +116,7 @@ pub struct Settings {
     pub discovery: DiscoveryOptions,
     pub packs: Vec<ResolvedPack>,
     #[serde(skip)]
-    exclusions: GlobSet,
+    exclusions: Override,
 }
 
 impl Default for Settings {
@@ -124,7 +133,7 @@ impl Default for Settings {
             required_files: vec![],
             discovery: DiscoveryOptions::default(),
             packs: vec![],
-            exclusions: GlobSet::empty(),
+            exclusions: Override::empty(),
         }
     }
 }
@@ -136,9 +145,15 @@ impl Settings {
 
     /// Exclusions apply to explicit inputs too. Patterns match root-relative paths or ancestors.
     pub fn excluded(&self, relative: &Path) -> bool {
-        relative
-            .ancestors()
-            .any(|path| self.exclusions.is_match(path))
+        self.excluded_path(relative, false)
+    }
+
+    pub(crate) fn excluded_path(&self, relative: &Path, is_dir: bool) -> bool {
+        relative.ancestors().enumerate().any(|(index, path)| {
+            self.exclusions
+                .matched(path, is_dir || index > 0)
+                .is_ignore()
+        })
     }
 
     /// No parent-directory search: only the chosen project's ryni.toml is implicit.
@@ -236,12 +251,14 @@ impl Settings {
         {
             enabled.remove(&rule);
         }
-        let mut builder = GlobSetBuilder::new();
+        let mut builder = OverrideBuilder::new(root);
         for pattern in &discovery.exclude {
             if pattern.trim().is_empty() {
                 return Err(fail("exclusion patterns must not be blank".into()));
             }
-            builder.add(Glob::new(pattern).map_err(|e| fail(e.to_string()))?);
+            builder
+                .add(&format!("!{pattern}"))
+                .map_err(|e| fail(format!("invalid exclusion {pattern:?}: {e}")))?;
         }
         Ok(Self {
             enabled,

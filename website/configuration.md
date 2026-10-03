@@ -108,20 +108,24 @@ the scan. A file-only scan cannot detect duplicates elsewhere in the repository.
 ## Discovery
 
 By default, hidden directories are included, nested symlinks are skipped, and
-ignore-file filtering is disabled. Linked Markdown targets may still resolve
+ignore-file filtering is enabled. Linked Markdown targets may still resolve
 through symlinks, point outside the project, or refer to excluded files.
 
 Exclusions match paths relative to the scan root and their ancestors. Excluding
 `vendor` excludes its descendants. Exclusions apply even to explicitly supplied
 files. A file-only scan uses the parent as root, so excluding that file uses its
-basename. Glob matching follows the `globset` syntax; `*` may match separators.
+basename. Patterns use gitignore syntax: patterns containing a slash are relative
+to the scan root; patterns such as `*.md` match at any depth.
 
-`respect-ignore = true` or `--respect-ignore` enables ignore-file filtering,
-including `.gitignore`, without suppressing hidden harness directories by default.
-Ancestor ignore files outside the scan root are not loaded. Explicit file inputs
-bypass ignore-file filtering but still honor Ryni exclusions. `--no-ignore`
-disables ignore-file filtering. `--exclude` replaces the configuration's exclusion
-list and may be repeated.
+Ryni respects `.gitignore`, `.ignore`, `.git/info/exclude`, and global Git
+excludes, including applicable parent and nested ignore files. Git ignore rules
+apply inside Git repositories; `.ignore` also works outside them. Matching files
+are skipped even if tracked by Git. Global excludes can make coverage differ
+between machines. Explicit file inputs bypass ignore-file filtering but still
+honor Ryni exclusions. `respect-ignore = false` or `--no-ignore` disables
+ignore-file filtering; `--respect-ignore` enables it again when configuration
+has disabled it. `--exclude` replaces the configuration's exclusion list and
+may be repeated; it also applies with `--no-ignore`.
 
 A scan continues after recoverable read, discovery or target-inspection errors.
 Its available findings are still reported, but an incomplete scan exits with code

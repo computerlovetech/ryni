@@ -1,6 +1,6 @@
 use crate::{Diagnostic, document::Document, filesystem::FileSystem, registry::Rule};
 use percent_encoding::percent_decode_str;
-use std::path::Path;
+use std::{io, path::Path};
 
 pub(crate) fn check(
     document: &Document,
@@ -40,6 +40,9 @@ pub(crate) fn check(
                     match filesystem.exists(&resolved) {
                         Ok(true) => None,
                         Ok(false) => Some(format!("Target {raw_path:?} does not exist")),
+                        Err(error) if invalid_path_error(&error) => {
+                            Some(format!("Target {raw_path:?} is an invalid path: {error}"))
+                        }
                         Err(error) => {
                             result.errors.push(crate::error::ScanError::new(
                                 crate::error::Operation::InspectTarget,
@@ -62,6 +65,22 @@ pub(crate) fn check(
         }
     }
     result
+}
+
+fn invalid_path_error(error: &io::Error) -> bool {
+    if error.kind() == io::ErrorKind::InvalidInput {
+        return true;
+    }
+    #[cfg(unix)]
+    if error.raw_os_error() == Some(libc::ENAMETOOLONG) {
+        return true;
+    }
+    // ERROR_INVALID_NAME, ERROR_BAD_PATHNAME, ERROR_FILENAME_EXCED_RANGE.
+    #[cfg(windows)]
+    if matches!(error.raw_os_error(), Some(123 | 161 | 206)) {
+        return true;
+    }
+    false
 }
 
 fn has_scheme(destination: &str) -> bool {
@@ -89,6 +108,13 @@ mod tests {
         Ok(result.diagnostics)
     }
     use tempfile::TempDir;
+
+    #[test]
+    fn inaccessible_targets_are_not_invalid_paths() {
+        for kind in [io::ErrorKind::PermissionDenied, io::ErrorKind::Other] {
+            assert!(!invalid_path_error(&io::Error::from(kind)));
+        }
+    }
 
     fn project() -> TempDir {
         let root = tempfile::tempdir().unwrap();

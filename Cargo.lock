@@ -555,8 +555,8 @@ version = "0.2.2"
 dependencies = [
  "annotate-snippets",
  "clap",
- "globset",
  "ignore",
+ "libc",
  "percent-encoding",
  "proptest",
  "pulldown-cmark",

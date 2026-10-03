@@ -63,8 +63,10 @@ fn discovery_keeps_hidden_skills_and_applies_explicit_exclusions_to_files() {
     fs::create_dir(root.path().join("vendor")).unwrap();
     fs::write(root.path().join(".agents/skills/demo/SKILL.md"), "bad").unwrap();
     fs::write(root.path().join("vendor/README.md"), "[broken](missing)").unwrap();
+    fs::create_dir(root.path().join(".git")).unwrap();
     fs::write(root.path().join(".gitignore"), "vendor/\n").unwrap();
-    assert_eq!(json(root.path(), &[]).1["files_checked"], 2);
+    assert_eq!(json(root.path(), &["--no-ignore"]).1["files_checked"], 2);
+    assert_eq!(json(root.path(), &[]).1["files_checked"], 1);
     let result = json(root.path(), &["--respect-ignore"]).1;
     assert_eq!(result["files_checked"], 1);
     assert_eq!(
@@ -194,4 +196,55 @@ fn one_versioned_pack_produces_identical_findings_in_two_repositories() {
     }
     assert_eq!(outputs[0].0, 1);
     assert_eq!(outputs[0], outputs[1]);
+}
+
+#[test]
+fn parent_ignore_files_and_configuration_preserve_discovery_precedence() {
+    let root = tempfile::tempdir().unwrap();
+    fs::create_dir(root.path().join(".git")).unwrap();
+    fs::create_dir(root.path().join("docs")).unwrap();
+    fs::write(root.path().join(".gitignore"), "skip.md\n").unwrap();
+    let docs = root.path().join("docs");
+    fs::write(docs.join("skip.md"), "[Broken](missing)").unwrap();
+    fs::write(docs.join("keep.md"), "# Guide").unwrap();
+    assert_eq!(json(&docs, &[]).1["files_checked"], 1);
+    fs::write(
+        docs.join("ryni.toml"),
+        "schema-version = 1\n[discovery]\nrespect-ignore = false",
+    )
+    .unwrap();
+    assert_eq!(json(&docs, &[]).1["files_checked"], 2);
+    assert_eq!(json(&docs, &["--respect-ignore"]).1["files_checked"], 1);
+    assert_eq!(json(&docs, &["--isolated"]).1["files_checked"], 1);
+    assert_eq!(
+        json(&docs, &["--isolated", "--no-ignore"]).1["files_checked"],
+        2
+    );
+}
+
+#[test]
+fn exclusion_globs_keep_gitignore_path_and_directory_semantics() {
+    let root = tempfile::tempdir().unwrap();
+    for name in ["vendor/a.md", "docs/vendor/b.md", "docs/c.md"] {
+        let path = root.path().join(name);
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
+        fs::write(path, "# Guide").unwrap();
+    }
+    for (pattern, count) in [
+        ("vendor/", 1),
+        ("/vendor/", 2),
+        ("vendor/*.md", 2),
+        ("*.md", 0),
+    ] {
+        assert_eq!(
+            json(root.path(), &["--no-ignore", "--exclude", pattern]).1["files_checked"],
+            count,
+            "{pattern}"
+        );
+    }
+    // A trailing slash excludes directories, not a file with the same basename.
+    assert_eq!(
+        json(root.path(), &["docs/c.md", "--exclude", "c.md/"]).1["files_checked"],
+        1
+    );
 }

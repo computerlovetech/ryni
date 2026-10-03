@@ -51,7 +51,7 @@ impl FileSystem for OsFileSystem {
     }
 }
 
-type CachedResult = Result<Option<FileKind>, (io::ErrorKind, String)>;
+type CachedResult = Result<Option<FileKind>, (io::ErrorKind, String, Option<i32>)>;
 
 /// Cache target observations for one check only. Never normalize paths through symlinks.
 pub struct CachedFileSystem<'a> {
@@ -91,10 +91,16 @@ impl FileSystem for CachedFileSystem<'_> {
                 .cloned()
         {
             self.hits.fetch_add(1, Ordering::Relaxed);
-            return result.map_err(|(kind, message)| io::Error::new(kind, message));
+            return result.map_err(|(kind, message, code)| match code {
+                Some(code) => io::Error::from_raw_os_error(code),
+                None => io::Error::new(kind, message),
+            });
         }
         self.lookups.fetch_add(1, Ordering::Relaxed);
-        let result = self.inner.kind(path).map_err(|e| (e.kind(), e.to_string()));
+        let result = self
+            .inner
+            .kind(path)
+            .map_err(|e| (e.kind(), e.to_string(), e.raw_os_error()));
         if self.enabled {
             // Do not hold the lock during I/O. Concurrent misses may perform redundant lookups;
             // the first observation is retained consistently for the remainder of this scan.
@@ -105,9 +111,15 @@ impl FileSystem for CachedFileSystem<'_> {
                 .entry(path.into())
                 .or_insert(result)
                 .clone();
-            result.map_err(|(kind, message)| io::Error::new(kind, message))
+            result.map_err(|(kind, message, code)| match code {
+                Some(code) => io::Error::from_raw_os_error(code),
+                None => io::Error::new(kind, message),
+            })
         } else {
-            result.map_err(|(kind, message)| io::Error::new(kind, message))
+            result.map_err(|(kind, message, code)| match code {
+                Some(code) => io::Error::from_raw_os_error(code),
+                None => io::Error::new(kind, message),
+            })
         }
     }
 }

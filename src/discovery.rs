@@ -41,20 +41,24 @@ fn supported(path: &Path) -> bool {
 pub(crate) fn discover(input: &Input, settings: &Settings) -> (Vec<PathBuf>, Vec<ScanError>) {
     let mut paths = Vec::new();
     let mut errors = Vec::new();
-    if settings.excluded(input.path.strip_prefix(&input.root).unwrap_or(&input.path)) {
+    if settings.excluded_path(
+        input.path.strip_prefix(&input.root).unwrap_or(&input.path),
+        input.path.is_dir(),
+    ) {
         return (paths, errors);
     }
     let mut builder = ignore::WalkBuilder::new(&input.path);
     builder
         .standard_filters(settings.discovery.respect_ignore)
         .hidden(false)
-        .follow_links(false)
-        .parents(false)
-        .require_git(false);
+        .follow_links(false);
     let root = input.root.clone();
     let settings = settings.clone();
     builder.filter_entry(move |entry| {
-        !settings.excluded(entry.path().strip_prefix(&root).unwrap_or(entry.path()))
+        !settings.excluded_path(
+            entry.path().strip_prefix(&root).unwrap_or(entry.path()),
+            entry.file_type().is_some_and(|kind| kind.is_dir()),
+        )
     });
     for entry in builder.build() {
         match entry {

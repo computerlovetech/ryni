@@ -54,7 +54,7 @@ struct CommonArgs {
     /// Allow explicitly selected preview rules.
     #[arg(long)]
     preview: bool,
-    /// Replace exclusions with root-relative glob patterns.
+    /// Replace exclusions with gitignore-style globs relative to the scan root.
     #[arg(long)]
     exclude: Option<Vec<String>>,
     /// Honor ignore files, including .gitignore.
