@@ -392,6 +392,7 @@ dependencies = [
  "annotate-snippets",
  "clap",
  "ignore",
+ "libc",
  "percent-encoding",
  "pulldown-cmark",
  "serde_yaml_ng",

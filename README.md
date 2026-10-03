@@ -148,7 +148,9 @@ Markdown reference labels are not filesystem targets and are not checked.
 
 Paths are checked literally: no automatic `.md` extension, website routing, or
 build-template expansion. Generated targets must already exist when checking;
-intentional broken links are reported too. There are no suppressions yet.
+intentional broken links are reported too. Invalid filenames and paths that are
+too long produce findings without stopping the scan. Other inspection failures,
+such as permission errors, remain execution errors. There are no suppressions yet.
 
 ## Development
 

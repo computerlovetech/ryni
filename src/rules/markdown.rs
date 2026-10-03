@@ -61,6 +61,9 @@ pub(crate) fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String
                         {
                             Some(format!("Target {raw_path:?} does not exist"))
                         }
+                        Err(error) if invalid_path_error(&error) => {
+                            Some(format!("Target {raw_path:?} is an invalid path: {error}"))
+                        }
                         Err(error) => {
                             return Err(format!(
                                 "cannot inspect link target {} from {}: {error}",
@@ -88,6 +91,22 @@ pub(crate) fn check(path: &Path, source: &str) -> Result<Vec<Diagnostic>, String
     Ok(diagnostics)
 }
 
+fn invalid_path_error(error: &io::Error) -> bool {
+    if error.kind() == io::ErrorKind::InvalidInput {
+        return true;
+    }
+    #[cfg(unix)]
+    if error.raw_os_error() == Some(libc::ENAMETOOLONG) {
+        return true;
+    }
+    // ERROR_INVALID_NAME, ERROR_BAD_PATHNAME, ERROR_FILENAME_EXCED_RANGE.
+    #[cfg(windows)]
+    if matches!(error.raw_os_error(), Some(123 | 161 | 206)) {
+        return true;
+    }
+    false
+}
+
 fn has_scheme(destination: &str) -> bool {
     let Some((scheme, _)) = destination.split_once(':') else {
         return false;
@@ -102,6 +121,13 @@ fn has_scheme(destination: &str) -> bool {
 mod tests {
     use super::*;
     use tempfile::TempDir;
+
+    #[test]
+    fn inaccessible_targets_are_not_invalid_paths() {
+        for kind in [io::ErrorKind::PermissionDenied, io::ErrorKind::Other] {
+            assert!(!invalid_path_error(&io::Error::from(kind)));
+        }
+    }
 
     fn project() -> TempDir {
         let root = tempfile::tempdir().unwrap();
