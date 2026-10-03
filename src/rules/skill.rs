@@ -120,7 +120,48 @@ pub(crate) fn check(
             }
         }
     }
+    // Re-serializing YAML can remove comments and change formatting. The user must opt in.
+    if let Some(directory) = path
+        .parent()
+        .and_then(Path::file_name)
+        .and_then(|name| name.to_str())
+        && valid_name(directory)
+        && text(metadata, "name").is_some()
+    {
+        for diagnostic in &mut diagnostics {
+            if diagnostic.rule == Rule::DirectoryName {
+                let mut fields = metadata.clone();
+                fields.insert(Value::from("name"), Value::from(directory));
+                if let Ok(mut replacement) = serde_yaml_ng::to_string(&fields)
+                    && let Some(Ok(frontmatter)) = &document.metadata
+                {
+                    if document.source.text()[frontmatter.span.clone()].contains("\r\n") {
+                        replacement = replacement.replace('\n', "\r\n");
+                    }
+                    diagnostic.fix = Some(crate::fix::Fix {
+                        title: format!(
+                            "Set name to {directory:?} (rewrites YAML formatting and comments)"
+                        ),
+                        applicability: crate::fix::Applicability::Unsafe,
+                        edits: vec![crate::fix::Edit {
+                            range: frontmatter.span.clone(),
+                            replacement,
+                        }],
+                    });
+                }
+            }
+        }
+    }
     diagnostics
+}
+
+fn valid_name(name: &str) -> bool {
+    (1..=64).contains(&name.chars().count())
+        && name == name.to_lowercase()
+        && name.chars().all(|c| c.is_alphanumeric() || c == '-')
+        && !name.starts_with('-')
+        && !name.ends_with('-')
+        && !name.contains("--")
 }
 
 pub(crate) fn text<'a>(metadata: &'a Mapping, field: &str) -> Option<&'a str> {

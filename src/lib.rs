@@ -3,6 +3,7 @@ mod discovery;
 pub mod document;
 pub mod error;
 pub mod filesystem;
+pub mod fix;
 pub mod registry;
 pub mod report;
 mod rules;

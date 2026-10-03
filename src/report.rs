@@ -7,6 +7,7 @@ pub struct CheckReport {
     pub files_checked: usize,
     pub diagnostics: Vec<Diagnostic>,
     pub errors: Vec<ScanError>,
+    pub files_fixed: usize,
 }
 
 impl CheckReport {
@@ -45,9 +46,11 @@ impl CheckReport {
             "schema_version": 1,
             "files_discovered": self.files_discovered,
             "files_checked": self.files_checked,
+            "files_fixed": self.files_fixed,
             "complete": self.errors.is_empty(),
             "diagnostics": self.diagnostics.iter().map(|d| {
                 serde_json::json!({
+                    "fix": d.fix,
                     "rule": d.rule.id(), "severity": "error", "message": d.message,
                     "path": d.source.path().to_string_lossy().replace('\\', "/"),
                     "range": d.span.as_ref().map(|span| serde_json::json!({"start": span.start, "end": span.end})),

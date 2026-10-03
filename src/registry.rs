@@ -31,6 +31,7 @@ pub struct RuleMetadata {
     pub scope: Scope,
     pub stability: Stability,
     pub default_enabled: bool,
+    pub fix: Option<crate::fix::Applicability>,
     pub explanation: &'static str,
 }
 
@@ -94,6 +95,11 @@ impl Rule {
         RuleMetadata {
             id,
             explanation,
+            fix: if self == Self::DirectoryName {
+                Some(crate::fix::Applicability::Unsafe)
+            } else {
+                None
+            },
             scope: match self {
                 Self::MarkdownLocalLink | Self::RequiredSections => Scope::Markdown,
                 Self::RequiredFiles | Self::DuplicateSkillName => Scope::Project,

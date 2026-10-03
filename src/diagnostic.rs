@@ -7,6 +7,7 @@ pub struct Diagnostic {
     pub message: String,
     pub source: Arc<SourceFile>,
     pub span: Option<Range<usize>>,
+    pub fix: Option<crate::fix::Fix>,
 }
 
 impl Diagnostic {
@@ -22,6 +23,7 @@ impl Diagnostic {
             message: message.into(),
             source: Arc::clone(source),
             span,
+            fix: None,
         }
     }
 

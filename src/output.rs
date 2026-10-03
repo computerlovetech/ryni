@@ -33,5 +33,9 @@ pub fn render(diagnostic: &Diagnostic, color: bool) -> String {
             .path(&path)
             .fold(false)
     };
-    renderer.render(&[title.element(snippet)]).to_string()
+    let mut rendered = renderer.render(&[title.element(snippet)]).to_string();
+    if let Some(fix) = &diagnostic.fix {
+        rendered.push_str(&format!("\n help: {} [{:?}]", fix.title, fix.applicability));
+    }
+    rendered
 }

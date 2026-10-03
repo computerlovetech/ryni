@@ -94,6 +94,12 @@ struct CheckArgs {
     common: CommonArgs,
     #[arg(long, value_enum, default_value = "text")]
     output_format: OutputFormat,
+    /// Apply safe fixes and recheck. Unsafe fixes require --unsafe-fixes too.
+    #[arg(long)]
+    fix: bool,
+    /// Also apply fixes that may change meaning or remove YAML comments.
+    #[arg(long, requires = "fix")]
+    unsafe_fixes: bool,
 }
 
 #[derive(Clone, Copy, ValueEnum)]
@@ -120,10 +126,19 @@ fn execute(cli: Cli) -> io::Result<u8> {
     let mut stdout = io::BufWriter::new(io::stdout().lock());
     let code = match cli.command {
         Command::Check(args) => {
-            let result = args
-                .common
-                .settings()
-                .and_then(|settings| ryni::check_with_settings(&args.common.project, &settings));
+            let result = args.common.settings().and_then(|settings| {
+                let mut report = ryni::check_with_settings(&args.common.project, &settings)?;
+                if args.fix {
+                    let root = ryni::project_root(&args.common.project)?;
+                    let applied = ryni::fix::apply(&root, &report, args.unsafe_fixes);
+                    if applied.files_changed > 0 {
+                        report = ryni::check_with_settings(&args.common.project, &settings)?;
+                    }
+                    report.files_fixed = applied.files_changed;
+                    report.errors.extend(applied.errors);
+                }
+                Ok(report)
+            });
             let report = result.unwrap_or_else(|error| CheckReport {
                 errors: vec![error],
                 ..Default::default()
@@ -133,6 +148,9 @@ fn execute(cli: Cli) -> io::Result<u8> {
                     writeln!(stdout, "{}", serde_json::to_string_pretty(&report.json())?)?
                 }
                 OutputFormat::Text => {
+                    if report.files_fixed > 0 {
+                        writeln!(stdout, "Fixed {} file(s).", report.files_fixed)?;
+                    }
                     for diagnostic in &report.diagnostics {
                         writeln!(stdout, "{}\n", output::render(diagnostic, color))?;
                     }
