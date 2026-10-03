@@ -85,6 +85,7 @@ struct Pack {
 pub struct ResolvedPack {
     pub name: String,
     pub version: String,
+    #[serde(serialize_with = "crate::error::serialize_path")]
     pub path: PathBuf,
 }
 
@@ -147,6 +148,13 @@ impl Settings {
         isolated: bool,
         overrides: Overrides,
     ) -> Result<Self, ScanError> {
+        if isolated && config.is_some() {
+            return Err(ScanError::new(
+                Operation::Configure,
+                root,
+                "explicit configuration cannot be combined with isolation",
+            ));
+        }
         let config_path = config
             .map(Path::to_path_buf)
             .unwrap_or_else(|| root.join("ryni.toml"));
@@ -230,6 +238,9 @@ impl Settings {
         }
         let mut builder = GlobSetBuilder::new();
         for pattern in &discovery.exclude {
+            if pattern.trim().is_empty() {
+                return Err(fail("exclusion patterns must not be blank".into()));
+            }
             builder.add(Glob::new(pattern).map_err(|e| fail(e.to_string()))?);
         }
         Ok(Self {
@@ -273,7 +284,8 @@ fn validate_options(lint: &LintOptions) -> Result<(), String> {
         }
     }
     for path in lint.required_files.iter().flatten() {
-        if path.contains('\\')
+        if path.split('/').any(|part| matches!(part, "" | "." | ".."))
+            || path.contains('\\')
             || path.contains(':')
             || path.contains('\0')
             || Path::new(path)

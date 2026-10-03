@@ -58,13 +58,21 @@ pub(crate) fn discover(input: &Input, settings: &Settings) -> (Vec<PathBuf>, Vec
     });
     for entry in builder.build() {
         match entry {
-            Ok(entry)
-                if entry.file_type().is_some_and(|kind| kind.is_file())
-                    && supported(entry.path()) =>
-            {
-                paths.push(entry.into_path())
+            Ok(entry) => {
+                if let Some(error) = entry.error() {
+                    errors.push(ScanError::new(
+                        Operation::Discover,
+                        entry
+                            .path()
+                            .strip_prefix(&input.root)
+                            .unwrap_or(entry.path()),
+                        error,
+                    ));
+                }
+                if entry.file_type().is_some_and(|kind| kind.is_file()) && supported(entry.path()) {
+                    paths.push(entry.into_path());
+                }
             }
-            Ok(_) => {}
             Err(error) => errors.push(ScanError::new(Operation::Discover, &input.root, error)),
         }
     }

@@ -163,3 +163,15 @@ fn rule_help_is_backed_by_registry() {
     );
     assert_eq!(run(root.path(), &["rule", "typo"]).status.code(), Some(2));
 }
+
+#[test]
+fn invalid_ignore_patterns_make_the_scan_incomplete() {
+    let root = tempfile::tempdir().unwrap();
+    fs::write(root.path().join(".ignore"), "[z-a]\n").unwrap();
+    fs::write(root.path().join("README.md"), "# Guide\n").unwrap();
+    let (code, result) = json(root.path(), &["--respect-ignore"]);
+    assert_eq!(code, 2);
+    assert_eq!(result["complete"], false);
+    assert_eq!(result["errors"][0]["operation"], "discover");
+    assert_eq!(result["files_checked"], 1);
+}

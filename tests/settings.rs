@@ -83,6 +83,8 @@ fn rejects_typos_incompatible_packs_and_unpinned_versions() {
     let root = tempfile::tempdir().unwrap();
     for config in [
         "schema-version = 2",
+        "schema-version = 1\n[lint]\nrequired-files = ['docs/./guide.md']",
+        "schema-version = 1\n[discovery]\nexclude = ['']",
         "schema-version = 1\nunknown = true",
         "schema-version = 1\n[lint]\nselect = ['typo']",
         "schema-version = 1\n[lint]\nselect = ['skill-duplicate-name']",
