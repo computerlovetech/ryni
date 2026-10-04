@@ -70,9 +70,9 @@ uncached, sequential and parallel runs, including target creation and deletion
 between scans. Fix tests cover opt-in, stale sources, overlap rejection and
 idempotence.
 
-To deliberately refresh the terminal snapshot, build the debug binary, run
-`python3 scripts/update_snapshots.py`, then review the diff. Never accept a changed
-snapshot or corpus baseline solely to make tests pass.
+When CLI output changes intentionally, update `tests/snapshots/local-link.txt`
+and review the diff. Never accept a changed snapshot or corpus baseline solely
+to make tests pass.
 
 The optional repository benchmark lives under `benchmarks/` and checks pinned
 real projects. Schema 2 baselines compare structured diagnostics independently of
